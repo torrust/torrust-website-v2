@@ -19,6 +19,7 @@ certonly
 cgbosse
 Chatrooms
 Chihaya
+Chocobo
 containerfile
 Containerfiles
 corepack
