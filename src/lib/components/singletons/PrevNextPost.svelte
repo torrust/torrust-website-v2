@@ -1,22 +1,29 @@
 <script lang="ts">
-	import type { BlogPost } from '$lib/utils/types';
 	import Icon from '@iconify/svelte';
-
-	export let currentPost: BlogPost;
-	export let allPosts: BlogPost[];
+	import type { BlogPost } from '$lib/utils/types';
+	export let data;
+	export let currentPage;
 
 	let prevPost: BlogPost | null = null;
 	let nextPost: BlogPost | null = null;
 
 	$: {
-		if (currentPost && allPosts.length) {
-			allPosts.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
+		if (currentPage && data.all_posts.length) {
+			// Sort posts by date (latest first)
+			data.all_posts.sort(
+				(a: BlogPost, b: BlogPost) => new Date(b.date).getTime() - new Date(a.date).getTime()
+			);
 
-			const currentIndex = allPosts.findIndex((post) => post.slug === currentPost.slug);
+			// Find the index of the current post
+			const currentIndex = data.all_posts.findIndex(
+				(post: BlogPost) => currentPage === post.meta.slug
+			);
 
+			// Set prevPost and nextPost based on the current index
 			if (currentIndex !== -1) {
-				prevPost = currentIndex > 0 ? allPosts[currentIndex - 1] : null;
-				nextPost = currentIndex < allPosts.length - 1 ? allPosts[currentIndex + 1] : null;
+				prevPost = currentIndex > 0 ? data.all_posts[currentIndex - 1] : null; // Previous post
+				nextPost =
+					currentIndex < data.all_posts.length - 1 ? data.all_posts[currentIndex + 1] : null; // Next post
 			}
 		}
 	}
@@ -32,7 +39,7 @@
 					height="24"
 					style="color: rgba(245, 245, 245, 0.92)"
 				/>
-				<a href="/{prevPost.slug}">{prevPost.title}</a>
+				<a href="/blog/{prevPost.meta.slug}">{prevPost?.meta?.title}</a>
 			</div>
 		{:else}
 			<h3 class="inactive">You are reading our first post.</h3>
@@ -42,7 +49,7 @@
 	<div class="nextPost">
 		{#if nextPost}
 			<div class="arrow arrowNext">
-				<a href="/{nextPost.slug}">{nextPost.title}</a>
+				<a href="/blog/{nextPost.meta.slug}">{nextPost?.meta?.title}</a>
 				<Icon
 					icon="ic:outline-arrow-forward"
 					width="24"

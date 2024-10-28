@@ -13,6 +13,7 @@
 				title={post.title}
 				date={post.date}
 				contributor={post.contributor}
+				coverImage={post.coverImage}
 			/>
 		{/each}
 	</div>

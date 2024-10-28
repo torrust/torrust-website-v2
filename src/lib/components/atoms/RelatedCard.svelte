@@ -58,9 +58,7 @@
 		&[onclick] {
 			cursor: pointer;
 			&:hover {
-				box-shadow: var(--card-shadow-hover);
-				transform: scale(1.01);
-				border: 3px solid rgba(255, 49, 0, 1);
+				border: 1px solid rgba(255, 49, 0, 1);
 			}
 		}
 	}

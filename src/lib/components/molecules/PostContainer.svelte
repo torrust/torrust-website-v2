@@ -1,5 +1,5 @@
 <script lang="ts">
-	let size: number;
+	let size = 0;
 </script>
 
 <svelte:window bind:innerWidth={size} />
@@ -8,7 +8,7 @@
 	<slot />
 </div>
 
-<style>
+<style lang="scss">
 	.grid {
 		display: grid;
 		grid-template-columns: repeat(6, 1fr);
@@ -19,7 +19,7 @@
 	}
 
 	.flex {
-		display: flex;
+		display: flex !important;
 		flex-direction: column;
 	}
 </style>

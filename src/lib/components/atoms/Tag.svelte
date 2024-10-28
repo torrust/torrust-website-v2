@@ -1,36 +1,13 @@
+<!-- src/lib/components/atoms/Tag.svelte -->
 <script lang="ts">
-	import { HttpRegex } from '$lib/utils/regex';
-	import ExternalLinkIcon from '$lib/icons/external-link.svelte';
-
-	export let color: 'primary' | 'secondary' = 'primary';
-
-	export let href: string | undefined = undefined;
 	export let tag: string;
-
-	const isExternalLink = !!href && HttpRegex.test(href);
-	export let target: '_self' | '_blank' = isExternalLink ? '_blank' : '_self';
-	export let rel = isExternalLink ? 'noopener noreferrer' : undefined;
-
-	$: tagElement = href ? 'a' : 'div';
-	$: linkProps = {
-		href,
-		target,
-		rel
-	};
 </script>
 
-<svelte:element this={tagElement} class="tag {color}" {...linkProps}>
-	{#if isExternalLink}
-		<div class="icon">
-			{tag}
-			<ExternalLinkIcon />
-		</div>
-	{:else}
-		<a data-sveltekit-reload href="/tags/{tag}">
-			<slot />
-		</a>
-	{/if}
-</svelte:element>
+<div class="tag">
+	<a href={`/tags/${tag}`}>
+		<slot>{tag}</slot>
+	</a>
+</div>
 
 <style lang="scss">
 	.tag {
@@ -44,13 +21,7 @@
 		font-size: 0.85rem;
 		width: fit-content;
 		white-space: nowrap;
-	}
-
-	.icon {
-		display: flex;
-		gap: 15px;
-		width: 100%;
-		height: 20px;
+		color: rgba(245, 245, 245, 0.64);
 	}
 
 	a {

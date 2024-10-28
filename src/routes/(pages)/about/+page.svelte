@@ -309,7 +309,7 @@
 
 			<p>
 				You can learn more by reading our blog article <a
-					href="torrust-enhancing-the-bittorrent-ecosystem"
+					href="blog/torrust-enhancing-the-bittorrent-ecosystem"
 					>Torrust - Enhancing the BitTorrent Ecosystem</a
 				>.
 			</p>

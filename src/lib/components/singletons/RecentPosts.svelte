@@ -12,6 +12,7 @@
 				slug={post.slug}
 				title={post.title}
 				date={post.date}
+				coverImage={post.coverImage}
 				contributor={post.contributor}
 			/>
 		{/each}

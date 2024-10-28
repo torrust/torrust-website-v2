@@ -1,102 +1,65 @@
 <script lang="ts">
-	import Tag from '$lib/components/atoms/Tag.svelte';
-	import { formatDate } from '$lib/utils/date';
-	import ShareButton from '$lib/components/singletons/ShareButton.svelte';
-
-	import { keywords, siteBaseUrl, title } from '$lib/data/meta';
-	import type { BlogPost } from '$lib/utils/types';
-	import Image from '$lib/components/atoms/Image.svelte';
+	export let data;
 	import PrevNextPost from '$lib/components/singletons/PrevNextPost.svelte';
-	import { allPosts } from '$lib/data/blog-posts';
-	import RelatedPosts from '$lib/components/organisms/RelatedPosts.svelte';
+	import ShareButton from '$lib/components/singletons/ShareButton.svelte';
+	import Image from '$lib/components/atoms/Image.svelte';
+	import Tag from '$lib/components/atoms/Tag.svelte';
 
-	export let data: { post: BlogPost; allPosts: BlogPost[] };
-	let post: BlogPost;
-
-	$: ({ post } = data);
-
-	let metaKeywords = keywords;
-
-	$: {
-		if (post?.tags?.length) {
-			metaKeywords = post.tags.concat(metaKeywords);
-		}
-		if (post?.keywords?.length) {
-			metaKeywords = post.keywords.concat(metaKeywords);
-		}
-	}
+	import { formatDate } from '$lib/utils/date';
+	import BlogPreview from '$lib/components/molecules/BlogPreview.svelte';
 </script>
-
-<svelte:head>
-	{#if post}
-		<meta name="keywords" content={metaKeywords.join(', ')} />
-
-		<meta name="description" content={post.excerpt} />
-		<meta property="og:description" content={post.excerpt} />
-		<meta name="twitter:description" content={post.excerpt} />
-		<link rel="canonical" href="{siteBaseUrl}/{post.slug}" />
-
-		<title>{post.title} - {title}</title>
-		<meta property="og:title" content="{post.title} - {title}" />
-		<meta name="twitter:title" content="{post.title} - {title}" />
-
-		{#if post.coverImage}
-			<meta property="og:image" content="{siteBaseUrl}{post.coverImage}" />
-			<meta name="twitter:image" content="{siteBaseUrl}{post.coverImage}" />
-		{/if}
-	{/if}
-</svelte:head>
 
 <div class="container">
 	<main>
 		<article id="article-content">
 			<div class="header">
-				{#if post.tags?.length}
+				{#if data.tags?.length}
 					<div class="tags">
-						{#each post.tags as tag}
+						{#each data.tags as tag}
 							<Tag {tag}>
 								{tag}
 							</Tag>
 						{/each}
 					</div>
 				{/if}
-				{#if post}
-					<h1>{post.title}</h1>
-					<p>{post.excerpt}</p>
+				{#if data}
+					<h1>{data.title}</h1>
+					<p>{data.excerpt}</p>
 					<div class="note">
 						<div>
-							{#if post.contributor}
-								<a class="author" href={'/contributor/' + post.contributorSlug}
-									>{post.contributor}</a
+							{#if data.contributor}
+								<a class="author" href={'/contributor/' + data.contributorSlug}
+									>{data.contributor}</a
 								>
 								-
 							{/if}
-							{formatDate(post.date)}
+							{formatDate(data.date)}
 						</div>
-						<ShareButton slug={post.slug} title={post.title} />
+						<ShareButton slug={data.slug} title={data.title} />
 					</div>
 				{/if}
 			</div>
-			{#if post && post.coverImage}
+			{#if data && data.coverImage}
 				<div class="cover-image">
-					{#key post.coverImage}
-						<Image src={post.coverImage + '?v=' + post.slug} alt={post.title} />
+					{#key data.coverImage}
+						<Image src={data.coverImage + '?v=' + data.slug} alt={data.title} />
 					{/key}
 				</div>
 			{/if}
 			<div class="content">
-				<slot />
+				<svelte:component this={data.content} />
 			</div>
 		</article>
+		<PrevNextPost currentPage={data.slug} {data} />
 
-		<PrevNextPost currentPost={post} {allPosts} />
-
-		{#if post.relatedPosts && post.relatedPosts.length > 0}
-			<div class="container-related-articles">
-				<h2>Related articles</h2>
-				<RelatedPosts posts={post.relatedPosts} />
+		<div class="related-posts-container">
+			<h2>Related Posts:</h2>
+			<div class="grid">
+				{#each data.posts.slice(0, 3) as post}
+					<BlogPreview post_data={post.meta} />
+				{/each}
 			</div>
-		{/if}
+		</div>
 	</main>
 </div>
 
@@ -220,10 +183,38 @@
 		}
 	}
 
-	.container-related-articles {
-		h2 {
-			margin-block: 64px 48px;
-			text-align: center;
+	.related-posts-container {
+		display: flex;
+		flex-direction: column;
+		color: rgba(245, 245, 245, 0.96);
+
+		@include for-desktop-up {
+			max-width: 1176px;
+		}
+	}
+
+	h2 {
+		text-align: center;
+		color: rgba(245, 245, 245, 0.96);
+		padding-top: 1.5rem;
+	}
+
+	.grid {
+		padding-top: 3rem;
+		display: grid;
+		grid-template-columns: 1fr 1fr;
+		grid-gap: 24px;
+
+		@include for-phone-only {
+			grid-template-columns: 1fr;
+		}
+
+		@include for-tablet-landscape-up {
+			grid-template-columns: 1fr 1fr;
+		}
+
+		@include for-desktop-up {
+			grid-template-columns: 1fr 1fr 1fr;
 		}
 	}
 </style>

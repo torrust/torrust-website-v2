@@ -39,7 +39,7 @@
 				server, or set them up separately. You can choose to build from source or use pre-built
 				containers. If you don't expect heavy traffic, we recommend using Docker Compose to simplify
 				setup. For detailed instructions, refer to our guide on <a
-					href="deploying-torrust-to-production">Deploying Torrust to Production</a
+					href="blog/deploying-torrust-to-production">Deploying Torrust to Production</a
 				>.
 			</p>
 
