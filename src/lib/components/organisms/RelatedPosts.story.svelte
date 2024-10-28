@@ -5,6 +5,17 @@
 
 	const posts: BlogPost[] = [
 		{
+			path: '/getting-started-with-svelte',
+			meta: {
+				slug: 'getting-started-with-svelte',
+				title: 'Getting Started with Svelte',
+				date: '2024-04-28',
+				contributor: 'John Doe',
+				coverImage: '/images/svelte-cover.jpg',
+				tags: ['Technology', 'Programming'],
+				readingTime: '5 minutes',
+				excerpt: 'Learn the basics of Svelte and start building web applications with ease.'
+			},
 			tags: ['Technology', 'Programming'],
 			keywords: ['Svelte', 'JavaScript', 'Web Development'],
 			hidden: false,
