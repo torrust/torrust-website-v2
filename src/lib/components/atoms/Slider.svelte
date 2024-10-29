@@ -55,6 +55,8 @@
 
 		a {
 			color: rgba(245, 245, 245, 0.96);
+			text-decoration: none;
+			word-break: keep-all;
 		}
 
 		div.has-link:hover {

@@ -170,3 +170,9 @@
 		fill-opacity="0.96"
 	/>
 </svg>
+
+<style lang="scss">
+	svg:hover path {
+		fill: rgba(255, 49, 0, 1);
+	}
+</style>

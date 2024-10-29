@@ -5,7 +5,9 @@
 <footer>
 	<div class="footer-wrapper">
 		<div>
-			<Nautilus />
+			<a href="https://nautilus-cyberneering.de/" target="_blank" class="logo-container">
+				<Nautilus />
+			</a>
 		</div>
 		<div>
 			<p>CC-BY-SA 4.0</p>

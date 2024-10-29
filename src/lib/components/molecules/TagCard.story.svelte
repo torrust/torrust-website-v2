@@ -25,10 +25,7 @@
 			coverImage={examplePost.coverImage}
 			excerpt={examplePost.excerpt}
 			slug={examplePost.slug}
-			tags={examplePost.tags}
-			readingTime={examplePost.readingTime}
 			date={examplePost.date}
-			showImage={examplePost.showImage}
 		/>
 	</svelte:component>
 </svelte:component>

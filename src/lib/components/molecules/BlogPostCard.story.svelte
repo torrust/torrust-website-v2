@@ -22,7 +22,6 @@
 			slug="exploring-javascript-ecosystem"
 			date="2024-09-30"
 			contributor="Jane Smith"
-			showImage={false}
 		/>
 	</svelte:component>
 
@@ -32,7 +31,6 @@
 			slug="css-tricks-modern-web-dev"
 			date="2024-09-30"
 			contributor="Alice Johnson"
-			showImage={true}
 		/>
 	</svelte:component>
 </svelte:component>

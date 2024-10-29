@@ -6,7 +6,7 @@
 	import Icon from '@iconify/svelte';
 
 	export let searchTerm = '';
-	export let posts: BlogPost[] = [];
+	export let blogPosts: BlogPost[] = [];
 
 	const dispatch = createEventDispatcher();
 	let showInput = true;
@@ -19,34 +19,39 @@
 		tags: string[];
 	}
 
+	let search: 'loading' | 'ready' = 'loading';
+	let results: SearchResult[] = [];
+
+	// Triggered on input change
 	function handleInput(event: Event) {
 		const input = event.target as HTMLInputElement;
 		searchTerm = input.value;
 		dispatch('search', searchTerm);
 	}
 
-	let search: 'loading' | 'ready' = 'loading';
-	let results: SearchResult[] = [];
-
-	onMount(async () => {
-		createPostsIndex(posts);
-		search = 'ready';
-	});
-
-	$: if (search === 'ready') {
-		results = searchPostsIndex(searchTerm);
-	}
-
+	// Clear search term
 	function clearSearch() {
 		searchTerm = '';
 		showInput = false;
 	}
 
+	// Focus on the search input if needed
 	afterUpdate(() => {
 		if (showInput && searchInput) {
 			searchInput.focus();
 		}
 	});
+
+	// On mount, create the search index from the blogPosts
+	onMount(async () => {
+		createPostsIndex(blogPosts); // Create index for blogPosts
+		search = 'ready';
+	});
+
+	// Perform search when searchTerm changes and index is ready
+	$: if (search === 'ready') {
+		results = searchPostsIndex(searchTerm);
+	}
 </script>
 
 <div class="search-bar-container">
@@ -81,16 +86,19 @@
 							<a href="/{result.slug}" on:click={clearSearch}>
 								<div>
 									<div>
+										<!-- Displaying result title -->
 										<!-- eslint-disable-next-line svelte/no-at-html-tags -->
 										{@html result.title}
 									</div>
 									<div>
+										<!-- Displaying result content snippet -->
 										<!-- eslint-disable-next-line svelte/no-at-html-tags -->
 										<p>{@html result.content}</p>
 									</div>
 								</div>
 								<div class="tag-container">
 									{#each result.tags as tag}
+										<!-- Highlight matching tags -->
 										{#if tag.toLowerCase().includes(searchTerm.toLowerCase())}
 											<!-- eslint-disable-next-line svelte/no-at-html-tags -->
 											<p class="tag" style="color: black;">{@html tag}</p>
@@ -101,8 +109,6 @@
 						</li>
 					{/each}
 				</ul>
-			{:else}
-				<p class="no-result">No results found for query "{searchTerm}"</p>
 			{/if}
 		</div>
 	{/if}
@@ -110,6 +116,7 @@
 
 <style lang="scss">
 	@import '$lib/scss/_mixins.scss';
+
 	.search-bar-container {
 		position: relative;
 		display: flex;
@@ -155,7 +162,6 @@
 		box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 		border-radius: 0 0 4px 4px;
 		z-index: 10;
-		border-radius: 4px;
 	}
 
 	.dropdown ul {
@@ -177,19 +183,10 @@
 		text-decoration: none;
 		color: rgba(245, 245, 245, 0.96);
 		display: block;
-		display: flex;
-		flex-direction: column;
-		gap: 2rem;
 	}
 
 	.dropdown a:hover {
 		background-color: hsl(220, 10%, 20%);
-	}
-
-	.dropdown p {
-		margin: 0;
-		font-size: 0.875rem;
-		color: #ffffff;
 	}
 
 	.tag-container {
@@ -206,10 +203,5 @@
 		font-size: 0.85rem;
 		width: fit-content;
 		background-color: var(--color--secondary-tint);
-	}
-
-	.no-result {
-		color: #ffffff;
-		padding: 0.5rem;
 	}
 </style>

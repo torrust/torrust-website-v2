@@ -41,6 +41,7 @@
 		align-items: center;
 		justify-content: center;
 		color: rgba(245, 245, 245, 0.96);
+		padding-inline: 1.5rem;
 
 		@include for-tablet-portrait-up {
 			.hero-heading,

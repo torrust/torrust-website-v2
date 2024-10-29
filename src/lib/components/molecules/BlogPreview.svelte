@@ -1,51 +1,42 @@
 <script lang="ts">
 	import { formatDate } from '$lib/utils/date';
 
-	export let title: string;
-	export let coverImage: string | undefined = undefined;
-	export let slug: string;
-	export let date: string;
-	export let contributor: string;
+	export let post_data;
 
-	const formattedDate = formatDate(date);
+	const formattedDate = formatDate(post_data.date);
 </script>
 
-<a href="/blog/{slug}" class="container">
+<div class="container">
 	<div class="grid">
 		<div class="image-container">
-			<img src={coverImage} alt={title} />
+			<img src={post_data.coverImage} alt={post_data.title} />
 		</div>
 		<div class="text-container">
-			<h2>{title}</h2>
-			{#if contributor}
-				<p>{contributor} - {formattedDate}</p>
+			<h2>{post_data.title}</h2>
+			{#if post_data.contributor}
+				<p>{post_data.contributor} - {formattedDate}</p>
 			{:else}
 				<p>{formattedDate}</p>
 			{/if}
 		</div>
 	</div>
-</a>
+</div>
 
 <style lang="scss">
 	@import '$lib/scss/breakpoints.scss';
 
-	a {
-		position: relative;
-		display: block;
-		width: 100%;
+	.container {
+		height: 312px;
+		margin: 0 auto;
 		overflow: hidden;
 		color: rgba(245, 245, 245, 0.96);
 		text-decoration: none;
 		cursor: pointer;
-	}
-
-	a:hover {
-		color: rgba(255, 49, 0, 1);
+		padding: 0;
 	}
 
 	.grid {
 		position: relative;
-		width: 100%;
 		height: 300px;
 	}
 
@@ -54,6 +45,8 @@
 		height: 100%;
 		overflow: hidden;
 		border-radius: 10px;
+		margin: 0;
+		padding: 0;
 	}
 
 	.image-container img {
@@ -74,7 +67,8 @@
 		align-items: flex-start;
 		text-align: left;
 		color: white;
-		background: rgba(0, 0, 0, 0.5); /* Dark overlay for better readability */
+		background: rgba(0, 0, 0, 0.5);
+		border-radius: 10px;
 		padding: 1rem;
 		transition: background 0.3s ease;
 	}
@@ -93,9 +87,5 @@
 		margin: 0.5rem 0 0;
 		font-size: 0.875rem;
 		color: #f5f5f5;
-	}
-
-	a:hover .text-container {
-		background: rgba(0, 0, 0, 0.7); /* Darken overlay on hover */
 	}
 </style>

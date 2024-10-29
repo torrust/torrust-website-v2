@@ -42,4 +42,15 @@ export type BlogPost = {
 	coverImage: string | undefined;
 	contributorSlug: string;
 	contributor: string;
+	path: string;
+	meta: {
+		slug: string;
+		title: string;
+		contributor: string;
+		coverImage: string;
+		tags?: string[];
+		readingTime: string;
+		excerpt: string;
+		date: string;
+	};
 };

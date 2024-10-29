@@ -22,6 +22,9 @@
 				<ul class="links">
 					<!-- Menu items -->
 					<li>
+						<a href="/" class={currentPath === '/' ? 'active' : ''} on:click={toggleMenu}>Home</a>
+					</li>
+					<li>
 						<a
 							href="/torrent-index"
 							class={currentPath === '/torrent-index' ? 'active' : ''}

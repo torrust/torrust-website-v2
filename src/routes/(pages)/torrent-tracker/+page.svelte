@@ -124,8 +124,8 @@
 			> tool for benchmarking.
 		</p>
 		<p>
-			You can also read our blog article about <a href="benchmarking-the-torrust-bittorrent-tracker"
-				>benchmarking for the tracker</a
+			You can also read our blog article about <a
+				href="blog/benchmarking-the-torrust-bittorrent-tracker">benchmarking for the tracker</a
 			>.
 		</p>
 	</div>
