@@ -1,6 +1,8 @@
+abstralexis
 adduser
 Ajeet
 alexohneander
+anujkumardarji
 appuser
 Arrs
 Autoclassifier
@@ -23,6 +25,7 @@ containerfile
 Containerfiles
 corepack
 cpus
+danielroe
 Datacenter
 datacenters
 dearmor
@@ -37,6 +40,7 @@ Fidonet
 flamegraph
 flamegraphs
 fontsource
+ftsimas
 fullchain
 grmbyrn
 HEALTHCHECK
@@ -80,6 +84,7 @@ nologin
 Nuxt
 opentracker
 passcode
+pataquets
 pcarles
 pexels
 postbuild
@@ -102,6 +107,7 @@ rustc
 RUSTFLAGS
 Ryzen
 Seeberger
+Shrirang
 signup
 Stackoverflow
 striptags
@@ -124,6 +130,8 @@ Webfeed
 webp
 webroot
 Werror
+Wolfremium
 WORKDIR
 Xacrimon
 Xdebug
+Zorlin
