@@ -56,7 +56,9 @@
 			<h2>Related Posts:</h2>
 			<div class="grid">
 				{#each data.posts.slice(0, 3) as post}
-					<BlogPreview post_data={post.meta} />
+					<a href={post.path}>
+						<BlogPreview post_data={post.meta} />
+					</a>
 				{/each}
 			</div>
 		</div>
