@@ -387,10 +387,10 @@ First, we need to get the docker compose configuration. You can download it dire
 ```bash
 cd \\
   && mkdir -p github/torrust \\
-  && cd torrust/  \\
-  && git clone --single-branch --branch main https://github.com/torrust/torrust-compose.git  \\
-  && cd torrust-compose/  \\
-  && git status  \\
+  && cd github/torrust/ \\
+  && git clone --single-branch --branch main https://github.com/torrust/torrust-compose.git \\
+  && cd torrust-compose/ \\
+  && git status \\
   && cd droplet/
 ```
 
@@ -422,23 +422,23 @@ The script will create some needed directories and empty SQLite databases:
 $ tree storage/
 storage/
 ├── certbot
-│   ├── etc
-│   └── lib
+│   ├── etc
+│   └── lib
 ├── dhparam
 ├── index
-│   ├── etc
-│   │   └── index.toml
-│   └── lib
-│       └── database
-│           └── sqlite3.db
+│   ├── etc
+│   │   └── index.toml
+│   └── lib
+│       └── database
+│           └── sqlite3.db
 ├── proxy
-│   ├── etc
-│   │   └── nginx-conf
-│   │       └── nginx.conf
-│   └── webroot
+│   ├── etc
+│   │   └── nginx-conf
+│   │       └── nginx.conf
+│   └── webroot
 └── tracker
     ├── etc
-    │   └── tracker.toml
+    │   └── tracker.toml
     └── lib
         └── database
             └── sqlite3.db
@@ -465,14 +465,38 @@ Replace the value for `TORRUST_INDEX_GUI_API_BASE_URL` with your domain:
 TORRUST_INDEX_GUI_API_BASE_URL='http://index.your-domain.com/api/v1'
 ```
 
+In `storage/index/etc/index.toml` replace the default tracker URL to be included in torrents with yours:
+
+<CodeBlock lang="bash">
+
+```bash
+[tracker]
+url = "udp://tracker.torrust-demo.com:6969"
+
+```
+
+</CodeBlock>
+
+<CodeBlock lang="bash">
+
+```bash
+[tracker]
+url = "udp://tracker.your-domain.com:6969"
+
+```
+
+</CodeBlock>
+
 You can generate the Tracker API token and the Auth Secret Key with:
 
 <CodeBlock lang="bash">
 
 ```bash
- gpg --armor --gen-random 1 40
+gpg --armor --gen-random 1 40
 jcrmbzlGyeP7z53TUQtXmtltMb5TubsIE9e0DPLnS4Ih29JddQw5JA==
 ```
+
+You also need to change Nginx configuration `share/container/default/config/nginx.conf` to set your domain.
 
 </CodeBlock>
 
@@ -563,6 +587,12 @@ sudo openssl dhparam -out /home/torrust/github/torrust/torrust-compose/droplet/s
 #### Update Nginx Configuration
 
 Edit the file `./storage/proxy/etc/nginx-conf/nginx.conf` and uncomment all the commented lines for HTTPs servers:
+
+<Callout type="warning">
+
+Notice: you have to edit the file `./storage/proxy/etc/nginx-conf/nginx.conf` not the file `share/container/default/config/nginx.conf`.
+
+</Callout>
 
 <CodeBlock lang="nginx">
 
@@ -716,7 +746,17 @@ TORRUST_INDEX_GUI_API_BASE_URL=https://index.torrust-demo.com/api/v1
 
 Replace it from `http://index.torrust-demo.com/api/v1` to `https://index.torrust-demo.com/api/v1`.
 
-After changing the Nginx configuration you need to restart the Nginx server:
+After changing the Nginx configuration and `.env` file you need to recreate containers:
+
+<CodeBlock lang="bash">
+
+```bash
+docker compose up -d --force-recreate
+```
+
+</CodeBlock>
+
+If you only change the Nginx configuration you can execute the following to reload Nginx configuration:
 
 <CodeBlock lang="bash">
 
@@ -769,75 +809,75 @@ $ sudo tree storage/certbot/
 [sudo] password for torrust:
 storage/certbot/
 ├── etc
-│   ├── accounts
-│   │   ├── acme-staging-v02.api.letsencrypt.org
-│   │   │   └── directory
-│   │   │       └── b39c03e978*****df8366ab6539
-│   │   │           ├── meta.json
-│   │   │           ├── private_key.json
-│   │   │           └── regr.json
-│   │   └── acme-v02.api.letsencrypt.org
-│   │       └── directory
-│   │           └── 441a435b0f8*****cc6dd22f34468
-│   │               ├── meta.json
-│   │               ├── private_key.json
-│   │               └── regr.json
-│   ├── archive
-│   │   ├── index.torrust-demo.com
-│   │   │   ├── cert1.pem
-│   │   │   ├── chain1.pem
-│   │   │   ├── fullchain1.pem
-│   │   │   └── privkey1.pem
-│   │   ├── index.torrust-demo.com-0001
-│   │   │   ├── cert1.pem
-│   │   │   ├── cert2.pem
-│   │   │   ├── chain1.pem
-│   │   │   ├── chain2.pem
-│   │   │   ├── fullchain1.pem
-│   │   │   ├── fullchain2.pem
-│   │   │   ├── privkey1.pem
-│   │   │   └── privkey2.pem
-│   │   └── tracker.torrust-demo.com
-│   │       ├── cert1.pem
-│   │       ├── cert2.pem
-│   │       ├── cert3.pem
-│   │       ├── chain1.pem
-│   │       ├── chain2.pem
-│   │       ├── chain3.pem
-│   │       ├── fullchain1.pem
-│   │       ├── fullchain2.pem
-│   │       ├── fullchain3.pem
-│   │       ├── privkey1.pem
-│   │       ├── privkey2.pem
-│   │       └── privkey3.pem
-│   ├── live
-│   │   ├── README
-│   │   ├── index.torrust-demo.com
-│   │   │   ├── README
-│   │   │   ├── cert.pem -> ../../archive/index.torrust-demo.com/cert1.pem
-│   │   │   ├── chain.pem -> ../../archive/index.torrust-demo.com/chain1.pem
-│   │   │   ├── fullchain.pem -> ../../archive/index.torrust-demo.com/fullchain1.pem
-│   │   │   └── privkey.pem -> ../../archive/index.torrust-demo.com/privkey1.pem
-│   │   ├── index.torrust-demo.com-0001
-│   │   │   ├── README
-│   │   │   ├── cert.pem -> ../../archive/index.torrust-demo.com-0001/cert2.pem
-│   │   │   ├── chain.pem -> ../../archive/index.torrust-demo.com-0001/chain2.pem
-│   │   │   ├── fullchain.pem -> ../../archive/index.torrust-demo.com-0001/fullchain2.pem
-│   │   │   └── privkey.pem -> ../../archive/index.torrust-demo.com-0001/privkey2.pem
-│   │   └── tracker.torrust-demo.com
-│   │       ├── README
-│   │       ├── cert.pem -> ../../archive/tracker.torrust-demo.com/cert3.pem
-│   │       ├── chain.pem -> ../../archive/tracker.torrust-demo.com/chain3.pem
-│   │       ├── fullchain.pem -> ../../archive/tracker.torrust-demo.com/fullchain3.pem
-│   │       └── privkey.pem -> ../../archive/tracker.torrust-demo.com/privkey3.pem
-│   ├── renewal
-│   │   ├── index.torrust-demo.com-0001.conf
-│   │   ├── index.torrust-demo.com.conf
-│   │   └── tracker.torrust-demo.com.conf
-│   └── renewal-hooks
-│       ├── deploy
-│       ├── post
-│       └── pre
+│   ├── accounts
+│   │   ├── acme-staging-v02.api.letsencrypt.org
+│   │   │   └── directory
+│   │   │       └── b39c03e978*****df8366ab6539
+│   │   │           ├── meta.json
+│   │   │           ├── private_key.json
+│   │   │           └── regr.json
+│   │   └── acme-v02.api.letsencrypt.org
+│   │       └── directory
+│   │           └── 441a435b0f8*****cc6dd22f34468
+│   │               ├── meta.json
+│   │               ├── private_key.json
+│   │               └── regr.json
+│   ├── archive
+│   │   ├── index.torrust-demo.com
+│   │   │   ├── cert1.pem
+│   │   │   ├── chain1.pem
+│   │   │   ├── fullchain1.pem
+│   │   │   └── privkey1.pem
+│   │   ├── index.torrust-demo.com-0001
+│   │   │   ├── cert1.pem
+│   │   │   ├── cert2.pem
+│   │   │   ├── chain1.pem
+│   │   │   ├── chain2.pem
+│   │   │   ├── fullchain1.pem
+│   │   │   ├── fullchain2.pem
+│   │   │   ├── privkey1.pem
+│   │   │   └── privkey2.pem
+│   │   └── tracker.torrust-demo.com
+│   │       ├── cert1.pem
+│   │       ├── cert2.pem
+│   │       ├── cert3.pem
+│   │       ├── chain1.pem
+│   │       ├── chain2.pem
+│   │       ├── chain3.pem
+│   │       ├── fullchain1.pem
+│   │       ├── fullchain2.pem
+│   │       ├── fullchain3.pem
+│   │       ├── privkey1.pem
+│   │       ├── privkey2.pem
+│   │       └── privkey3.pem
+│   ├── live
+│   │   ├── README
+│   │   ├── index.torrust-demo.com
+│   │   │   ├── README
+│   │   │   ├── cert.pem -> ../../archive/index.torrust-demo.com/cert1.pem
+│   │   │   ├── chain.pem -> ../../archive/index.torrust-demo.com/chain1.pem
+│   │   │   ├── fullchain.pem -> ../../archive/index.torrust-demo.com/fullchain1.pem
+│   │   │   └── privkey.pem -> ../../archive/index.torrust-demo.com/privkey1.pem
+│   │   ├── index.torrust-demo.com-0001
+│   │   │   ├── README
+│   │   │   ├── cert.pem -> ../../archive/index.torrust-demo.com-0001/cert2.pem
+│   │   │   ├── chain.pem -> ../../archive/index.torrust-demo.com-0001/chain2.pem
+│   │   │   ├── fullchain.pem -> ../../archive/index.torrust-demo.com-0001/fullchain2.pem
+│   │   │   └── privkey.pem -> ../../archive/index.torrust-demo.com-0001/privkey2.pem
+│   │   └── tracker.torrust-demo.com
+│   │       ├── README
+│   │       ├── cert.pem -> ../../archive/tracker.torrust-demo.com/cert3.pem
+│   │       ├── chain.pem -> ../../archive/tracker.torrust-demo.com/chain3.pem
+│   │       ├── fullchain.pem -> ../../archive/tracker.torrust-demo.com/fullchain3.pem
+│   │       └── privkey.pem -> ../../archive/tracker.torrust-demo.com/privkey3.pem
+│   ├── renewal
+│   │   ├── index.torrust-demo.com-0001.conf
+│   │   ├── index.torrust-demo.com.conf
+│   │   └── tracker.torrust-demo.com.conf
+│   └── renewal-hooks
+│       ├── deploy
+│       ├── post
+│       └── pre
 └── lib
 
 22 directories, 49 files
@@ -847,7 +887,7 @@ storage/certbot/
 
 ## Exposed services
 
-After finishing the instalaltion the main available services are:
+After finishing the installation the main available services are:
 
 - The Index: <http://index.torrust-demo.com/>
 - The HTTP Tracker: <https://tracker.torrust-demo.com/announce>
