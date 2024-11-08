@@ -23,7 +23,6 @@
 				{ name: 'Performance & Efficiency', id: 'performanceEfficiency' },
 				{ name: 'Security & Reliability', id: 'securityReliability' },
 				{ name: 'User Experience & Accessibility', id: 'userExperience' },
-				{ name: 'Future use cases', id: 'futureUses' },
 				{ name: 'Integration & Interoperability', id: 'integration' }
 			]
 		},
