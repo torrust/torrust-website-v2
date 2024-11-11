@@ -30,12 +30,16 @@ export function createPostsIndex(data: BlogPost[]) {
 }
 
 export function searchPostsIndex(searchTerm: string) {
+	if (!searchTerm) {
+		return [];
+	}
+
 	const match = searchTerm.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 	const results = postsIndex.search(match);
 
 	return results
 		.map((index) => posts[index as number])
-		.map(({ slug, title, excerpt, tags }) => {
+		.map(({ slug, title = '', excerpt = '', tags = [] }) => {
 			return {
 				slug,
 				title: replaceTextWithMarker(title, match),
@@ -46,11 +50,23 @@ export function searchPostsIndex(searchTerm: string) {
 }
 
 function replaceTextWithMarker(text: string, match: string) {
+	if (!text) {
+		return '';
+	}
+
+	if (!match) {
+		return text;
+	}
+
 	const regex = new RegExp(match, 'gi');
-	return text.replaceAll(regex, (match) => `<mark>${match}</mark>`);
+	return text.replaceAll(regex, (matchedText) => `<mark>${matchedText}</mark>`);
 }
 
 function getMatches(text: string, searchTerm: string, limit = 1) {
+	if (!searchTerm) {
+		return [];
+	}
+
 	const regex = new RegExp(searchTerm, 'gi');
 	const indexes = [];
 	let matches = 0;
