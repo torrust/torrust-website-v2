@@ -4,6 +4,7 @@
 	import Table from '$lib/components/atoms/Table.svelte';
 	import Slider from '$lib/components/atoms/Slider.svelte';
 	import Banner from '$lib/components/atoms/Banner.svelte';
+	import TorrustIndexPost from '$lib/components/singletons/TorrustIndexPost.svelte';
 
 	import Sqlite from '$lib/icons/sqlite.svelte';
 	import Rust from '$lib/icons/rust.svelte';
@@ -28,7 +29,6 @@
 		};
 	});
 
-	import TorrustIndexPost from '$lib/components/singletons/TorrustIndexPost.svelte';
 	import {
 		indexTitleArr1,
 		indexBasicTableHeadings,
@@ -137,11 +137,18 @@
 		h2 {
 			margin-top: 4rem;
 			padding-inline: 1.5rem;
+			font-size: 1.8rem;
+			font-weight: bold;
 		}
 
 		p {
 			margin-top: 1.4rem;
 			padding-inline: 1.5rem;
+		}
+
+		a {
+			word-break: keep-all;
+			color: rgba(255, 49, 0, 1);
 		}
 	}
 

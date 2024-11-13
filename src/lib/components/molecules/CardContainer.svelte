@@ -19,7 +19,9 @@
 			grid-template-columns: repeat(2, 1fr);
 			grid-template-rows: repeat(1, 1fr);
 			grid-column-gap: 24px;
-			grid-row-gap: 24px;
+			grid-row-gap: 2px;
+			max-width: 1200px;
+			padding-inline: 1.5rem;
 		}
 	}
 

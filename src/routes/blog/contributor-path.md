@@ -236,7 +236,7 @@ They are totally independent from the Index and Tracker. They might be a good wa
 
 In our blog you will find tutorials like:
 
-- [How To Setup The Dev Env](./blog/how-to-setup-the-development-environment)
+- [How To Setup The Dev Env](./how-to-setup-the-development-environment)
 
 You can also open a new discussion or issues in all repos if there is something you would like to contribute with but you are not sure where to start from.
 

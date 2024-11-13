@@ -5,6 +5,7 @@ import { mdsvex } from 'mdsvex';
 import rehypeExternalLinks from 'rehype-external-links';
 import rehypeSlug from 'rehype-slug';
 import rehypeAutolinkHeadings from 'rehype-autolink-headings';
+import { preprocessMeltUI, sequence } from '@melt-ui/pp';
 
 const extensions = ['.svelte', '.md'];
 
@@ -17,7 +18,7 @@ const config = {
 			entries: ['*']
 		}
 	},
-	preprocess: [
+	preprocess: sequence([
 		vitePreprocess(),
 		mdsvex({
 			extensions: extensions,
@@ -39,8 +40,9 @@ const config = {
 					}
 				]
 			]
-		})
-	],
+		}),
+		preprocessMeltUI()
+	]),
 	extensions: extensions
 };
 

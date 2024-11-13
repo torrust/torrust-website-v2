@@ -1,38 +1,13 @@
 <script lang="ts">
-	import TableOfContents from '$lib/components/atoms/TableOfContents.svelte'; // Adjust the path if needed
 	import CodeBlock from '$lib/components/molecules/CodeBlock.svelte';
-
-	// Array of section objects with display names and IDs
-	let sections = [
-		{
-			name: 'Installation',
-			id: 'installation',
-			subsections: [
-				{ name: 'Software requirements', id: 'softwareRequirements' },
-				{ name: 'Build from sources', id: 'buildSources' },
-				{ name: 'Run with docker', id: 'docker' }
-			]
-		},
-		{ name: 'Roadmap', id: 'roadmap' },
-		{
-			name: 'License',
-			id: 'license',
-			subsections: [
-				{ name: 'Copyright', id: 'copyright' },
-				{ name: 'Legacy Exception', id: 'legacyException' }
-			]
-		}
-	];
-
-	let activeSection = '';
+	import Toc from '../atoms/Toc.svelte';
+	import PagesWrapper from '../atoms/PagesWrapper.svelte';
 </script>
 
-<div class="layout">
-	<div>
-		<TableOfContents {sections} {activeSection} />
-	</div>
+<PagesWrapper heading="">
+	<Toc />
 
-	<div class="content">
+	<div id="toc-builder-preview" class="content-preview">
 		<h2 id="installation">Installation</h2>
 
 		<p>
@@ -245,55 +220,47 @@ cd /tmp \
 			> license.
 		</p>
 	</div>
-</div>
+</PagesWrapper>
 
 <style lang="scss">
 	@import '$lib/scss/breakpoints.scss';
 
-	.layout {
-		padding-inline: 1.5rem;
-		margin-top: 8rem;
-		border: 1px solid transparent;
+	.content-preview {
+		flex: 1;
+		word-break: keep-all;
+		padding-top: 2rem;
 	}
 
-	.content {
-		margin-top: 2rem;
-	}
-
-	/*h1 {
-		padding-top: 1rem;
-		font-size: 2.25rem;
-	}*/
-
-	h2 {
-		padding-top: 0.5rem;
+	#toc-builder-preview > h2 {
 		font-size: 1.8rem;
 	}
 
-	h2:not(:first-of-type) {
-		padding-top: 1.5rem; /* Add top padding to all h2 elements except the first one */
+	#toc-builder-preview > h2:not(:first-of-type) {
+		padding-top: 1.5rem;
 	}
 
-	h3 {
-		padding-top: 2rem;
+	#toc-builder-preview > h3 {
 		font-size: 1.3rem;
+		font-weight: bold;
+		padding-top: 1rem;
 	}
 
 	p {
 		font-size: 1rem;
 		padding-top: 1.5rem;
 		color: rgba(245, 245, 245, 0.8);
+		word-break: keep-all;
+	}
+
+	a {
+		word-break: keep-all;
+		color: rgba(255, 49, 0, 1);
 	}
 
 	@include for-desktop-up {
-		.layout {
-			display: flex;
-			gap: 2rem;
-			padding-inline: 0rem;
-		}
-
-		.content {
-			margin-top: 0rem;
+		.content-preview {
+			overflow-y: auto;
+			padding-top: 0rem;
 		}
 	}
 </style>

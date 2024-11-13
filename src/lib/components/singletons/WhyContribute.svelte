@@ -32,6 +32,12 @@
 		background: rgba(26, 26, 26, 1);
 		padding-top: 4rem;
 		padding-inline: 1.5rem;
+		max-width: 1200px;
+
+		h2 {
+			font-size: 1.8rem;
+			font-weight: bold;
+		}
 
 		p {
 			margin-top: 1.5rem;

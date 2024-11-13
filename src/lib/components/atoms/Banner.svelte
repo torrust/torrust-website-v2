@@ -29,4 +29,9 @@
 		display: flex;
 		text-align: center;
 	}
+
+	h1 {
+		font-size: 2.5rem;
+		font-weight: bolder;
+	}
 </style>

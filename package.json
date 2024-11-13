@@ -20,6 +20,8 @@
 	"devDependencies": {
 		"@histoire/plugin-svelte": "^0.17.17",
 		"@iconify/svelte": "^4.0.2",
+		"@melt-ui/pp": "^0.3.2",
+		"@melt-ui/svelte": "^0.86.0",
 		"@sveltejs/adapter-static": "^3.0.1",
 		"@sveltejs/kit": "^2.5.25",
 		"@types/swiper": "^5.4.3",
@@ -44,6 +46,7 @@
 		"svelte": "^4.2.19",
 		"svelte-check": "^3.8.0",
 		"svelte-sitemap": "^2.6.0",
+		"tailwindcss": "^3.4.14",
 		"typescript": "^5.5.4",
 		"vite": "^5.2.12"
 	},
@@ -51,8 +54,11 @@
 	"dependencies": {
 		"@fontsource-variable/roboto-mono": "^5.0.19",
 		"@fontsource-variable/roboto-slab": "^5.0.20",
+		"@tailwindcss/typography": "^0.5.15",
+		"autoprefixer": "^10.4.20",
 		"feather-icons": "^4.29.2",
 		"flexsearch": "^0.7.43",
+		"postcss": "^8.4.49",
 		"shiki": "^1.6.1",
 		"shiki-es": "^0.14.0",
 		"svelte-toc": "^0.5.9",

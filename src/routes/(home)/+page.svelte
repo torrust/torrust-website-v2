@@ -50,6 +50,8 @@
 		text-align: center;
 		color: rgba(245, 245, 245, 0.96);
 		padding-top: 4rem;
+		font-size: 1.8rem;
+		font-weight: bold;
 	}
 
 	.grid {

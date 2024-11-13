@@ -8,7 +8,7 @@
 		{@html title.icon}
 	</span>
 	<!-- eslint-disable-next-line svelte/no-at-html-tags -->
-	<h2>{@html title.title}</h2>
+	<h3>{@html title.title}</h3>
 	<!-- eslint-disable-next-line svelte/no-at-html-tags -->
 	<p>{@html title.para}</p>
 </div>
@@ -26,9 +26,10 @@
 			display: inline-block;
 		}
 
-		h2 {
+		h3 {
 			font-size: 20px;
 			color: rgba(245, 245, 245, 0.96);
+			font-weight: bold;
 		}
 
 		p {
