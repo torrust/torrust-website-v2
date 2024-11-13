@@ -2,6 +2,7 @@
 	import '$lib/scss/global.scss';
 	import Header from '$lib/components/organisms/Header.svelte';
 	import Footer from '$lib/components/organisms/Footer.svelte';
+	import '../app.css';
 </script>
 
 <Header />

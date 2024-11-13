@@ -67,6 +67,7 @@
 			font-size: 48px;
 			margin-top: 2rem;
 			line-height: 48px;
+			font-weight: bold;
 		}
 
 		p {

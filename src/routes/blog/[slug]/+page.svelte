@@ -189,6 +189,7 @@
 		display: flex;
 		flex-direction: column;
 		color: rgba(245, 245, 245, 0.96);
+		margin: 0 auto;
 
 		@include for-desktop-up {
 			max-width: 1176px;
@@ -199,6 +200,7 @@
 		text-align: center;
 		color: rgba(245, 245, 245, 0.96);
 		padding-top: 1.5rem;
+		font-size: 1.8rem;
 	}
 
 	.grid {
@@ -206,6 +208,8 @@
 		display: grid;
 		grid-template-columns: 1fr 1fr;
 		grid-gap: 24px;
+		max-width: 1200px; // Set a max width for centering control
+		margin: 0 auto;
 
 		@include for-phone-only {
 			grid-template-columns: 1fr;

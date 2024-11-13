@@ -84,6 +84,7 @@
 			align-items: center;
 			width: 100%;
 			margin: 0 auto;
+			padding-top: 0.25rem;
 
 			@include for-phone-only {
 				height: 64px;
