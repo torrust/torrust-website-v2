@@ -273,9 +273,25 @@ cd /tmp \
 		color: rgba(255, 49, 0, 1);
 	}
 
+	ul {
+		display: flex;
+		flex-direction: column;
+		list-style-type: disc;
+		margin: 0;
+		padding-left: 1.5rem;
+		padding-top: 1rem;
+	}
+
+	ul li {
+		margin: 0.25rem 0;
+		word-break: keep-all;
+	}
+
 	@include for-desktop-up {
 		.content-preview {
-			overflow-y: auto;
+			overflow-y: scroll;
+			scrollbar-width: none;
+			-ms-overflow-style: none;
 			padding-top: 0rem;
 		}
 	}
