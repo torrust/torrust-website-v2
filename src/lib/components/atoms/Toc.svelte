@@ -50,10 +50,23 @@
 	});
 </script>
 
-<div class="lg:overflow-y-auto rounded-lg text-white">
+<div>
 	<nav>
 		{#key $headingsTree}
 			<Tree tree={$headingsTree} activeHeadingIdxs={$activeHeadingIdxs} {item} />
 		{/key}
 	</nav>
 </div>
+
+<style lang="scss">
+	@import '$lib/scss/breakpoints.scss';
+
+	@include for-desktop-up {
+		nav {
+			position: sticky;
+			top: 0;
+			z-index: 100;
+			background-color: inherit;
+		}
+	}
+</style>

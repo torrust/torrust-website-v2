@@ -36,7 +36,6 @@
 
 	@include for-desktop-up {
 		.layout {
-			height: 100vh;
 			flex-direction: row;
 			gap: 4rem;
 		}

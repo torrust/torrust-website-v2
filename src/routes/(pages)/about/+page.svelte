@@ -337,6 +337,13 @@
 		padding-top: 2rem;
 	}
 
+	@include for-desktop-up {
+		.content-preview {
+			overflow-y: auto;
+			padding-top: 0rem;
+		}
+	}
+
 	#toc-builder-preview > h2 {
 		font-size: 1.8rem;
 		font-weight: bold;
@@ -371,7 +378,6 @@
 		margin: 0;
 		padding-left: 1.5rem;
 		word-break: keep-all;
-		padding-top: 1rem;
 	}
 
 	ul li {
@@ -392,14 +398,5 @@
 
 	img {
 		border-radius: 24px;
-	}
-
-	@include for-desktop-up {
-		.content-preview {
-			overflow-y: scroll;
-			scrollbar-width: none;
-			-ms-overflow-style: none;
-			padding-top: 0rem;
-		}
 	}
 </style>
