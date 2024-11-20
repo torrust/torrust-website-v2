@@ -4,6 +4,10 @@
 	import { createTableOfContents } from '@melt-ui/svelte';
 	import { pushState } from '$app/navigation';
 
+	let classes: string;
+	export { classes as class };
+	export let selector = '#toc-contents';
+
 	let isMobileScreen = false;
 
 	onMount(() => {
@@ -20,7 +24,7 @@
 		elements: { item },
 		states: { activeHeadingIdxs, headingsTree }
 	} = createTableOfContents({
-		selector: '#toc-builder-preview',
+		selector,
 		exclude: [],
 		activeType: 'highest',
 		pushStateFn: pushState,
@@ -50,7 +54,7 @@
 	});
 </script>
 
-<div class="lg:overflow-y-auto rounded-lg text-white">
+<div class="lg:overflow-y-auto rounded-lg text-white {classes}">
 	<nav>
 		{#key $headingsTree}
 			<Tree tree={$headingsTree} activeHeadingIdxs={$activeHeadingIdxs} {item} />
