@@ -33,10 +33,16 @@
 		scrollFn: (id) => {
 			const element = document.getElementById(id);
 
+			if (!element) return;
+			const prevScrollMargin = element.style.scrollMarginTop;
+			element.style.scrollMarginTop = '16px';
+			// trigger reflow
+			getComputedStyle(element);
 			element?.scrollIntoView({
 				behavior: 'smooth',
 				block: 'start'
 			});
+			element.style.scrollMarginTop = prevScrollMargin;
 		}
 	});
 </script>
