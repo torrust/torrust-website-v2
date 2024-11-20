@@ -31,25 +31,12 @@
 		headingFilterFn: (heading) => !heading.hasAttribute('data-toc-ignore'),
 
 		scrollFn: (id) => {
-			const container = document.getElementById('toc-builder-preview');
 			const element = document.getElementById(id);
 
-			if (container && element) {
-				const containerTopOffset = container.offsetTop;
-				const elementTopOffset = element.offsetTop;
-
-				if (isMobileScreen) {
-					element.scrollIntoView({
-						behavior: 'smooth',
-						block: 'start'
-					});
-				} else {
-					container.scrollTo({
-						top: elementTopOffset - containerTopOffset,
-						behavior: 'smooth'
-					});
-				}
-			}
+			element?.scrollIntoView({
+				behavior: 'smooth',
+				block: 'start'
+			});
 		}
 	});
 </script>

@@ -5,7 +5,7 @@
 	import '../app.css';
 </script>
 
-<div class="app">
+<div id="app-container">
 	<Header />
 	<div class="content">
 		<slot />
@@ -19,14 +19,14 @@
 		overflow-y: scroll;
 	}
 
-	.app {
+	#app-container {
 		display: flex;
 		flex-direction: column;
 		height: 100vh;
 		overflow: hidden;
 	}
 
-	.app .content {
+	#app-container .content {
 		flex: 1 1 auto;
 		min-height: 0;
 	}

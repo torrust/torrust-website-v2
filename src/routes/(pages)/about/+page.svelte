@@ -8,7 +8,7 @@
 
 <PagesWrapper heading="About">
 	<div class="wrapper">
-		<Toc class="toc" selector="body" />
+		<Toc class="toc" />
 		<div id="toc-contents" class="content-preview">
 			<h2>Why BitTorrent?</h2>
 
