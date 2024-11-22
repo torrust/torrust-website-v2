@@ -5,14 +5,27 @@
 	import '../app.css';
 </script>
 
-<Header />
-<div>
-	<slot />
+<div id="app-container">
+	<Header />
+	<div class="content">
+		<slot />
+		<Footer />
+	</div>
 </div>
-<Footer />
 
 <style lang="scss">
-	div {
+	.content {
 		background: rgba(26, 26, 26, 1);
+		overflow-y: scroll;
+	}
+	#app-container {
+		display: flex;
+		flex-direction: column;
+		height: 100vh;
+		overflow: hidden;
+	}
+	#app-container .content {
+		flex: 1 1 auto;
+		min-height: 0;
 	}
 </style>
