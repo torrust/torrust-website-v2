@@ -8,13 +8,12 @@ export const GET = async () => {
 		const dateA = new Date(a.meta.date);
 		const dateB = new Date(b.meta.date);
 
-		// Check if the dates are valid before sorting
 		if (isNaN(dateA.getTime()) || isNaN(dateB.getTime())) {
 			console.error('Invalid date found:', a.meta.date, b.meta.date);
-			return 0; // Keep original order if dates are invalid
+			return 0;
 		}
 
-		return dateB.getTime() - dateA.getTime(); // Sort in descending order
+		return dateB.getTime() - dateA.getTime();
 	});
 
 	if (!sortedPosts.length) {

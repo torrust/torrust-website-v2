@@ -1,10 +1,11 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
+	import { page } from '$app/stores';
 
 	import Button from '$lib/components/atoms/Button.svelte';
-	import RelatedPostCard from '$lib/components/molecules/RelatedPostCard.svelte';
 	import ContentSection from '$lib/components/organisms/ContentSection.svelte';
 	import type { BlogPost } from '$lib/utils/types';
+	import BlogPreview from '$lib/components/molecules/BlogPreview.svelte';
 
 	export let data: {
 		posts: BlogPost[];
@@ -17,10 +18,10 @@
 	let numberOfPosts: number | undefined;
 
 	onMount(() => {
-		currentUrl = window.location.href;
+		currentUrl = $page.url.pathname;
 		splitUrl = currentUrl.split('/').pop();
 
-		numberOfPosts = posts.filter((post) => post.contributorSlug === splitUrl).length;
+		numberOfPosts = posts.filter((post) => post.meta.contributorSlug === splitUrl).length;
 	});
 </script>
 
@@ -31,16 +32,9 @@
 		<ContentSection title="All Blog Posts">
 			<div class="grid">
 				{#each posts as post}
-					{#if post.contributorSlug === splitUrl}
-						<RelatedPostCard
-							title={post.title}
-							excerpt={post.excerpt}
-							readingTime={post.readingTime}
-							slug={post.slug}
-							tags={post.tags}
-							date={post.date}
-						/>
-					{/if}
+					<a href={post.path}>
+						<BlogPreview post_data={post.meta} />
+					</a>
 				{/each}
 			</div>
 		</ContentSection>
@@ -61,6 +55,7 @@
 
 <style lang="scss">
 	@import '$lib/scss/_mixins.scss';
+	@import '$lib/scss/_breakpoints.scss';
 
 	.container {
 		background: rgba(26, 26, 26, 1);
@@ -68,38 +63,23 @@
 	}
 
 	.grid {
-		width: 100%;
+		padding-top: 3rem;
 		display: grid;
-		grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
-		grid-gap: 20px;
+		grid-template-columns: 1fr 1fr;
+		grid-gap: 24px;
+		max-width: 1200px;
+		margin: 0 auto;
 
-		@include for-tablet-portrait-down {
+		@include for-phone-only {
 			grid-template-columns: 1fr;
 		}
 
 		@include for-tablet-landscape-up {
-			// Select every 6 elements, starting from position 1
-			// And make it take up 6 columns
-			> :global(:nth-child(6n + 1)) {
-				grid-column: span 6;
-			}
-			// Select every 6 elements, starting from position 2
-			// And make it take up 3 columns
-			> :global(:nth-child(6n + 2)) {
-				grid-column: span 3;
-			}
-			// Select every 6 elements, starting from position 3
-			// And make it take up 3 columns
-			> :global(:nth-child(6n + 3)) {
-				grid-column: span 3;
-			}
-			// Select every 6 elements, starting from position 4, 5 and 6
-			// And make it take up 2 columns
-			> :global(:nth-child(6n + 4)),
-			:global(:nth-child(6n + 5)),
-			:global(:nth-child(6n + 6)) {
-				grid-column: span 2;
-			}
+			grid-template-columns: 1fr 1fr;
+		}
+
+		@include for-desktop-up {
+			grid-template-columns: 1fr 1fr 1fr;
 		}
 	}
 
