@@ -11,6 +11,7 @@
 				title: 'Getting Started with Svelte',
 				date: '2024-04-28',
 				contributor: 'John Doe',
+				contributorSlug: 'john-doe',
 				coverImage: '/images/svelte-cover.jpg',
 				tags: ['Technology', 'Programming'],
 				readingTime: '5 minutes',
