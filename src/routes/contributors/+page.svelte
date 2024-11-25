@@ -1,3 +1,4 @@
+<h1>Contributors</h1>
 <div class="contributors">
 	<div class="contributor">
 		<a href="/contributor/jose-celano">
@@ -61,6 +62,11 @@
 </div>
 
 <style>
+	h1 {
+		padding-block: 1rem;
+		text-align: center;
+		color: rgba(245, 245, 245, 0.96);
+	}
 	.contributors {
 		display: flex;
 		flex-direction: column;
