@@ -94,6 +94,14 @@
 		filter: brightness(0.9);
 	}
 
+	a {
+		color: rgba(245, 245, 245, 0.96);
+	}
+
+	a:hover {
+		color: rgba(255, 49, 0, 0.96);
+	}
+
 	@media (min-width: 768px) {
 		.contributors {
 			flex-direction: row;

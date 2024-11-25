@@ -1,22 +1,17 @@
-<script lang="ts">
-	import Footer from '$lib/components/organisms/Footer.svelte';
-	import Header from '$lib/components/organisms/Header.svelte';
-</script>
-
-<Header />
 <div class="contributors">
 	<h1>Contributors</h1>
 	<slot />
 </div>
-<Footer />
 
 <style lang="scss">
 	.contributors {
 		background: rgba(26, 26, 26, 1);
+		padding-block: 2rem;
 	}
 
 	h1 {
-		padding-block: 1rem;
+		font-size: 2.5rem;
+		padding-block: 3rem;
 		text-align: center;
 		color: rgba(245, 245, 245, 0.96);
 	}

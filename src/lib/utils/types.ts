@@ -47,6 +47,7 @@ export type BlogPost = {
 		slug: string;
 		title: string;
 		contributor: string;
+		contributorSlug: string;
 		coverImage: string;
 		tags?: string[];
 		readingTime: string;

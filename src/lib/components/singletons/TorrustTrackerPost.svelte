@@ -1,7 +1,7 @@
 <script lang="ts">
 	import CodeBlock from '$lib/components/molecules/CodeBlock.svelte';
-	import Toc from '../atoms/Toc.svelte';
-	import PagesWrapper from '../atoms/PagesWrapper.svelte';
+	import Toc from '$lib/components/atoms/Toc.svelte';
+	import PagesWrapper from '$lib/components/atoms/PagesWrapper.svelte';
 </script>
 
 <PagesWrapper heading="">

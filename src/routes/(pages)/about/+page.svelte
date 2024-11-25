@@ -354,7 +354,7 @@
 		padding-top: 2rem;
 	}
 
-	#toc-builder-preview > h2 {
+	h2 {
 		font-size: 1.8rem;
 		font-weight: bold;
 	}

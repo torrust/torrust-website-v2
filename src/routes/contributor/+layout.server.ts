@@ -1,7 +1,8 @@
-import { filteredPosts } from '$lib/data/blog-posts';
+export const load = async ({ fetch }) => {
+	const response = await fetch(`/api`);
+	const posts = await response.json();
 
-export async function load() {
 	return {
-		posts: filteredPosts
+		posts
 	};
-}
+};
