@@ -22,8 +22,6 @@
 		"@iconify/svelte": "^4.0.2",
 		"@melt-ui/pp": "^0.3.2",
 		"@melt-ui/svelte": "^0.86.0",
-		"@skeletonlabs/skeleton": "^2.10.3",
-		"@skeletonlabs/tw-plugin": "^0.4.0",
 		"@sveltejs/adapter-static": "^3.0.1",
 		"@sveltejs/kit": "^2.5.25",
 		"@types/swiper": "^5.4.3",

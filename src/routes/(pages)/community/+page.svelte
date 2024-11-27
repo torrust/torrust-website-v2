@@ -208,16 +208,10 @@
 	@import '$lib/scss/breakpoints.scss';
 
 	.wrapper {
-		display: grid;
-		grid-template-columns: 300px 1fr;
-		gap: 4rem;
+		display: flex;
+		flex-direction: column;
+		gap: 2rem;
 		position: relative;
-	}
-
-	.wrapper :global(.toc) {
-		position: sticky;
-		top: 4rem;
-		height: min-content;
 	}
 
 	.content-preview {
@@ -274,6 +268,17 @@
 	}
 
 	@include for-desktop-up {
+		.wrapper {
+			flex-direction: row;
+			gap: 4rem;
+		}
+
+		.wrapper :global(.toc) {
+			position: sticky;
+			top: 4rem;
+			height: min-content;
+		}
+
 		.content-preview {
 			overflow-y: scroll;
 			scrollbar-width: none;

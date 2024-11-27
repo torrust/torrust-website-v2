@@ -2,10 +2,12 @@
 	import Hero from '$lib/components/organisms/Hero.svelte';
 	import WhyContribute from '$lib/components/singletons/WhyContribute.svelte';
 	import BlogPreview from '$lib/components/molecules/BlogPreview.svelte';
-	import type { BlogPost } from '$lib/utils/types';
+	import Contributors from '$lib/components/singletons/Contributors.svelte';
+	import type { BlogPost, Contributor } from '$lib/utils/types';
 
 	export let data: {
 		posts: BlogPost[];
+		allContributors: Contributor[];
 	};
 
 	let filteredPosts = data.posts;
@@ -13,7 +15,9 @@
 
 <Hero />
 <WhyContribute />
-{#if filteredPosts && filteredPosts.length}
+<Contributors contributors={data.allContributors} />
+
+{#if filteredPosts && filteredPosts.length > 0}
 	<div class="container">
 		<h2>Latest articles</h2>
 		<div class="grid">
