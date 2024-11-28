@@ -706,30 +706,3 @@ export const aboutTableData = [
 		ipfs: 'Cryptographic validation of all content'
 	}
 ];
-
-export const repoNames = [
-	'torrust-tracker',
-	'torrust-compose',
-	'torrust-website',
-	'torrust-index',
-	'torrust-index-gui',
-	'torrust-bencode-online',
-	'torrust-demo',
-	'bittorrent-infrastructure-project',
-	'bencode2json',
-	'torrust-installer',
-	'bittorrent-primitives',
-	'json2bencode',
-	'torrust-bencode2json',
-	'torrust-index-api-lib',
-	'torrust-index-types-lib',
-	'torrust-hash2torrent',
-	'torrust-index-gui-user-guide',
-	'containerizing-rust-apps-examples',
-	'torrust-serde-bencode-archive',
-	'torrust-index-archive',
-	'torrust-parse-torrent',
-	'torrents-importer-sample',
-	'torrust-documentation',
-	'torrust-docker'
-];

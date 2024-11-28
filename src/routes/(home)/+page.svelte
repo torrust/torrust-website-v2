@@ -8,6 +8,7 @@
 	export let data: {
 		posts: BlogPost[];
 		allContributors: Contributor[];
+		gitHubRepos: string[];
 	};
 
 	let filteredPosts = data.posts;
@@ -40,7 +41,7 @@
 		min-height: 100vh;
 		display: flex;
 		flex-direction: column;
-		padding-top: 3rem;
+		padding-top: rem;
 		background: rgba(26, 26, 26, 1);
 		color: rgba(245, 245, 245, 0.96);
 		padding-bottom: 64px;
