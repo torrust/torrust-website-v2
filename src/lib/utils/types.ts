@@ -33,6 +33,11 @@ export type Contributor = {
 	html_url: string;
 };
 
+export type CacheEntry<T> = {
+	data: T;
+	expiresAt: number;
+};
+
 export type BlogPost = {
 	tags: string[];
 	keywords: string[];
