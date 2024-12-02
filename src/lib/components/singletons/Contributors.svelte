@@ -1,7 +1,7 @@
 <script lang="ts">
 	export let contributors;
 	export let error;
-	import { contributorsList } from '$lib/constants/constants';
+	import { defaultContributorsList } from '$lib/constants/constants';
 </script>
 
 <div class="container">
@@ -17,7 +17,7 @@
 				</div>
 			{/each}
 		{:else}
-			{#each contributorsList as contributor}
+			{#each defaultContributorsList as contributor}
 				<div>
 					<a
 						href="https://github.com/{contributor.html_url}"

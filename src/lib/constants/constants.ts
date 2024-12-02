@@ -707,7 +707,7 @@ export const aboutTableData = [
 	}
 ];
 
-export const contributorsList = [
+export const defaultContributorsList = [
 	{
 		html_url: 'mickvandijke',
 		avatar_url: 'https://avatars.githubusercontent.com/u/12992260?v=4'
