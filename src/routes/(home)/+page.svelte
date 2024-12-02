@@ -8,21 +8,16 @@
 	export let data: {
 		posts: BlogPost[];
 		allContributors: Contributor[];
+		error: string | null;
 	};
 
 	let filteredPosts = data.posts;
-	let showContributors = true; // A state to control visibility of Contributors component
-	let errorMessage = '';
 </script>
 
 <Hero />
 <WhyContribute />
 
-{#if showContributors}
-	<Contributors contributors={data.allContributors} />
-{:else}
-	<p>{errorMessage}</p>
-{/if}
+<Contributors contributors={data.allContributors} error={data.error} />
 
 {#if filteredPosts && filteredPosts.length > 0}
 	<div class="container">

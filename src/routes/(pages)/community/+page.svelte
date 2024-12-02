@@ -1,6 +1,13 @@
 <script lang="ts">
 	import Toc from '$lib/components/atoms/Toc.svelte';
 	import PagesWrapper from '$lib/components/atoms/PagesWrapper.svelte';
+	import Contributors from '$lib/components/singletons/Contributors.svelte';
+	import type { Contributor } from '$lib/utils/types';
+
+	export let data: {
+		allContributors: Contributor[];
+		error: string | null;
+	};
 </script>
 
 <PagesWrapper heading="Community">
@@ -203,6 +210,7 @@
 		</div>
 	</div>
 </PagesWrapper>
+<Contributors contributors={data.allContributors} error={data.error} />
 
 <style lang="scss">
 	@import '$lib/scss/breakpoints.scss';
