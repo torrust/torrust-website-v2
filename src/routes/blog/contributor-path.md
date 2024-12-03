@@ -27,7 +27,7 @@ hidden: false
     { name: "Introduction", id: "introduction" },
     { name: "Minimum Requirements", id: "minimum-requirements" },
     { name: "Why Getting Started Can Be Challenging", id: "why-getting-started-can-be-challenging" },
-    { name: "How Can You contribute", id: "how-can-you-contribute" },
+    { name: "How You Can Contribute", id: "how-you-can-contribute" },
     { name: "More Resources", id: "more-resources" },
   ]
 
@@ -97,7 +97,7 @@ Our current package structure for the Tracker could be improved in terms of perf
 
 We believe smaller and independent packages will make it easier for contributors to work on specific components without needing to understand the entire codebase.
 
-## How Can You contribute
+## How You Can Contribute
 
 There are many ways to contribute to Torrust, including:
 

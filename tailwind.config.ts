@@ -1,14 +1,9 @@
 import type { Config } from 'tailwindcss';
 import plugin from 'tailwindcss/plugin';
 import typography from '@tailwindcss/typography';
-import { skeleton } from '@skeletonlabs/tw-plugin';
-import { join } from 'path';
 
 export default {
-	content: [
-		'./src/**/*.{html,js,svelte,ts}',
-		join(require.resolve('@skeletonlabs/skeleton'), '../**/*.{html,js,svelte,ts}')
-	],
+	content: ['./src/**/*.{html,js,svelte,ts}'],
 
 	theme: {
 		container: {
@@ -76,7 +71,6 @@ export default {
 	},
 
 	plugins: [
-		skeleton,
 		typography,
 		plugin(function ({ addVariant, matchUtilities, theme }) {
 			addVariant('hocus', ['&:hover', '&:focus']);

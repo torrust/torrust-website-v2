@@ -27,6 +27,17 @@ export type Feature = {
 	tags: TagType[];
 };
 
+export type Contributor = {
+	login: string;
+	avatar_url: string;
+	html_url: string;
+};
+
+export type CacheEntry<T> = {
+	data: T;
+	expiresAt: number;
+};
+
 export type BlogPost = {
 	tags: string[];
 	keywords: string[];

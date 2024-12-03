@@ -2,10 +2,13 @@
 	import Hero from '$lib/components/organisms/Hero.svelte';
 	import WhyContribute from '$lib/components/singletons/WhyContribute.svelte';
 	import BlogPreview from '$lib/components/molecules/BlogPreview.svelte';
-	import type { BlogPost } from '$lib/utils/types';
+	import Contributors from '$lib/components/singletons/Contributors.svelte';
+	import type { BlogPost, Contributor } from '$lib/utils/types';
 
 	export let data: {
 		posts: BlogPost[];
+		allContributors: Contributor[];
+		error: string | null;
 	};
 
 	let filteredPosts = data.posts;
@@ -13,7 +16,10 @@
 
 <Hero />
 <WhyContribute />
-{#if filteredPosts && filteredPosts.length}
+
+<Contributors contributors={data.allContributors} error={data.error} />
+
+{#if filteredPosts && filteredPosts.length > 0}
 	<div class="container">
 		<h2>Latest articles</h2>
 		<div class="grid">
@@ -36,7 +42,7 @@
 		min-height: 100vh;
 		display: flex;
 		flex-direction: column;
-		padding-top: 3rem;
+		padding-top: rem;
 		background: rgba(26, 26, 26, 1);
 		color: rgba(245, 245, 245, 0.96);
 		padding-bottom: 64px;

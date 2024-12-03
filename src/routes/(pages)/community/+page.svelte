@@ -1,6 +1,13 @@
 <script lang="ts">
 	import Toc from '$lib/components/atoms/Toc.svelte';
 	import PagesWrapper from '$lib/components/atoms/PagesWrapper.svelte';
+	import Contributors from '$lib/components/singletons/Contributors.svelte';
+	import type { Contributor } from '$lib/utils/types';
+
+	export let data: {
+		allContributors: Contributor[];
+		error: string | null;
+	};
 </script>
 
 <PagesWrapper heading="Community">
@@ -203,21 +210,16 @@
 		</div>
 	</div>
 </PagesWrapper>
+<Contributors contributors={data.allContributors} error={data.error} />
 
 <style lang="scss">
 	@import '$lib/scss/breakpoints.scss';
 
 	.wrapper {
-		display: grid;
-		grid-template-columns: 300px 1fr;
-		gap: 4rem;
+		display: flex;
+		flex-direction: column;
+		gap: 2rem;
 		position: relative;
-	}
-
-	.wrapper :global(.toc) {
-		position: sticky;
-		top: 4rem;
-		height: min-content;
 	}
 
 	.content-preview {
@@ -274,6 +276,17 @@
 	}
 
 	@include for-desktop-up {
+		.wrapper {
+			flex-direction: row;
+			gap: 4rem;
+		}
+
+		.wrapper :global(.toc) {
+			position: sticky;
+			top: 4rem;
+			height: min-content;
+		}
+
 		.content-preview {
 			overflow-y: scroll;
 			scrollbar-width: none;
