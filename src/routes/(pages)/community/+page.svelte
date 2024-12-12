@@ -1,13 +1,17 @@
 <script lang="ts">
-	import Toc from '$lib/components/atoms/Toc.svelte';
 	import PagesWrapper from '$lib/components/atoms/PagesWrapper.svelte';
-	import Contributors from '$lib/components/singletons/Contributors.svelte';
+	import Contributors from '$lib/components/organisms/Contributors.svelte';
+	import Toc from '$lib/components/atoms/Toc.svelte';
 	import type { Contributor } from '$lib/utils/types';
 
-	export let data: {
-		allContributors: Contributor[];
-		error: string | null;
-	};
+	interface Props {
+		data: {
+			allContributors: Contributor[];
+			error: string | null;
+		};
+	}
+
+	let { data }: Props = $props();
 </script>
 
 <PagesWrapper heading="Community">
@@ -213,7 +217,7 @@
 <Contributors contributors={data.allContributors} error={data.error} />
 
 <style lang="scss">
-	@import '$lib/scss/breakpoints.scss';
+	@use '$lib/scss/breakpoints.scss' as bp;
 
 	.wrapper {
 		display: flex;
@@ -275,7 +279,7 @@
 		margin-bottom: 1rem;
 	}
 
-	@include for-desktop-up {
+	@include bp.for-desktop-up {
 		.wrapper {
 			flex-direction: row;
 			gap: 4rem;

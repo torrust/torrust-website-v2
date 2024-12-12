@@ -17,7 +17,7 @@
 </footer>
 
 <style lang="scss">
-	@import '$lib/scss/breakpoints.scss';
+	@use '$lib/scss/breakpoints.scss' as bp;
 
 	footer {
 		background-color: rgba(26, 26, 26, 1);
@@ -35,7 +35,7 @@
 			padding: 1rem;
 			text-align: center;
 
-			@include for-tablet-portrait-up {
+			@include bp.for-tablet-portrait-up {
 				flex-direction: row;
 				align-items: center;
 				gap: 24px;
@@ -43,7 +43,7 @@
 				max-width: 2500px;
 			}
 
-			@include for-desktop-up {
+			@include bp.for-desktop-up {
 				padding: 0rem;
 			}
 
@@ -52,17 +52,7 @@
 			}
 		}
 
-		footer div:nth-of-type(2) p:first-of-type {
-			margin-top: 1.5rem;
-		}
-
-		@include for-tablet-portrait-up {
-			footer div:nth-of-type(2) p:first-of-type {
-				margin-top: 0rem;
-			}
-		}
-
-		@include for-desktop-up {
+		@include bp.for-desktop-up {
 			padding-inline: 9rem;
 		}
 	}

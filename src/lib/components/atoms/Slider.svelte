@@ -4,7 +4,11 @@
 		link: string;
 	}
 
-	export let titleArr: TitleObj[] = [];
+	interface Props {
+		titleArr?: TitleObj[];
+	}
+
+	let { titleArr = [] }: Props = $props();
 </script>
 
 <div class="slider-container">
@@ -24,8 +28,6 @@
 </div>
 
 <style lang="scss">
-	@import '$lib/scss/breakpoints.scss';
-
 	.slider-container {
 		display: flex;
 		gap: 1rem;

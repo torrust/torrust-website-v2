@@ -1,9 +1,21 @@
 <script lang="ts">
-	export let id: string | undefined = undefined;
-	export let title: string | undefined = undefined;
-	export let description: string | undefined = undefined;
+	interface Props {
+		id?: string | undefined;
+		title?: string | undefined;
+		description?: string | undefined;
+		align?: 'left' | 'top' | 'right';
+		button?: import('svelte').Snippet;
+		children?: import('svelte').Snippet;
+	}
 
-	export let align: 'left' | 'top' | 'right' = 'top';
+	let {
+		id = undefined,
+		title = undefined,
+		description = undefined,
+		align = 'top',
+		button,
+		children
+	}: Props = $props();
 </script>
 
 <section {id} class="content-section {align}">
@@ -23,19 +35,19 @@
 				{/if}
 			</div>
 		{/if}
-		{#if $$slots['button']}
+		{#if button}
 			<div class="button">
-				<slot name="button" />
+				{@render button?.()}
 			</div>
 		{/if}
 	</div>
 	<div class="content-area">
-		<slot />
+		{@render children?.()}
 	</div>
 </section>
 
 <style lang="scss">
-	@import '../../scss/breakpoints.scss';
+	@use '$lib/scss/breakpoints.scss' as bp;
 
 	.content-section {
 		display: flex;
@@ -70,7 +82,7 @@
 			place-items: center;
 		}
 
-		@include for-tablet-landscape-up {
+		@include bp.for-tablet-landscape-up {
 			&.left {
 				.title-area {
 					order: 1;
@@ -99,7 +111,8 @@
 				}
 			}
 		}
-		@include for-tablet-portrait-down {
+
+		@include bp.for-tablet-portrait-down {
 			flex-direction: column;
 		}
 	}

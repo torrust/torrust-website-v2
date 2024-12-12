@@ -1,7 +1,6 @@
 <script lang="ts">
-	export let contributors;
-	export let error;
 	import { defaultContributorsList } from '$lib/constants/constants';
+	let { contributors, error } = $props();
 </script>
 
 <div class="container">
@@ -33,8 +32,6 @@
 </div>
 
 <style lang="scss">
-	@import '$lib/scss/breakpoints.scss';
-
 	.container {
 		margin: 0 auto;
 		max-width: 800px;

@@ -1,5 +1,5 @@
 <script lang="ts">
-	export let title;
+	let { title } = $props();
 </script>
 
 <div class="container">

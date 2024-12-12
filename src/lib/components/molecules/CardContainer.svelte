@@ -1,7 +1,7 @@
 <script lang="ts">
 	import Card from '$lib/components/atoms/Card.svelte';
 
-	export let titleArr;
+	let { titleArr } = $props();
 </script>
 
 <div class="card-container">
@@ -11,9 +11,9 @@
 </div>
 
 <style lang="scss">
-	@import '$lib/scss/breakpoints.scss';
+	@use '$lib/scss/breakpoints.scss' as bp;
 
-	@include for-tablet-portrait-up {
+	@include bp.for-tablet-portrait-up {
 		.card-container {
 			display: grid;
 			grid-template-columns: repeat(2, 1fr);
@@ -25,7 +25,7 @@
 		}
 	}
 
-	@include for-tablet-landscape-up {
+	@include bp.for-tablet-landscape-up {
 		.card-container {
 			display: grid;
 			grid-template-columns: repeat(3, 1fr);

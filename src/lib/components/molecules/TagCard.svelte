@@ -2,34 +2,42 @@
 	import { formatDate } from '$lib/utils/date';
 	import TagCard from '$lib/components/atoms/TagCard.svelte';
 
-	export let title: string;
-	export let coverImage: string;
-	export let slug: string;
-	export let date: string;
-	export let excerpt: string;
+	interface Props {
+		title: string;
+		coverImage: string;
+		slug: string;
+		date: string;
+		excerpt: string;
+	}
+
+	let { title, coverImage, slug, date, excerpt }: Props = $props();
 
 	const formattedDate = formatDate(date);
 </script>
 
 <TagCard href="/blog/{slug}" target="_self">
-	<div class="image-container" slot="image">
-		{#if coverImage}
-			<img src={coverImage} alt="Cover for this blog post" />
-		{/if}
-	</div>
-	<div class="content" slot="content">
-		<p class="title">
-			{title}
-		</p>
-		{#if date}
-			<div class="date">Published {formattedDate}</div>
-		{/if}
-		{#if excerpt}
-			<p class="text">
-				{excerpt}
+	{#snippet image()}
+		<div class="image-container">
+			{#if coverImage}
+				<img src={coverImage} alt="Cover for this blog post" />
+			{/if}
+		</div>
+	{/snippet}
+	{#snippet content()}
+		<div class="content">
+			<p class="title">
+				{title}
 			</p>
-		{/if}
-	</div>
+			{#if date}
+				<div class="date">Published {formattedDate}</div>
+			{/if}
+			{#if excerpt}
+				<p class="text">
+					{excerpt}
+				</p>
+			{/if}
+		</div>
+	{/snippet}
 </TagCard>
 
 <style lang="scss">

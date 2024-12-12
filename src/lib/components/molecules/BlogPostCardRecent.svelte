@@ -1,7 +1,11 @@
 <script lang="ts">
-	export let title: string;
-	export let author: string;
-	export let date: string;
+	interface Props {
+		title: string;
+		author: string;
+		date: string;
+	}
+
+	let { title, author, date }: Props = $props();
 </script>
 
 <div class="container">
@@ -12,8 +16,6 @@
 </div>
 
 <style lang="scss">
-	@import '$lib/scss/breakpoints.scss';
-
 	.container {
 		background-color: blue;
 		padding: 184px 72px 24px 24px;

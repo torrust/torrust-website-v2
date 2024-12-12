@@ -1,5 +1,10 @@
 <script lang="ts">
-	export let heading: string;
+	interface Props {
+		heading: string;
+		children?: import('svelte').Snippet;
+	}
+
+	let { heading, children }: Props = $props();
 </script>
 
 <div class="para">
@@ -7,12 +12,12 @@
 		<h1>{heading}</h1>
 	{/if}
 	<div class="layout">
-		<slot />
+		{@render children?.()}
 	</div>
 </div>
 
 <style lang="scss">
-	@import '$lib/scss/breakpoints.scss';
+	@use '$lib/scss/breakpoints' as bp;
 
 	.para {
 		display: flex;
@@ -34,7 +39,7 @@
 		padding-inline: 2.5rem;
 	}
 
-	@include for-desktop-up {
+	@include bp.for-desktop-up {
 		.layout {
 			height: 100%;
 			flex-direction: row;

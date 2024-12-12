@@ -7,8 +7,12 @@
 		subsections?: Section[];
 	}
 
-	export let sections: Section[] = [];
-	export let activeSection = '';
+	interface Props {
+		sections?: Section[];
+		activeSection?: string;
+	}
+
+	let { sections = [], activeSection = $bindable('') }: Props = $props();
 
 	onMount(() => {
 		if (sections.length > 0) {
@@ -67,8 +71,6 @@
 </nav>
 
 <style lang="scss">
-	@import '$lib/scss/breakpoints.scss';
-
 	.sticky-nav {
 		background: rgba(26, 26, 26, 1);
 		width: 300px;
@@ -100,22 +102,6 @@
 			&.active a {
 				font-weight: bold;
 				color: rgba(255, 49, 0, 0.96);
-			}
-
-			/* Sublist styling */
-			ul.sublist {
-				margin-left: 20px;
-				list-style-type: none;
-				margin-top: 16px;
-
-				li {
-					margin-top: 8px;
-
-					ul.sublist {
-						margin-left: 20px;
-						list-style-type: circle;
-					}
-				}
 			}
 		}
 	}

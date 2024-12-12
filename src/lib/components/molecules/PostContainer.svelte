@@ -1,11 +1,16 @@
 <script lang="ts">
-	let size = 0;
+	interface Props {
+		children?: import('svelte').Snippet;
+	}
+
+	let { children }: Props = $props();
+	let size = $state(0);
 </script>
 
 <svelte:window bind:innerWidth={size} />
 
 <div class={size >= 1440 ? 'grid' : 'flex'}>
-	<slot />
+	{@render children?.()}
 </div>
 
 <style lang="scss">

@@ -1,11 +1,15 @@
-<!-- src/lib/components/atoms/Tag.svelte -->
 <script lang="ts">
-	export let tag: string;
+	interface Props {
+		tag: string;
+		children?: import('svelte').Snippet;
+	}
+
+	let { tag, children }: Props = $props();
 </script>
 
 <div class="tag">
 	<a href={`/tags/${tag}`}>
-		<slot>{tag}</slot>
+		{#if children}{@render children()}{:else}{tag}{/if}
 	</a>
 </div>
 

@@ -1,11 +1,15 @@
 <script lang="ts">
 	import { formatDate } from '$lib/utils/date';
 
-	export let title: string;
-	export let coverImage: string | undefined = undefined;
-	export let slug: string;
-	export let date: string;
-	export let contributor: string;
+	interface Props {
+		title: string;
+		coverImage?: string | undefined;
+		slug: string;
+		date: string;
+		contributor: string;
+	}
+
+	let { title, coverImage = undefined, slug, date, contributor }: Props = $props();
 
 	const formattedDate = formatDate(date);
 </script>
@@ -27,8 +31,6 @@
 </a>
 
 <style lang="scss">
-	@import '$lib/scss/breakpoints.scss';
-
 	a {
 		position: relative;
 		display: block;
@@ -74,7 +76,7 @@
 		align-items: flex-start;
 		text-align: left;
 		color: white;
-		background: rgba(0, 0, 0, 0.5); /* Dark overlay for better readability */
+		background: rgba(0, 0, 0, 0.5);
 		padding: 1rem;
 		transition: background 0.3s ease;
 	}
@@ -96,6 +98,6 @@
 	}
 
 	a:hover .text-container {
-		background: rgba(0, 0, 0, 0.7); /* Darken overlay on hover */
+		background: rgba(0, 0, 0, 0.7);
 	}
 </style>

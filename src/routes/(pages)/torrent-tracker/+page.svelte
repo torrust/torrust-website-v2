@@ -134,7 +134,7 @@
 </div>
 
 <style lang="scss">
-	@import '$lib/scss/breakpoints.scss';
+	@use '$lib/scss/breakpoints.scss' as bp;
 
 	.container {
 		max-width: 1200px;
@@ -198,7 +198,7 @@
 		color: rgba(255, 49, 0, 0.96);
 	}
 
-	@include for-tablet-portrait-up {
+	@include bp.for-tablet-portrait-up {
 		.inner-container {
 			padding-top: 3rem;
 		}

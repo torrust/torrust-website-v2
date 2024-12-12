@@ -1,3 +1,5 @@
+@use '$lib/scss/breakpoints' as bp;
+
 a {
 	color: rgba(245, 245, 245, 0.96);
 	text-decoration: none;
@@ -40,7 +42,7 @@ h1 {
 	font-size: 2.5rem;
 	font-weight: 700;
 
-	@include for-phone-only {
+	@include bp.for-phone-only {
 		font-size: 2rem;
 	}
 }

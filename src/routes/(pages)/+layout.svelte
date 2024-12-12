@@ -1,13 +1,16 @@
 <script lang="ts">
+	interface Props {
+		children?: import('svelte').Snippet;
+	}
+
+	let { children }: Props = $props();
 </script>
 
 <div class="layout-container">
-	<slot />
+	{@render children?.()}
 </div>
 
 <style lang="scss">
-	@import '$lib/scss/breakpoints.scss';
-
 	.layout-container {
 		background: rgba(26, 26, 26, 1);
 		padding: 0;

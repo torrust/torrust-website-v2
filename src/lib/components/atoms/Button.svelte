@@ -1,23 +1,46 @@
 <script lang="ts">
+	import { createBubbler } from 'svelte/legacy';
+
+	const bubble = createBubbler();
 	import { HttpRegex } from '$lib/utils/regex';
 
-	export let color: 'primary' | 'secondary' = 'primary';
-	export let style: 'solid' | 'understated' | 'clear' = 'solid';
-	export let size: 'small' | 'medium' | 'large' = 'medium';
-	export let href: string | undefined = undefined;
+	interface Props {
+		color?: 'primary' | 'secondary';
+		style?: 'solid' | 'understated' | 'clear';
+		size?: 'small' | 'medium' | 'large';
+		href?: string | undefined;
+		additionalClass?: string | undefined;
+		target?: '_self' | '_blank';
+		rel?: any;
+		icon?: import('svelte').Snippet;
+		children?: import('svelte').Snippet;
+		[key: string]: any;
+	}
 
-	export let additionalClass: string | undefined = undefined;
+	let {
+		color = 'primary',
+		style = 'solid',
+		size = 'medium',
+		href = undefined,
+		additionalClass = undefined,
+		target,
+		rel,
+		icon,
+		children,
+		...rest
+	}: Props = $props();
 
 	const isExternalLink = !!href && HttpRegex.test(href);
-	export let target: '_self' | '_blank' = isExternalLink ? '_blank' : '_self';
-	export let rel = isExternalLink ? 'noopener noreferrer' : undefined;
 
-	$: tag = href ? 'a' : 'button';
-	$: linkProps = {
+	target = target ?? (isExternalLink ? '_blank' : '_self');
+	rel = rel ?? (isExternalLink ? 'noopener noreferrer' : undefined);
+
+	let tag = $derived(href ? 'a' : 'button');
+	let linkProps = $derived({
 		href,
 		target,
 		rel
-	};
+	});
 </script>
 
 <svelte:element
@@ -27,17 +50,17 @@
 		' '
 	)}
 	data-sveltekit-preload-data
-	on:click
+	onclick={bubble('click')}
 	role="button"
 	tabindex="0"
-	{...$$restProps}
+	{...rest}
 >
-	{#if $$slots['icon']}
+	{#if icon}
 		<div class="icon">
-			<slot name="icon" />
+			{@render icon?.()}
 		</div>
 	{/if}
-	<slot />
+	{@render children?.()}
 </svelte:element>
 
 <style lang="scss">

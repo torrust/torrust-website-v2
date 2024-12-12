@@ -1,20 +1,24 @@
 <script lang="ts">
-	export let isMenuOpen: boolean;
-	export let toggleMenu: () => void;
+	interface Props {
+		isMenuOpen: boolean;
+		toggleMenu: () => void;
+		children?: import('svelte').Snippet;
+	}
+
+	let { isMenuOpen, toggleMenu, children }: Props = $props();
 </script>
 
 <nav class:open={isMenuOpen}>
-	<slot />
+	{@render children?.()}
 </nav>
-<button class="burger" on:click={toggleMenu} class:open={isMenuOpen}>
-	<div class="bar-1" />
-	<div class="bar-2" />
-	<div class="bar-3" />
+<button class="burger" onclick={toggleMenu} class:open={isMenuOpen} aria-label="Toggle menu">
+	<div class="bar-1"></div>
+	<div class="bar-2"></div>
+	<div class="bar-3"></div>
 </button>
 
 <style lang="scss">
-	@import '$lib/scss/breakpoints.scss';
-	@import '$lib/scss/themes.scss';
+	@use '$lib/scss/breakpoints.scss' as bp;
 
 	.burger {
 		height: 30px;
@@ -58,7 +62,7 @@
 		transform: rotateZ(-45deg);
 	}
 
-	@include for-phone-only {
+	@include bp.for-phone-only {
 		nav {
 			display: none;
 			opacity: 0;
@@ -75,7 +79,7 @@
 		}
 	}
 
-	@include for-tablet-portrait-up {
+	@include bp.for-tablet-portrait-up {
 		.burger {
 			display: none;
 		}
@@ -83,33 +87,6 @@
 		nav {
 			display: block;
 			position: relative;
-		}
-	}
-
-	// Set theme-specific colors
-	:root[data-theme='light'] {
-		--burger-border-color: black;
-		--burger-background-color: white;
-		--burger-bar-background-color: black; // Bars are black in light mode
-	}
-
-	:root[data-theme='dark'] {
-		--burger-border-color: white;
-		--burger-background-color: black;
-		--burger-bar-background-color: white; // Bars are white in dark mode
-	}
-
-	:root[data-theme='auto'] {
-		@media (prefers-color-scheme: dark) {
-			--burger-border-color: white;
-			--burger-background-color: black;
-			--burger-bar-background-color: white; // Bars are white in dark mode
-		}
-
-		@media (prefers-color-scheme: light) {
-			--burger-border-color: black;
-			--burger-background-color: white;
-			--burger-bar-background-color: black; // Bars are black in light mode
 		}
 	}
 </style>

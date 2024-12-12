@@ -1,7 +1,7 @@
 <script lang="ts">
 	import CodeBlock from '$lib/components/molecules/CodeBlock.svelte';
-	import Toc from '$lib/components/atoms/Toc.svelte';
 	import PagesWrapper from '$lib/components/atoms/PagesWrapper.svelte';
+	import Toc from '$lib/components/atoms/Toc.svelte';
 </script>
 
 <PagesWrapper heading="">
@@ -246,7 +246,8 @@ cd /tmp \
 </PagesWrapper>
 
 <style lang="scss">
-	@import '$lib/scss/breakpoints.scss';
+	@use '$lib/scss/breakpoints.scss' as bp;
+
 	.wrapper {
 		display: flex;
 		flex-direction: column;
@@ -300,7 +301,7 @@ cd /tmp \
 		word-break: keep-all;
 	}
 
-	@include for-desktop-up {
+	@include bp.for-desktop-up {
 		.wrapper {
 			flex-direction: row;
 			gap: 4rem;

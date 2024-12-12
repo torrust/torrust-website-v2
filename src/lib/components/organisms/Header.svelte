@@ -3,13 +3,13 @@
 	import AnimatedHamburger from '$lib/components/singletons/AnimatedHamburger.svelte';
 	import Header from '$lib/icons/header.svelte';
 
-	let isMenuOpen = false;
+	let isMenuOpen = $state(false);
 
 	function toggleMenu() {
 		isMenuOpen = !isMenuOpen;
 	}
 
-	$: currentPath = $page.url.pathname;
+	let currentPath = $derived($page.url.pathname);
 </script>
 
 <header>
@@ -22,43 +22,43 @@
 				<ul class="links">
 					<!-- Menu items -->
 					<li>
-						<a href="/" class={currentPath === '/' ? 'active' : ''} on:click={toggleMenu}>Home</a>
+						<a href="/" class={currentPath === '/' ? 'active' : ''} onclick={toggleMenu}>Home</a>
 					</li>
 					<li>
 						<a
 							href="/torrent-index"
 							class={currentPath === '/torrent-index' ? 'active' : ''}
-							on:click={toggleMenu}>Index</a
+							onclick={toggleMenu}>Index</a
 						>
 					</li>
 					<li>
 						<a
 							href="/torrent-tracker"
 							class={currentPath === '/torrent-tracker' ? 'active' : ''}
-							on:click={toggleMenu}>Tracker</a
+							onclick={toggleMenu}>Tracker</a
 						>
 					</li>
 					<li>
 						<a
 							href="/self-host"
 							class={currentPath === '/self-host' ? 'active' : ''}
-							on:click={toggleMenu}>Self&#8209;host</a
+							onclick={toggleMenu}>Self&#8209;host</a
 						>
 					</li>
 					<li>
 						<a
 							href="/community"
 							class={currentPath === '/community' ? 'active' : ''}
-							on:click={toggleMenu}>Community</a
+							onclick={toggleMenu}>Community</a
 						>
 					</li>
 					<li>
-						<a href="/blog" class={currentPath === '/blog' ? 'active' : ''} on:click={toggleMenu}
+						<a href="/blog" class={currentPath === '/blog' ? 'active' : ''} onclick={toggleMenu}
 							>Blog</a
 						>
 					</li>
 					<li>
-						<a href="/about" class={currentPath === '/about' ? 'active' : ''} on:click={toggleMenu}
+						<a href="/about" class={currentPath === '/about' ? 'active' : ''} onclick={toggleMenu}
 							>About</a
 						>
 					</li>
@@ -69,7 +69,7 @@
 </header>
 
 <style lang="scss">
-	@import '$lib/scss/breakpoints.scss';
+	@use '$lib/scss/breakpoints' as bp;
 
 	header {
 		position: relative;
@@ -86,7 +86,7 @@
 			margin: 0 auto;
 			padding-top: 0.25rem;
 
-			@include for-phone-only {
+			@include bp.for-phone-only {
 				height: 64px;
 			}
 		}
@@ -128,7 +128,7 @@
 			background-color: white;
 		}
 
-		@include for-phone-only {
+		@include bp.for-phone-only {
 			.links-wrapper {
 				padding: 3rem;
 				margin: 3.5rem 0rem;

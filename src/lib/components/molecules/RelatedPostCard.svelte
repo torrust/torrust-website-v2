@@ -3,42 +3,50 @@
 	import Tag from '$lib/components/atoms/Tag.svelte';
 	import { formatDate } from '$lib/utils/date';
 
-	export let title: string;
-	export let excerpt: string;
-	export let slug: string;
-	export let tags: string[] | undefined;
-	export let readingTime: string | undefined = undefined;
-	export let date: string;
+	interface Props {
+		title: string;
+		excerpt: string;
+		slug: string;
+		tags: string[] | undefined;
+		readingTime?: string | undefined;
+		date: string;
+	}
+
+	let { title, excerpt, slug, tags, readingTime = undefined, date }: Props = $props();
 
 	const formattedDate = formatDate(date);
 </script>
 
 <RelatedCard href="/{slug}" target="_self">
-	<div class="content" slot="content">
-		<p class="title">
-			{title}
-		</p>
-		{#if date}
-			<div class="date">Published on {formattedDate}</div>
-		{/if}
-		{#if readingTime}
-			<div class="note">{readingTime}</div>
-		{/if}
-		{#if excerpt}
-			<p class="text">
-				{excerpt}
+	{#snippet content()}
+		<div class="content">
+			<p class="title">
+				{title}
 			</p>
-		{/if}
-	</div>
-	<div class="footer" slot="footer">
-		{#if tags?.length}
-			<div class="tags">
-				{#each tags.slice(0, 2) as tag}
-					<Tag {tag}><a href="/tags/{tag}">{tag}</a></Tag>
-				{/each}
-			</div>
-		{/if}
-	</div>
+			{#if date}
+				<div class="date">Published on {formattedDate}</div>
+			{/if}
+			{#if readingTime}
+				<div class="note">{readingTime}</div>
+			{/if}
+			{#if excerpt}
+				<p class="text">
+					{excerpt}
+				</p>
+			{/if}
+		</div>
+	{/snippet}
+	{#snippet footer()}
+		<div class="footer">
+			{#if tags?.length}
+				<div class="tags">
+					{#each tags.slice(0, 2) as tag}
+						<Tag {tag}><a href="/tags/{tag}">{tag}</a></Tag>
+					{/each}
+				</div>
+			{/if}
+		</div>
+	{/snippet}
 </RelatedCard>
 
 <style lang="scss">

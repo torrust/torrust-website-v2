@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { formatDate } from '$lib/utils/date';
 
-	export let post_data;
+	let { post_data } = $props();
 
 	const formattedDate = formatDate(post_data.date);
 </script>
@@ -23,8 +23,6 @@
 </div>
 
 <style lang="scss">
-	@import '$lib/scss/breakpoints.scss';
-
 	.container {
 		height: 312px;
 		margin: 0 auto;

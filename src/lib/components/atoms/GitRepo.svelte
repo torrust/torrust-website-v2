@@ -12,6 +12,3 @@
 		></svg
 	>
 </div>
-
-<style lang="scss">
-</style>

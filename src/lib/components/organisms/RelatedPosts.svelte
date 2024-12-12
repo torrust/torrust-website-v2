@@ -2,7 +2,11 @@
 	import BlogPostCard from '$lib/components/molecules/BlogPostCard.svelte';
 	import type { BlogPost } from '$lib/utils/types';
 
-	export let posts: BlogPost[];
+	interface Props {
+		posts: BlogPost[];
+	}
+
+	let { posts }: Props = $props();
 </script>
 
 <div class="container">
@@ -20,7 +24,7 @@
 </div>
 
 <style lang="scss">
-	@import '$lib/scss/breakpoints.scss';
+	@use '$lib/scss/breakpoints.scss' as bp;
 
 	.container {
 		color: rgba(245, 245, 245, 0.8);
@@ -34,11 +38,11 @@
 		grid-template-columns: 1fr;
 		grid-gap: 20px;
 
-		@include for-tablet-portrait-up {
+		@include bp.for-tablet-portrait-up {
 			grid-template-columns: 1fr 1fr;
 		}
 
-		@include for-desktop-up {
+		@include bp.for-desktop-up {
 			grid-template-columns: 1fr 1fr 1fr;
 		}
 	}

@@ -57,7 +57,7 @@ We’ve started a [discussion on GitHub](https://github.com/orgs/torrust/discuss
 
 To ensure all feature requests are well-organized and evaluated, we’ve created an [impact map](https://www.impactmapping.org/). This tool highlights the relevance and potential benefits of each feature, helping us focus on what truly matters to the community and the project’s goals.
 
-<iframe width="768" height="432" src="https://miro.com/app/live-embed/uXjVL_SACr0=/?moveToViewport=-7817,-1260,14754,10654&embedId=711626446826" frameborder="0" scrolling="no" allow="fullscreen; clipboard-read; clipboard-write" allowfullscreen></iframe>
+<iframe width="768" height="432" title='Interactive Whiteboard: Collaborative Planning in Real-Time' src="https://miro.com/app/live-embed/uXjVL_SACr0=/?moveToViewport=-7817,-1260,14754,10654&embedId=711626446826" frameborder="0" scrolling="no" allow="fullscreen; clipboard-read; clipboard-write" allowfullscreen></iframe>
 
 ## Focus Areas for 2025
 

@@ -1,32 +1,33 @@
 <script lang="ts">
+	import { run } from 'svelte/legacy';
+
 	import Icon from '@iconify/svelte';
 	import type { BlogPost } from '$lib/utils/types';
-	export let data;
-	export let currentPage;
+	let { data, currentPage } = $props();
 
-	let prevPost: BlogPost | null = null;
-	let nextPost: BlogPost | null = null;
+	let prevPost: BlogPost | null = $state(null);
+	let nextPost: BlogPost | null = $state(null);
 
-	$: {
+	run(() => {
 		if (currentPage && data.all_posts.length) {
-			// Sort posts by date (latest first)
-			data.all_posts.sort(
-				(a: BlogPost, b: BlogPost) => new Date(b.date).getTime() - new Date(a.date).getTime()
-			);
+			const sortedPosts = data.all_posts
+				.slice()
+				.sort(
+					(a: BlogPost, b: BlogPost) =>
+						new Date(b.meta.date).getTime() - new Date(a.meta.date).getTime()
+				);
 
-			// Find the index of the current post
-			const currentIndex = data.all_posts.findIndex(
+			const currentIndex = sortedPosts.findIndex(
 				(post: BlogPost) => currentPage === post.meta.slug
 			);
 
 			// Set prevPost and nextPost based on the current index
 			if (currentIndex !== -1) {
-				prevPost = currentIndex > 0 ? data.all_posts[currentIndex - 1] : null; // Previous post
-				nextPost =
-					currentIndex < data.all_posts.length - 1 ? data.all_posts[currentIndex + 1] : null; // Next post
+				prevPost = currentIndex > 0 ? sortedPosts[currentIndex - 1] : null; // Previous post
+				nextPost = currentIndex < sortedPosts.length - 1 ? sortedPosts[currentIndex + 1] : null; // Next post
 			}
 		}
-	}
+	});
 </script>
 
 <div class="container">
@@ -69,6 +70,7 @@
 		justify-content: space-between;
 		font-size: 16px;
 		border: 1px solid rgba(245, 245, 245, 0.08);
+		padding-inline: 2.5rem;
 	}
 
 	.nextPost,

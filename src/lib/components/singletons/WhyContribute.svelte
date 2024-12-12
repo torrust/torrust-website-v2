@@ -22,11 +22,14 @@
 </div>
 
 <style lang="scss">
-	@import '$lib/scss/breakpoints.scss';
+	@use '$lib/scss/breakpoints.scss' as bp;
 
 	.container {
 		display: flex;
 		flex-direction: column;
+		justify-content: center;
+		align-items: center;
+		margin: 0 auto;
 		text-align: center;
 		color: rgba(245, 245, 245, 0.8);
 		background: rgba(26, 26, 26, 1);
@@ -48,7 +51,7 @@
 		}
 	}
 
-	@include for-tablet-portrait-up {
+	@include bp.for-tablet-portrait-up {
 		.contribute-container {
 			width: 640px;
 			margin: 0 auto;
