@@ -12,7 +12,7 @@ const config: UserConfig = {
 			optipng: { optimizationLevel: 5 },
 			pngquant: { quality: [0.6, 0.8] },
 			webp: { quality: 75 }
-		  })
+		})
 	],
 	resolve: {
 		alias: {
