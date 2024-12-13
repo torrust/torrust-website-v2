@@ -1,12 +1,28 @@
 <script lang="ts">
 	import { HttpRegex } from '$lib/utils/regex';
 
-	export let additionalClass: string | undefined = undefined;
+	interface Props {
+		additionalClass?: string | undefined;
+		href?: string | undefined;
+		target?: '_self' | '_blank';
+		rel?: any;
+		content?: import('svelte').Snippet;
+		[key: string]: any;
+	}
 
-	export let href: string | undefined = undefined;
+	let {
+		additionalClass = undefined,
+		href = undefined,
+		target,
+		rel,
+		content,
+		...rest
+	}: Props = $props();
+
 	const isExternalLink = !!href && HttpRegex.test(href);
-	export let target: '_self' | '_blank' = isExternalLink ? '_blank' : '_self';
-	export let rel = isExternalLink ? 'noopener noreferrer' : undefined;
+
+	target = target ?? (isExternalLink ? '_blank' : '_self');
+	rel = rel ?? (isExternalLink ? 'noopener noreferrer' : undefined);
 
 	function getRandomColor() {
 		const letters = '0123456789ABCDEF';
@@ -24,14 +40,14 @@
 		return `linear-gradient(${randomDegree}deg, ${color1}, ${color2})`;
 	}
 
-	$: randomGradientBackground = getRandomGradient();
+	let randomGradientBackground = $derived(getRandomGradient());
 
-	$: tag = href ? 'a' : 'article';
-	$: linkProps = {
+	let tag = $derived(href ? 'a' : 'article');
+	let linkProps = $derived({
 		href,
 		target,
 		rel
-	};
+	});
 </script>
 
 <svelte:element
@@ -39,19 +55,17 @@
 	class="card {additionalClass}"
 	{...linkProps}
 	data-sveltekit-preload-data
-	{...$$restProps}
+	{...rest}
 	style="background: {randomGradientBackground};"
 >
 	<div class="body">
 		<div class="content">
-			<slot name="content" />
+			{@render content?.()}
 		</div>
 	</div>
 </svelte:element>
 
 <style lang="scss">
-	@import '$lib/scss/breakpoints.scss';
-
 	.card {
 		display: flex;
 		flex-direction: column;

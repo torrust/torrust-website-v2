@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { createEventDispatcher } from 'svelte';
 	import type { BlogPost } from '$lib/utils/types';
-	import { onMount, afterUpdate } from 'svelte';
+	import { onMount } from 'svelte';
 	import { createPostsIndex, searchPostsIndex } from '$lib/utils/search';
 	import Icon from '@iconify/svelte';
 
@@ -22,33 +22,28 @@
 	let search: 'loading' | 'ready' = 'loading';
 	let results: SearchResult[] = [];
 
-	// Triggered on input change
 	function handleInput(event: Event) {
 		const input = event.target as HTMLInputElement;
 		searchTerm = input.value;
 		dispatch('search', searchTerm);
 	}
 
-	// Clear search term
 	function clearSearch() {
 		searchTerm = '';
 		showInput = false;
 	}
 
-	// Focus on the search input if needed
-	afterUpdate(() => {
-		if (showInput && searchInput) {
-			searchInput.focus();
-		}
-	});
-
-	// On mount, create the search index from the blogPosts
 	onMount(async () => {
-		createPostsIndex(blogPosts); // Create index for blogPosts
+		createPostsIndex(blogPosts);
 		search = 'ready';
 	});
 
-	// Perform search when searchTerm changes and index is ready
+	$: {
+		if (showInput && searchInput) {
+			searchInput.focus();
+		}
+	}
+
 	$: if (search === 'ready') {
 		results = searchPostsIndex(searchTerm);
 	}
@@ -115,7 +110,7 @@
 </div>
 
 <style lang="scss">
-	@import '$lib/scss/_mixins.scss';
+	@use '$lib/scss/breakpoints.scss' as bp;
 
 	.search-bar-container {
 		position: relative;
@@ -125,6 +120,10 @@
 		background-color: transparent;
 		border: 1px solid rgba(245, 245, 245, 0.08);
 		border-radius: 1.5rem;
+
+		@include bp.for-phone-only {
+			width: 300px;
+		}
 	}
 
 	.input-wrapper {
@@ -134,8 +133,14 @@
 		border-radius: 5px;
 		padding: 0.5rem;
 		border: none;
+		outline: none;
 		color: white;
 		background-color: transparent;
+
+		div {
+			display: flex;
+			align-items: center;
+		}
 	}
 
 	.input-wrapper input {
@@ -145,6 +150,11 @@
 		font-size: 1rem;
 		background-color: transparent;
 		color: rgba(245, 245, 245, 0.96);
+
+		&:focus {
+			outline: none;
+			box-shadow: none;
+		}
 	}
 
 	.input-wrapper > * {
@@ -202,6 +212,5 @@
 		font-weight: 500;
 		font-size: 0.85rem;
 		width: fit-content;
-		background-color: var(--color--secondary-tint);
 	}
 </style>

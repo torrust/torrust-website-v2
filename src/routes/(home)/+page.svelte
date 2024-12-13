@@ -2,7 +2,7 @@
 	import Hero from '$lib/components/organisms/Hero.svelte';
 	import WhyContribute from '$lib/components/singletons/WhyContribute.svelte';
 	import BlogPreview from '$lib/components/molecules/BlogPreview.svelte';
-	import Contributors from '$lib/components/singletons/Contributors.svelte';
+	import Contributors from '$lib/components/organisms/Contributors.svelte';
 	import type { BlogPost, Contributor } from '$lib/utils/types';
 
 	export let data: {
@@ -16,7 +16,6 @@
 
 <Hero />
 <WhyContribute />
-
 <Contributors contributors={data.allContributors} error={data.error} />
 
 {#if filteredPosts && filteredPosts.length > 0}
@@ -36,18 +35,22 @@
 {/if}
 
 <style lang="scss">
-	@import '$lib/scss/breakpoints.scss';
+	@use '$lib/scss/breakpoints' as bp;
 
 	.container {
 		min-height: 100vh;
 		display: flex;
 		flex-direction: column;
-		padding-top: rem;
+		justify-content: center;
+		align-items: center;
+		margin: 0 auto;
+		width: 100%;
+		padding-top: 2rem;
 		background: rgba(26, 26, 26, 1);
 		color: rgba(245, 245, 245, 0.96);
 		padding-bottom: 64px;
 
-		@include for-desktop-up {
+		@include bp.for-desktop-up {
 			max-width: 1176px;
 		}
 	}
@@ -66,15 +69,15 @@
 		grid-template-columns: 1fr 1fr;
 		grid-gap: 24px;
 
-		@include for-phone-only {
+		@include bp.for-phone-only {
 			grid-template-columns: 1fr;
 		}
 
-		@include for-tablet-landscape-up {
+		@include bp.for-tablet-landscape-up {
 			grid-template-columns: 1fr 1fr;
 		}
 
-		@include for-desktop-up {
+		@include bp.for-desktop-up {
 			grid-template-columns: 1fr 1fr 1fr;
 		}
 	}

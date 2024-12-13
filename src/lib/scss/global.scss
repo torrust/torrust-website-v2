@@ -1,17 +1,16 @@
-@import '$lib/scss/_reset.scss';
-@import '$lib/scss/_variables.scss';
-@import '$lib/scss/_themes.scss';
-@import '$lib/scss/_breakpoints.scss';
-@import '$lib/scss/_functions.scss';
-@import '$lib/scss/_mixins.scss';
-@import '$lib/scss/_base.scss';
-@import '$lib//scss/_typography.scss';
-@import '$lib/scss/_markdown.scss';
-@import '$lib/scss/_code-highlights.scss';
-@import '$lib/scss/animations.scss';
+@use '$lib/scss/reset' as *;
+@use '$lib/scss/variables' as *;
+@use '$lib/scss/breakpoints' as *;
+@use '$lib/scss/functions' as *;
+@use '$lib/scss/mixins' as *;
+@use '$lib/scss/base' as *;
+@use '$lib/scss/typography' as *;
+@use '$lib/scss/markdown' as *;
+@use '$lib/scss/code-highlights' as *;
+@use '$lib/scss/animations' as *;
 
-@import '@fontsource-variable/roboto-slab';
-@import '@fontsource-variable/roboto-mono';
+@use '@fontsource-variable/roboto-slab' as *;
+@use '@fontsource-variable/roboto-mono' as *;
 
 body {
 	--body-background-color: var(--color--page-background);

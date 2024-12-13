@@ -105,7 +105,7 @@
 </PagesWrapper>
 
 <style lang="scss">
-	@import '$lib/scss/breakpoints.scss';
+	@use '$lib/scss/breakpoints.scss' as bp;
 
 	.wrapper {
 		display: flex;
@@ -153,7 +153,7 @@
 		word-break: keep-all;
 	}
 
-	@include for-desktop-up {
+	@include bp.for-desktop-up {
 		.wrapper {
 			flex-direction: row;
 			gap: 4rem;

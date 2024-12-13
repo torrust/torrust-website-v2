@@ -1,16 +1,17 @@
-<!-- src/routes/tags/[tagId]/+page.svelte -->
 <script lang="ts">
+	import { run } from 'svelte/legacy';
+
 	import { page } from '$app/stores';
 	import type { BlogPost } from '$lib/utils/types';
 	import TagCard from '$lib/components/molecules/TagCard.svelte';
 
 	const tagId = $page.params.tagId;
 
-	let blogPosts: BlogPost[] = [];
+	let blogPosts: BlogPost[] = $state([]);
 
-	$: {
+	run(() => {
 		blogPosts = $page.data.posts;
-	}
+	});
 </script>
 
 <div class="container">
@@ -38,6 +39,8 @@
 		display: flex;
 		flex-direction: column;
 		gap: 1.5rem;
+		margin: 0 auto;
+		padding-inline: 2.5rem;
 
 		h1 {
 			padding: 2rem;

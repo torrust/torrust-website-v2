@@ -1,5 +1,6 @@
+<!-- @migration-task Error while migrating Svelte code: Can't migrate code with afterUpdate. Please migrate by hand. -->
 <script lang="ts">
-	import { onMount, afterUpdate } from 'svelte';
+	import { onMount } from 'svelte';
 
 	let size: number;
 	let divStyle: string;
@@ -14,11 +15,7 @@
 
 	onMount(updateStyles);
 
-	afterUpdate(updateStyles);
-
-	$: {
-		updateStyles();
-	}
+	$: updateStyles();
 </script>
 
 <svelte:window bind:innerWidth={size} />
@@ -30,8 +27,6 @@
 </div>
 
 <style lang="scss">
-	@import '$lib/scss/breakpoints.scss';
-
 	.scroll-container {
 		height: 100vh;
 		overflow-y: auto;

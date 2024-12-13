@@ -1,8 +1,13 @@
 <script lang="ts">
 	import { writable } from 'svelte/store';
 
-	// Receive props from the parent component
-	export let showSecondUl = writable(false);
+	interface Props {
+		// Receive props from the parent component
+		showSecondUl?: any;
+		children?: import('svelte').Snippet;
+	}
+
+	let { showSecondUl = writable(false), children }: Props = $props();
 
 	// Function to toggle the visibility of the second <ul>
 	function toggleSecondUl() {
@@ -10,7 +15,7 @@
 	}
 </script>
 
-<button on:click={toggleSecondUl}>
+<button onclick={toggleSecondUl}>
 	{#if $showSecondUl}
 		-
 	{:else}
@@ -19,5 +24,5 @@
 </button>
 
 {#if $showSecondUl}
-	<slot />
+	{@render children?.()}
 {/if}

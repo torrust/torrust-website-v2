@@ -1,14 +1,23 @@
 <script lang="ts">
 	import { dev } from '$app/environment';
 
-	export let src: string;
-	export let alt: string;
-	export let fullBleed: boolean | undefined = undefined;
+	interface Props {
+		src: string;
+		alt: string;
+		fullBleed?: boolean | undefined;
+		formats?: string[];
+		widths?: string[] | undefined;
+	}
 
-	export let formats: string[] = ['avif', 'webp', 'png'];
-	export let widths: string[] | undefined = undefined;
+	let {
+		src,
+		alt,
+		fullBleed = undefined,
+		formats = ['avif', 'webp', 'png'],
+		widths = undefined
+	}: Props = $props();
 
-	$: fileName = src.split('.')[0];
+	let fileName = $derived(src.split('.')[0]);
 
 	function buildSrcset() {
 		if (dev) return;

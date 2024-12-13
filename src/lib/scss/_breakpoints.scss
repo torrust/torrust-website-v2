@@ -11,31 +11,37 @@ $breakpoint-desktop-min: 1201px;
 		@content;
 	}
 }
+
 @mixin for-phone-only {
 	@media (max-width: $breakpoint-phone-max) {
 		@content;
 	}
 }
+
 @mixin for-tablet-portrait-up {
 	@media (min-width: $breakpoint-tablet-portrait-min) {
 		@content;
 	}
 }
+
 @mixin for-tablet-portrait-down {
 	@media (max-width: $breakpoint-tablet-portrait-max) {
 		@content;
 	}
 }
+
 @mixin for-tablet-landscape-up {
 	@media (min-width: $breakpoint-tablet-landscape-min) {
 		@content;
 	}
 }
+
 @mixin for-tablet-landscape-down {
 	@media (max-width: $breakpoint-tablet-landscape-max) {
 		@content;
 	}
 }
+
 @mixin for-desktop-up {
 	@media (min-width: $breakpoint-desktop-min) {
 		@content;

@@ -16,7 +16,7 @@
 </script>
 
 <div>
-	<button on:click={copyUrlToClipboard}>Copy article link</button>
+	<button onclick={copyUrlToClipboard}>Copy article link</button>
 </div>
 
 <style lang="scss">

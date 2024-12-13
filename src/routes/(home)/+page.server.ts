@@ -5,12 +5,12 @@ import { fetchWithCache } from '$lib/utils/cache';
 const BASE_URL = 'https://api.github.com';
 
 export async function load() {
-	try {
-		const allPosts = await fetchMarkdownPosts();
-		const posts = allPosts
-			.sort((a, b) => new Date(b.meta.date).getTime() - new Date(a.meta.date).getTime())
-			.slice(0, 6);
+	const allPosts = await fetchMarkdownPosts();
+	const posts = allPosts
+		.sort((a, b) => new Date(b.meta.date).getTime() - new Date(a.meta.date).getTime())
+		.slice(0, 6);
 
+	try {
 		const repos = await fetchWithCache<{ name: string }[]>(`${BASE_URL}/orgs/torrust/repos`);
 		const gitHubRepos = repos.map((repo: { name: string }) => repo.name);
 
@@ -34,7 +34,7 @@ export async function load() {
 		console.error('Failed to load contributors: ', error);
 
 		return {
-			posts: [],
+			posts,
 			allContributors: [],
 			error: 'Failed to fetch contributors. You may have hit the rate limit.'
 		};

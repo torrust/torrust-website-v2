@@ -171,7 +171,7 @@
 	/>
 </svg>
 
-<style lang="scss">
+<style>
 	svg:hover path {
 		fill: rgba(255, 49, 0, 1);
 	}

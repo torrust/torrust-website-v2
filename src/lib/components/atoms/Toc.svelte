@@ -3,9 +3,12 @@
 	import { createTableOfContents } from '@melt-ui/svelte';
 	import { pushState } from '$app/navigation';
 
-	let classes: string;
-	export { classes as class };
-	export let selector = '#toc-contents';
+	interface Props {
+		class: string;
+		selector?: string;
+	}
+
+	let { class: classes, selector = '#toc-contents' }: Props = $props();
 
 	const {
 		elements: { item },
@@ -44,9 +47,9 @@
 </div>
 
 <style lang="scss">
-	@import '$lib/scss/breakpoints.scss';
+	@use '$lib/scss/breakpoints.scss' as bp;
 
-	@include for-desktop-up {
+	@include bp.for-desktop-up {
 		nav {
 			position: sticky;
 			top: 0;

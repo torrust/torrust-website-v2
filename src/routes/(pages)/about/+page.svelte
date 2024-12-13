@@ -1,7 +1,7 @@
-<script>
+<script lang="ts">
 	import Toc from '$lib/components/atoms/Toc.svelte';
-	import Table from '$lib/components/atoms/Table.svelte';
 	import PagesWrapper from '$lib/components/atoms/PagesWrapper.svelte';
+	import Table from '$lib/components/atoms/Table.svelte';
 
 	import { aboutTableHeadings, aboutTableData } from '$lib/constants/constants';
 </script>
@@ -333,7 +333,7 @@
 </PagesWrapper>
 
 <style lang="scss">
-	@import '$lib/scss/breakpoints.scss';
+	@use '$lib/scss/breakpoints.scss' as bp;
 
 	.wrapper {
 		display: flex;
@@ -404,7 +404,7 @@
 		border-radius: 24px;
 	}
 
-	@include for-desktop-up {
+	@include bp.for-desktop-up {
 		.wrapper {
 			flex-direction: row;
 			gap: 4rem;

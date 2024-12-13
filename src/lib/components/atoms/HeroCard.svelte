@@ -1,11 +1,15 @@
 <script lang="ts">
 	import MiniLogo from '$lib/icons/miniLogo.svelte';
 
-	export let title: string;
-	export let details: string;
-	export let version: string;
-	export let liveDemo: string;
-	export let learnMore: string;
+	interface Props {
+		title: string;
+		details: string;
+		version: string;
+		liveDemo: string;
+		learnMore: string;
+	}
+
+	let { title, details, version, liveDemo, learnMore }: Props = $props();
 </script>
 
 <div class="details-card">

@@ -1,14 +1,19 @@
 <script lang="ts">
 	import Icon from '@iconify/svelte';
-	export let filename: string | undefined = undefined;
-	export let lang: string;
-	export let fullBleed: boolean | undefined = undefined;
-	let codeBlockElement: HTMLDivElement;
-	let showCheckmark: boolean = false;
+	interface Props {
+		filename?: string | undefined;
+		lang: string;
+		fullBleed?: boolean | undefined;
+		children?: import('svelte').Snippet;
+	}
+
+	let { filename = undefined, lang, fullBleed = undefined, children }: Props = $props();
+	let codeBlockElement: HTMLDivElement | undefined = $state();
+	let showCheckmark: boolean = $state(false);
 
 	async function copyToClipboard() {
 		try {
-			const codeContent = codeBlockElement.querySelector('.code-content')?.textContent || '';
+			const codeContent = codeBlockElement?.querySelector('.code-content')?.textContent || '';
 			await navigator.clipboard.writeText(codeContent);
 			showCheckmark = true;
 
@@ -28,7 +33,7 @@
 	{/if}
 	<button
 		class={`copy-button ${showCheckmark ? 'copy-button-green' : 'copy-button-gray'}`}
-		on:click={copyToClipboard}
+		onclick={copyToClipboard}
 	>
 		{#if showCheckmark}
 			<Icon icon="charm:tick" color="#6cdb2e" />
@@ -37,7 +42,7 @@
 		{/if}
 	</button>
 	<div class="code-content">
-		<slot />
+		{@render children?.()}
 	</div>
 </div>
 

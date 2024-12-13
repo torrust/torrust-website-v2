@@ -3,12 +3,16 @@
 	import Github from '$lib/icons/socials/github.svelte';
 	import Linkedin from '$lib/icons/socials/linkedin.svelte';
 
-	export let name: string;
-	export let position: string | undefined = undefined;
-	export let img: string;
-	export let contributeDate: string;
-	export let paras: { para: string }[];
-	export let links: { email: string; github: string; linkedIn: string }[];
+	interface Props {
+		name: string;
+		position?: string | undefined;
+		img: string;
+		contributeDate: string;
+		paras: { para: string }[];
+		links: { email: string; github: string; linkedIn: string }[];
+	}
+
+	let { name, position = undefined, img, contributeDate, paras, links }: Props = $props();
 </script>
 
 <div class="contributor-biography">

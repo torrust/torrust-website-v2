@@ -2,16 +2,21 @@
 	import { siteBaseUrl } from '$lib/data/meta';
 	import ShareUrl from '$lib/components/singletons/ShareUrl.svelte';
 
-	export let slug: string;
-	export let title: string;
+	interface Props {
+		slug: string;
+		title: string;
+		[key: string]: any;
+	}
 
-	let showDropdown: boolean = false;
+	let { ...props }: Props = $props();
+
+	let showDropdown: boolean = $state(false);
 
 	const encodedSubject = encodeURIComponent('I wanted you to see this blog post');
 	const encodedBody = encodeURIComponent(
-		`${title} is a really interesting blog post from Torrust. Check it out here: ${siteBaseUrl}/${slug}`
+		`${props.title} is a really interesting blog post from Torrust. Check it out here: ${siteBaseUrl}/${props.slug}`
 	);
-	const encodedSlug = encodeURIComponent(slug);
+	const encodedSlug = encodeURIComponent(props.slug);
 
 	const unescapedHref = (href: string) => {
 		return href;
@@ -32,7 +37,7 @@
 		},
 		{
 			text: 'Share on X',
-			href: `https://twitter.com/share?url=${siteBaseUrl}/${encodedSlug}&text=${title}`
+			href: `https://twitter.com/share?url=${siteBaseUrl}/${encodedSlug}&text=${props.title}`
 		}
 	];
 
@@ -42,14 +47,14 @@
 </script>
 
 <div class="dropdown-container">
-	<button on:click={toggleDropdown} class="dropdown-button {showDropdown ? 'active' : ''}">
+	<button onclick={toggleDropdown} class="dropdown-button {showDropdown ? 'active' : ''}">
 		<svg
 			xmlns="http://www.w3.org/2000/svg"
 			class="hover-icon {showDropdown ? 'active' : ''}"
 			width="16"
 			height="16"
 			viewBox="0 0 24 24"
-			{...$$props}
+			{...props}
 		>
 			<path
 				d="M11 16V7.85l-2.6 2.6L7 9l5-5l5 5l-1.4 1.45l-2.6-2.6V16zm-5 4q-.825 0-1.412-.587T4 18v-3h2v3h12v-3h2v3q0 .825-.587 1.413T18 20z"

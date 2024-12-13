@@ -108,7 +108,7 @@
 </div>
 
 <style lang="scss">
-	@import '$lib/scss/breakpoints.scss';
+	@use '$lib/scss/breakpoints.scss' as bp;
 
 	.container {
 		max-width: 1200px;
@@ -174,7 +174,7 @@
 		margin-top: 3rem;
 	}
 
-	@include for-tablet-portrait-up {
+	@include bp.for-tablet-portrait-up {
 		.stack-icons {
 			gap: 1.5rem;
 		}
@@ -193,7 +193,7 @@
 		}
 	}
 
-	@include for-tablet-portrait-up {
+	@include bp.for-tablet-portrait-up {
 		.inner-container {
 			padding-top: 3rem;
 		}

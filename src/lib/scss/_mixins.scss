@@ -1,5 +1,5 @@
-@import './_breakpoints.scss';
-@import './_functions.scss';
+@use '$lib/scss/breakpoints' as *;
+@use '$lib/scss/functions' as *;
 
 @mixin padded-container {
 	width: 100%;
@@ -26,24 +26,4 @@
 	@include for-desktop-up {
 		max-width: 1080px;
 	}
-}
-
-// Defines a bunch of CSS variables for a given color
-// In HEX, HSL and RGB formats
-// Plus a contrast option for text
-@mixin define-color($title, $color) {
-	--color--#{$title}: #{$color};
-
-	--color--#{$title}-h: #{hue($color)};
-	--color--#{$title}-l: #{lightness($color)};
-	--color--#{$title}-s: #{saturation($color)};
-	--color--#{$title}-a: #{alpha($color)};
-
-	--color--#{$title}-rgb: #{red($color)}, #{green($color)}, #{blue($color)};
-
-	--color--#{$title}-contrast: #{if(
-			brightness($color) > 186,
-			var(--color--text),
-			var(--color--text-inverse)
-		)};
 }

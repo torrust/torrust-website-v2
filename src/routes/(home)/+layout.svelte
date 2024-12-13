@@ -1,5 +1,12 @@
 <script>
 	import { description, image, keywords, title, siteBaseUrl } from '$lib/data/meta';
+	/**
+	 * @typedef {Object} Props
+	 * @property {import('svelte').Snippet} [children]
+	 */
+
+	/** @type {Props} */
+	let { children } = $props();
 </script>
 
 <svelte:head>
@@ -21,7 +28,7 @@
 </svelte:head>
 
 <main>
-	<slot />
+	{@render children?.()}
 </main>
 
 <style lang="scss">

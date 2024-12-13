@@ -1,5 +1,4 @@
 <script lang="ts">
-	export let data;
 	import PrevNextPost from '$lib/components/singletons/PrevNextPost.svelte';
 	import ShareButton from '$lib/components/singletons/ShareButton.svelte';
 	import Image from '$lib/components/atoms/Image.svelte';
@@ -7,6 +6,8 @@
 
 	import { formatDate } from '$lib/utils/date';
 	import BlogPreview from '$lib/components/molecules/BlogPreview.svelte';
+
+	let { data } = $props();
 </script>
 
 <div class="container">
@@ -47,7 +48,7 @@
 				</div>
 			{/if}
 			<div class="content">
-				<svelte:component this={data.content} />
+				<data.content />
 			</div>
 		</article>
 		<PrevNextPost currentPage={data.slug} {data} />
@@ -66,12 +67,12 @@
 </div>
 
 <style lang="scss">
-	@import '$lib/scss/_mixins.scss';
-	@import '$lib/scss/breakpoints.scss';
+	@use '$lib/scss/breakpoints.scss' as bp;
 
 	.container {
 		background: rgba(26, 26, 26, 1);
 		color: rgba(245, 245, 245, 0.96);
+		margin: 0 auto;
 	}
 
 	#article-content {
@@ -86,26 +87,26 @@
 			padding-top: 1.5rem;
 		}
 
-		@include for-iphone-se {
-			padding-left: 0;
-			padding-right: 0;
-		}
-
-		@include for-tablet-portrait-up {
-			padding-right: 20px;
-			padding-left: 20px;
-		}
-
-		@include for-tablet-landscape-up {
-			--main-column-width: 170ch;
-			padding-right: 30px;
-			padding-left: 30px;
-		}
-
 		display: flex;
 		flex-direction: column;
 		text-align: left;
 		gap: 30px;
+
+		@include bp.for-iphone-se {
+			padding-left: 0;
+			padding-right: 0;
+		}
+
+		@include bp.for-tablet-portrait-up {
+			padding-right: 20px;
+			padding-left: 20px;
+		}
+
+		@include bp.for-tablet-landscape-up {
+			--main-column-width: 170ch;
+			padding-right: 30px;
+			padding-left: 30px;
+		}
 
 		.header {
 			display: flex;
@@ -191,7 +192,7 @@
 		color: rgba(245, 245, 245, 0.96);
 		margin: 0 auto;
 
-		@include for-desktop-up {
+		@include bp.for-desktop-up {
 			max-width: 1176px;
 		}
 	}
@@ -208,19 +209,21 @@
 		display: grid;
 		grid-template-columns: 1fr 1fr;
 		grid-gap: 24px;
-		max-width: 1200px; // Set a max width for centering control
+		max-width: 1200px;
 		margin: 0 auto;
+		padding-inline: 2.5rem;
 
-		@include for-phone-only {
+		@include bp.for-phone-only {
 			grid-template-columns: 1fr;
 		}
 
-		@include for-tablet-landscape-up {
+		@include bp.for-tablet-landscape-up {
 			grid-template-columns: 1fr 1fr;
 		}
 
-		@include for-desktop-up {
+		@include bp.for-desktop-up {
 			grid-template-columns: 1fr 1fr 1fr;
+			padding-inline: 0;
 		}
 	}
 </style>

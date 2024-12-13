@@ -4,13 +4,17 @@
 	import { page } from '$app/stores';
 	import type { BlogPost } from '$lib/utils/types';
 
-	export let data: {
-		posts: BlogPost[];
-	};
+	interface Props {
+		data: {
+			posts: BlogPost[];
+		};
+	}
+
+	let { data }: Props = $props();
 
 	let { posts: blogPosts } = data;
 
-	let searchTerm = '';
+	let searchTerm = $state('');
 
 	type Post = {
 		path: string;
@@ -21,10 +25,8 @@
 		};
 	};
 
-	let posts: Post[];
-
-	$: {
-		posts = $page.data.posts.filter((post: BlogPost) => {
+	let posts: Post[] = $derived(
+		$page.data.posts.filter((post: BlogPost) => {
 			const title = post.meta?.title ?? '';
 			const contributor = post.meta?.contributor ?? '';
 			const excerpt = post.meta?.excerpt ?? '';
@@ -34,8 +36,8 @@
 				contributor.toLowerCase().includes(searchTerm.toLowerCase()) ||
 				excerpt.toLowerCase().includes(searchTerm.toLowerCase())
 			);
-		});
-	}
+		})
+	);
 </script>
 
 <div class="container">
@@ -53,65 +55,69 @@
 </div>
 
 <style lang="scss">
-	@import '$lib/scss/breakpoints.scss';
+	@use '$lib/scss/breakpoints.scss' as bp;
 
 	.container {
 		min-height: 100vh;
 		display: flex;
 		flex-direction: column;
+		justify-content: center;
+		align-items: center;
+		margin: 0 auto;
 		padding-top: 3rem;
 		background: rgba(26, 26, 26, 1);
 		color: rgba(245, 245, 245, 0.96);
 		padding-bottom: 64px;
 
-		@include for-desktop-up {
+		@include bp.for-desktop-up {
 			max-width: 1176px;
 		}
 	}
 
 	.header {
-		padding-inline: 3.5rem;
 		margin: 0 auto;
 
-		@include for-tablet-portrait-up {
+		@include bp.for-tablet-portrait-up {
 			width: 700px;
 		}
 
-		@include for-desktop-up {
+		@include bp.for-desktop-up {
 			width: 1100px;
-			padding-inline: 0rem;
 		}
 
 		h1 {
 			padding-bottom: 1rem;
 			font-size: 36px;
 
-			@include for-tablet-portrait-up {
+			@include bp.for-tablet-portrait-up {
 				padding-bottom: 0px;
 			}
 		}
 
-		@include for-tablet-portrait-up {
+		@include bp.for-tablet-portrait-up {
 			display: flex;
 			justify-content: space-between;
 		}
 	}
 
 	.grid {
-		padding-top: 3rem;
 		display: grid;
+		padding-top: 3rem;
+		padding-inline: 2.5rem;
 		grid-template-columns: 1fr 1fr;
 		grid-gap: 24px;
+		width: 100%;
+		flex-grow: 1;
 
-		@include for-phone-only {
+		@include bp.for-phone-only {
 			grid-template-columns: 1fr;
 		}
 
-		@include for-tablet-landscape-up {
+		@include bp.for-tablet-landscape-up {
 			grid-template-columns: 1fr 1fr;
 		}
 
-		@include for-desktop-up {
+		@include bp.for-desktop-up {
 			grid-template-columns: 1fr 1fr 1fr;
 		}
 	}

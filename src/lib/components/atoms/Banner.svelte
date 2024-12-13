@@ -1,7 +1,11 @@
 <script lang="ts">
 	import Torrust from '$lib/icons/torrust.svelte';
 
-	export let title: string;
+	interface Props {
+		title: string;
+	}
+
+	let { title }: Props = $props();
 </script>
 
 <div class="svg-container">
