@@ -87,21 +87,23 @@
 
 		li {
 			margin-top: 16px;
+			list-style-type: none !important;
+			margin-left: 0 !important;
 
 			a {
-				color: rgba(245, 245, 245, 0.96);
+				color: rgba(245, 245, 245, 0.96) !important;
 				font-size: 0.875rem;
 				text-decoration: none;
 				word-break: keep-all;
 
 				&:hover {
-					color: rgba(255, 49, 0, 0.96);
+					color: rgba(255, 49, 0, 0.96) !important;
 				}
 			}
 
 			&.active a {
 				font-weight: bold;
-				color: rgba(255, 49, 0, 0.96);
+				color: rgba(255, 49, 0, 0.96) !important;
 			}
 		}
 	}
