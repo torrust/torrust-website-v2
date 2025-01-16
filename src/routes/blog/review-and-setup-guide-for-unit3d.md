@@ -271,59 +271,43 @@ And this is the droplet configuration.
 
 Before continuing with the tutorial make sure your root domain and `www` subdomain are pointing to the droplet's IP.
 
-<CodeBlock lang="console">
-
-```console
-ping unit3d-demo.com
-PING unit3d-demo.com (134.122.65.71) 56(84) bytes of data.
-
+<CodeBlock
+lang="console"
+code={`ping unit3d-demo.com
+PING unit3d-demo.com (134.122.65.71) 56(84) bytes of data.\n
 ping <www.unit3d-demo.com>
-PING unit3d-demo.com (134.122.65.71) 56(84) bytes of data.
-```
-
-</CodeBlock>
+PING unit3d-demo.com (134.122.65.71) 56(84) bytes of data.`}
+/>
 
 Also, check that you can login using SSH:
 
-<CodeBlock lang="console">
-
-```console
-ssh root@134.122.65.71
-```
-
-</CodeBlock>
+<CodeBlock lang="console" code={`ssh root@134.122.65.71`} />
 
 ### Step 2. Update the Server
 
 This is only a recommendation before running the installer.
 
-<CodeBlock lang="console">
-
-```console
-sudo apt-get update
+<CodeBlock
+lang="console"
+code={`sudo apt-get update
 Hit:1 http://mirrors.digitalocean.com/ubuntu jammy InRelease
 Hit:2 https://repos.insights.digitalocean.com/apt/do-agent main InRelease
 Hit:3 http://mirrors.digitalocean.com/ubuntu jammy-updates InRelease
 Hit:4 https://repos-droplet.digitalocean.com/apt/droplet-agent main InRelease
 Hit:5 http://mirrors.digitalocean.com/ubuntu jammy-backports InRelease
 Hit:6 http://security.ubuntu.com/ubuntu jammy-security InRelease
-Reading package lists... Done
-```
-
-</CodeBlock>
+Reading package lists... Done`}
+/>
 
 ### Step 3. Run the UNIT3D Installer
 
-<CodeBlock lang="console">
-
-```console
-sudo apt -y install git
+<CodeBlock
+lang="console"
+code={`sudo apt -y install git
 git clone https://github.com/HDInnovations/UNIT3D-Installer.git installer
 cd installer
-sudo ./install.sh
-```
-
-</CodeBlock>
+sudo ./install.sh`}
+/>
 
 The installer has some steps:
 
@@ -365,15 +349,12 @@ During the installation we had a couple of issues.
 
 **Second**, the initial server was too small and it stuck at building the frontend app. We got this error:
 
-<CodeBlock lang="console">
-
-```console
-[Warning] $ vite build
+<CodeBlock
+lang="console"
+code={`[Warning] $ vite build
 error: script "build" was terminated by signal SIGKILL (Forced Quit)
-Killed
-```
-
-</CodeBlock>
+Killed`}
+/>
 
 The problem was solved by increasing the droplet size. Anyway, It was too small to host all the services UNIT3D requires. Currently, with no users, the **CPU Usage** is at almost **30%** using a 1 vCPU; 2GB RAM instance.
 

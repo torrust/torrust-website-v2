@@ -15,7 +15,6 @@ hidden: false
 
 <script>
   import Callout from "$lib/components/molecules/Callout.svelte";
-  import CodeBlock from "$lib/components/molecules/CodeBlock.svelte";
   import Image from "$lib/components/atoms/Image.svelte";
   import PostBody from "$lib/components/molecules/PostBody.svelte";
   import PostContainer from "$lib/components/molecules/PostContainer.svelte";

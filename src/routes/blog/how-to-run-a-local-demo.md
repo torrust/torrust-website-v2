@@ -68,54 +68,36 @@ Although we use some small bash scripts, you can run the demo on different opera
 
 We are going to use a temporary directory to run the demo. You can install the demo with the following commands:
 
-<CodeBlock lang="terminal">
-
-```s
-mkdir -p /tmp/torrust \\
+<CodeBlock
+lang="bash"
+code={`mkdir -p /tmp/torrust \\
   && cd /tmp/torrust \\
   && git clone git@github.com:torrust/torrust-compose.git \\
   && cd torrust-compose/demo \\
   && ./bin/install.sh
-```
-
-</CodeBlock>
+`}
+/>
 
 To start the application:
 
-<CodeBlock lang="terminal">
-
-```s
-./bin/start.sh
-```
-
-</CodeBlock>
+<CodeBlock lang="bash" code={`./bin/start.sh`} />
 
 To stop the application:
 
-<CodeBlock lang="terminal">
-
-```s
-./bin/stop.sh
-```
-
-</CodeBlock>
+<CodeBlock lang="bash" code={`./bin/stop.sh`} />
 
 After starting the demo you can check that all container are running with the following command:
 
-<CodeBlock lang="output">
-
-```s
-$ docker ps
+<CodeBlock
+lang="bash"
+code={`$ docker ps
 CONTAINER ID   IMAGE                       COMMAND                  CREATED         STATUS                            PORTS                                                                                                      NAMES
 e380a435eede   torrust/index-gui:develop   "/usr/local/bin/entrypoint.sh"   4 seconds ago   Up 3 seconds (health: starting)   0.0.0.0:3000->3000/tcp, :::3000->3000/tcp, 0.0.0.0:24678->24678/tcp, :::24678->24678/tcp                   torrust-index-gui-1
 db8f7c679b66   torrust/index:develop       "/usr/local/bin/entrypoint.sh"   5 seconds ago   Up 3 seconds (health: starting)   0.0.0.0:3001->3001/tcp, :::3001->3001/tcp                                                                  torrust-index-1
 820720c37d80   torrust/tracker:develop     "/usr/local/bin/entrypoint.sh"   5 seconds ago   Up 4 seconds (health: starting)   1313/tcp, 0.0.0.0:1212->1212/tcp, :::1212->1212/tcp, 7070/tcp, 0.0.0.0:6969->6969/udp, :::6969->6969/udp   torrust-tracker-1
 a9668e78f3cc   mysql:8.0                   "docker-entrypoint.s…"   5 seconds ago   Up 4 seconds (health: starting)   0.0.0.0:3306->3306/tcp, :::3306->3306/tcp, 33060/tcp                                                       torrust-mysql-1
-c10ad938b283   dockage/mailcatcher:0.8.2   "entrypoint mailcatcher"   5 seconds ago   Up 4 seconds                      0.0.0.0:1025->1025/tcp, :::1025->1025/tcp, 0.0.0.0:1080->1080/tcp, :::1080->1080/tcp                       torrust-mailcatcher-1
-
-```
-
-</CodeBlock>
+c10ad938b283   dockage/mailcatcher:0.8.2   "entrypoint mailcatcher"   5 seconds ago   Up 4 seconds                      0.0.0.0:1025->1025/tcp, :::1025->1025/tcp, 0.0.0.0:1080->1080/tcp, :::1080->1080/tcp                       torrust-mailcatcher-1`}
+/>
 
 <Callout type="info">
 

@@ -126,7 +126,7 @@ proxy:
 
 </CodeBlock>
 
-THe Prometheus configuration is very simple. We only need to set the Tracker URL.
+The Prometheus configuration is very simple. We only need to set the Tracker URL.
 
 <CodeBlock lang="yml">
 
@@ -168,10 +168,9 @@ Once the setup is complete, you’ll have access to essential tracker statistics
 
 Endpoint with the new format: <https://127.0.0.1/api/v1/stats?token=MyAccessToken&format=prometheus>
 
-<CodeBlock lang="text">
-
-```text
-torrents 250966
+<CodeBlock
+lang="text"
+code={`torrents 250966
 seeders 71116
 completed 3395
 leechers 201896
@@ -188,10 +187,8 @@ udp4_errors_handled 2418729
 udp6_connections_handled 0
 udp6_announces_handled 0
 udp6_scrapes_handled 0
-udp6_errors_handled 0
-```
-
-</CodeBlock>
+udp6_errors_handled 0`}
+/>
 
 [We are considering adding new metrics](https://github.com/torrust/torrust-tracker/issues/1128).
 

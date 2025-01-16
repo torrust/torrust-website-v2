@@ -80,12 +80,12 @@ You will problably need to rewrite the whole "source" part of the application to
 
 When you run the importer, the output will be something like this:
 
-<CodeBlock lang="terminal">
-
-```s
-$ cargo run
+<!-- prettier-ignore -->
+<CodeBlock
+lang="bash"
+code={`$ cargo run
     Finished dev [unoptimized + debuginfo] target(s) in 0.02s
-     Running `target/debug/torrents-importer-sample`
+     Running 'target/debug/torrents-importer-sample'
 API login with username admin ...
 Logged as admin with account admin
 Reading file ./data/database.xml ...
@@ -113,10 +113,8 @@ Torrent uploaded UploadedTorrent {
     info_hash: "0c90fbf036e28370c1ec773401bc7620146b1d48",
 }
 Processed torrents: 1
-Uploaded torrents:  1
-```
-
-</CodeBlock>
+Uploaded torrents:  1`}
+/>
 
 ## Conclusion
 

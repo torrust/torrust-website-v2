@@ -97,10 +97,9 @@ Our benchmarking approach encompasses three pivotal areas:
 
 Basically a tracker is just a shared data structure between all the BitTorrent peers. Peers announce themselves and the tracker builds up a list of torrents. For each torrent, the tracker keeps a list of peers interested in that torrent. The in-memory data structure is an array of structures that look like this one (example in JSON):
 
-<CodeBlock lang="json">
-
-```json
-{
+<CodeBlock
+lang="json"
+code={`{
 	"info_hash": "090c6d4fb3a03191c4ef1fda6236ef0efb2d5c10",
 	"seeders": 1,
 	"completed": 1,
@@ -120,24 +119,16 @@ Basically a tracker is just a shared data structure between all the BitTorrent p
 			"event": "Completed"
 		}
 	]
-}
-```
-
-</CodeBlock>
+}`}
+/>
 
 There are many ways to keep this information in memory. The access to this data is actually a bottleneck. Eventually all requests hit this structure. The problem is all `announce` requests need to update this structure. Due to Rust owning rules, only the owner can write into this struct. We have been trying different implementations to minimize contention. There is a trait for the torrent "Repository". You can benchmark the different repository implementations by running the following command:
 
-<CodeBlock lang="terminal">
-
-```terminal
-cargo run --release -p torrust-torrent-repository-benchmarks -- --threads 4 --sleep 0 --compare true
-```
-
-</CodeBlock>
+<CodeBlock lang="bash" code={`cargo run --release -p torrust-torrent-repository-benchmarks -- --threads 4 --sleep 0 --compare true`} />
 
 The output at the time of writing this post is:
 
-<CodeBlock lang="terminal">
+<CodeBlock lang="bash">
 
 ```terminal
 tokio::sync::RwLock<std::collections::BTreeMap<InfoHash, Entry>>
@@ -202,36 +193,30 @@ Logging levels are: `Off`, `Error`, `Warn`, `Info`, `Debug` and `Trace`. The mor
 
 We provide a especial configuration for benchmarking `./share/default/config/tracker.udp.benchmarking.toml` with the best configuration to test the performance of the UDP tracker. After cloning the tracker repo you can build and run it with:
 
-<CodeBlock lang="terminal">
-
-```terminal
-cargo build --release
-TORRUST_TRACKER_PATH_CONFIG="./share/default/config/tracker.udp.benchmarking.toml" ./target/release/torrust-tracker
-```
-
-</CodeBlock>
+<CodeBlock
+lang="bash"
+code={`cargo build --release
+TORRUST_TRACKER_PATH_CONFIG="./share/default/config/tracker.udp.benchmarking.toml" ./target/release/torrust-tracker`}
+/>
 
 ### Running The Aquatic UDP Load Test
 
 For updated instructions about how to setup the tool please follow the [official documentation](https://github.com/greatest-ape/aquatic/tree/master/crates/).
 
-<CodeBlock lang="terminal">
-
-```terminal
-cd /tmp
+<CodeBlock
+lang="bash"
+code={`cd /tmp
 git clone git@github.com:greatest-ape/aquatic.git
 cd aquatic
 cargo build --release -p aquatic_udp_load_test
-./target/release/aquatic_udp_load_test -p > "load-test-config.toml"
-```
-
-</CodeBlock>
+./target/release/aquatic_udp_load_test -p > "load-test-config.toml"`}
+/>
 
 The last line `./target/release/aquatic_udp_load_test -p > "load-test-config.toml"` generates a config file. At least you will need to change the UDP port from `3000` to `6969` which is the default one in the Torrust Tracker. You can also edit other options like how many requests of each type you want to make.
 
 Edit the `load-test-config.toml`:
 
-<CodeBlock lang="terminal">
+<CodeBlock lang="bash">
 
 ```toml
 # ...
@@ -253,13 +238,7 @@ weight_scrape = 1
 
 Finally you can run the test with:
 
-<CodeBlock lang="toml">
-
-```toml
-./target/release/aquatic_udp_load_test -c "load-test-config.toml"
-```
-
-</CodeBlock>
+<CodeBlock lang="toml" code={`./target/release/aquatic_udp_load_test -c "load-test-config.toml"`} />
 
 ### Test Results
 
@@ -276,7 +255,7 @@ Just as an example we show the test results with a non dedicated machine.
 
 **Test result**:
 
-<CodeBlock lang="terminal">
+<CodeBlock lang="bash">
 
 ```terminal
 Requests out: 388702.94/second
@@ -316,22 +295,15 @@ In order to run the Bencher you need to install all the trackers first.
 
 Follow the [official documentation](https://github.com/chihaya/chihaya). You will need to install Go:
 
-<CodeBlock lang="terminal">
-
-```terminal
-sudo apt install golang-go
-```
-
-</CodeBlock>
+<CodeBlock lang="bash" code={`sudo apt install golang-go`} />
 
 ### Setup The Opentracker Tracker
 
 You can `make` it from sources following the [official documentation](https://erdgeist.org/arts/software/opentracker/#toc-entry-3) or install it on Ubuntu with:
 
-<CodeBlock lang="terminal">
-
-```terminal
-cd /tmp
+<CodeBlock
+lang="bash"
+code={`cd /tmp
 cvs -d :pserver:cvs@cvs.fefe.de:/cvs -z9 co libowfat
 cd libowfat
 make
@@ -340,10 +312,8 @@ git clone git://erdgeist.org/opentracker
 cd opentracker
 make
 cp opentracker ~/bin
-opentracker -h
-```
-
-</CodeBlock>
+opentracker -h`}
+/>
 
 <Callout type="info">
 
@@ -355,18 +325,15 @@ NOTICE: Installing the opentracker from Ubuntu repositories did not work for us.
 
 You can follow the [official documentation](https://github.com/greatest-ape/aquatic/tree/master/crates/udp). At the moment this is the process:
 
-<CodeBlock lang="terminal">
-
-```terminal
-sudo apt update && sudo apt upgrade -y
+<CodeBlock
+lang="bash"
+code={`sudo apt update && sudo apt upgrade -y
 sudo apt-get install libhwloc-dev
 cd /tmp
 git clone git@github.com:greatest-ape/aquatic.git
 cd aquatic
-cargo build --profile=release-debug --all-features -p aquatic_udp
-```
-
-</CodeBlock>
+cargo build --profile=release-debug --all-features -p aquatic_udp`}
+/>
 
 <Callout type="info">
 
@@ -378,26 +345,17 @@ NOTICE: `libhwloc-dev` is needed for `io-uring` feature.
 
 You don't need to run the trackers manually the Bencher does it. First you need to build the Bencher:
 
-<CodeBlock lang="terminal">
-
-```terminal
-cd /tmp
+<CodeBlock
+lang="bash"
+code={`cd /tmp
 git clone git@github.com:greatest-ape/aquatic.git
 cd aquatic
-cargo build --profile=release-debug -p aquatic_bencher
-```
-
-</CodeBlock>
+cargo build --profile=release-debug -p aquatic_bencher`}
+/>
 
 And then you can run it with:
 
-<CodeBlock lang="terminal">
-
-```terminal
-./target/release-debug/aquatic_bencher udp
-```
-
-</CodeBlock>
+<CodeBlock lang="bash" code={`./target/release-debug/aquatic_bencher udp`} />
 
 <Callout type="info">
 
@@ -420,7 +378,7 @@ Machine used for the test:
 
 Bencher result:
 
-<CodeBlock lang="terminal">
+<CodeBlock lang="bash">
 
 ```terminal
 # Benchmark report

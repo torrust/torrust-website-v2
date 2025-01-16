@@ -94,15 +94,13 @@ You can find the docker compose configuration used in this guide on the followin
 
 <https://github.com/torrust/torrust-compose/tree/main/droplet>
 
-Although we are using a droplet, this tutorial is intended to be so generic that
-you should be able to setup the services in any virtual machine with docker and docker compose.
+Although we are using a droplet, this tutorial is intended to be so generic that you should be able to setup the services in any virtual machine with docker and docker compose.
 
 This tutorial is based on the Digital Ocean tutorial:
 
 [How To Secure a Containerized Node.js Application with Nginx, Let's Encrypt, and Docker Compose](https://www.digitalocean.com/community/tutorials/how-to-secure-a-containerized-node-js-application-with-nginx-let-s-encrypt-and-docker-compose).
 
-We have only changed the docker compose configuration and some steps to configure the **Torrust Index and Tracker** instead of
-the sample node application.
+We have only changed the docker compose configuration and some steps to configure the **Torrust Index and Tracker** instead of the sample node application.
 
 After finishing this tutorial you will have these public services available (with your own domain):
 
@@ -150,18 +148,15 @@ Features:
 
 The Docker images used by this tutorial are:
 
-<CodeBlock lang="terminal">
-
-```console
-$ docker images --digests
+<CodeBlock
+lang="bash"
+code={`$ docker images --digests
 REPOSITORY          TAG               DIGEST                                                                    IMAGE ID       CREATED       SIZE
 torrust/tracker     develop           sha256:5589eaf57af277feda6eca6f841859fd2aa05af7deafca546ad0a17fe36d8e51   c42f0cce3304   4 days ago    160MB
 nginx               mainline-alpine   sha256:3923f8de8d2214b9490e68fd6ae63ea604deddd166df2755b788bef04848b9bc   01e5c69afaf6   2 weeks ago   42.6MB
 torrust/index       develop           sha256:69b12dfcb9c47267bd314f4869dfce7585d3f2b172200ef0d7d7bb776e209fe6   a3db4d4e5d6a   2 weeks ago   64.9MB
-torrust/index-gui   develop           sha256:b30deb84cdee8fa34e4d3783ce2f467542e6fdc13a14dd6bbed879e2e2b82bcb   4f6e446cb009   2 weeks ago   175MB
-```
-
-</CodeBlock>
+torrust/index-gui   develop           sha256:b30deb84cdee8fa34e4d3783ce2f467542e6fdc13a14dd6bbed879e2e2b82bcb   4f6e446cb009   2 weeks ago   175MB`}
+/>
 
 <Callout type="info">
 
@@ -181,8 +176,7 @@ This section covers the initial configuration of your Ubuntu 22.04 server, focus
 
 <Callout type="info">
 
-Disclaimer: For the initial server setup we only highlight the main points. We provide the links to Digital Ocean tutorials
-where you will find detailed information.
+Disclaimer: For the initial server setup we only highlight the main points. We provide the links to Digital Ocean tutorials where you will find detailed information.
 
 </Callout>
 
@@ -199,27 +193,17 @@ In this first step you will:
 - Create a new user `torrust`.
 - Access the server using the new account `torrust`.
 
-After creating the droplet you should be able to connect by using SSH with the `root` account providing the password you set
-during the droplet creation:
+After creating the droplet you should be able to connect by using SSH with the `root` account providing the password you set during the droplet creation:
 
-<CodeBlock lang="bash">
-
-```bash
-ssh root@139.59.150.216
-```
-
-</CodeBlock>
+<CodeBlock lang="bash" code={`ssh root@139.59.150.216`} />
 
 After logging in you can create the new user account:
 
-<CodeBlock lang="bash">
-
-```bash
-adduser torrust
-usermod -aG sudo torrust
-```
-
-</CodeBlock>
+<CodeBlock
+lang="bash"
+code={`adduser torrust
+usermod -aG sudo torrust`}
+/>
 
 The user is added to the sudo group you can can execute command as root when needed.
 
@@ -231,23 +215,11 @@ Follow the [Digital Ocean tutorial](https://www.digitalocean.com/community/tutor
 
 You have to generate a new key and copy it to the server:
 
-<CodeBlock lang="bash">
-
-```bash
-ssh-copy-id -i ~/.ssh/torrust_rsa.pub torrust@139.59.150.216
-```
-
-</CodeBlock>
+<CodeBlock lang="bash" code={`ssh-copy-id -i ~/.ssh/torrust_rsa.pub torrust@139.59.150.216`} />
 
 If all went fine you should be able to login to the server with your SSH key.
 
-<CodeBlock lang="bash">
-
-```bash
-ssh torrust@139.59.150.216
-```
-
-</CodeBlock>
+<CodeBlock lang="bash" code={`ssh torrust@139.59.150.216`} />
 
 ### Install Docker
 
@@ -257,31 +229,25 @@ You can also follow the DO guide: [How To Install and Use Docker on Ubuntu 22.04
 
 In short, you only need to execute some commands:
 
-<CodeBlock lang="bash">
-
-```bash
-sudo apt update
+<CodeBlock
+lang="bash"
+code={`sudo apt update
 sudo apt install apt-transport-https ca-certificates curl software-properties-common
 curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
 echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
 sudo apt update
 apt-cache policy docker-ce
 sudo apt install docker-ce
-sudo systemctl status docker
-```
-
-</CodeBlock>
+sudo systemctl status docker`}
+/>
 
 If you want to execute docker without sudo you will need to execute some more commands:
 
-<CodeBlock lang="bash">
-
-```bash
-sudo usermod -aG docker ${USER}
-su - ${USER}
-```
-
-</CodeBlock>
+<CodeBlock
+lang="bash"
+code={`sudo usermod -aG docker \${USER}
+su - \${USER}`}
+/>
 
 Make sure docker is running with `docker run hello-world`.
 
@@ -291,46 +257,36 @@ Docker Compose helps in running complex apps easily. It's like a recipe that tel
 
 You can follow the Digital Ocean Tutorial: [How To Install and Use Docker Compose on Ubuntu 22.04](https://www.digitalocean.com/community/tutorials/how-to-install-and-use-docker-compose-on-ubuntu-22-04)
 
-<CodeBlock lang="bash">
-
-```bash
-mkdir -p ~/.docker/cli-plugins/
+<CodeBlock
+lang="bash"
+code={`mkdir -p ~/.docker/cli-plugins/
 curl -SL https://github.com/docker/compose/releases/download/v2.3.3/docker-compose-linux-x86_64 -o ~/.docker/cli-plugins/docker-compose
-chmod +x ~/.docker/cli-plugins/docker-compose
-```
-
-</CodeBlock>
+chmod +x ~/.docker/cli-plugins/docker-compose`}
+/>
 
 And also make sure it's installed correctly with `docker compose version`.
 
 ### Install SQLite
 
-SQLite is a simple database system. You won't needed if you use MySQL for both the Index and Tracker. In this tutorial
-we will use it.
+SQLite is a simple database system. You won't needed if you use MySQL for both the Index and Tracker. In this tutorial we will use it.
 
-<CodeBlock lang="bash">
-
-```bash
-sudo apt update
-sudo apt install sqlite3
-```
-
-</CodeBlock>
+<CodeBlock
+lang="bash"
+code={`sudo apt update
+sudo apt install sqlite3`}
+/>
 
 You can check if it's installed correctly with `sqlite3 --version`.
 
 You can execute queries to get the Tracker or Index data connecting with:
 
-<CodeBlock lang="bash">
-
-```bash
-$ sqlite3 ./storage/index/lib/database/sqlite3.db
+<CodeBlock
+lang="bash"
+code={`$ sqlite3 ./storage/index/lib/database/sqlite3.db
 SQLite version 3.37.2 2022-01-06 13:25:41
 Enter ".help" for usage hints.
-sqlite>
-```
-
-</CodeBlock>
+sqlite>`}
+/>
 
 Some useful commands are:
 
@@ -348,8 +304,7 @@ The droplet has an IP that can be used to setup the DNS, but we recommend using 
 
 </Callout>
 
-First at all, you need to change your name servers and use the ones from Digital Ocean. You have to find out how to do that
-in your domain provider.
+First at all, you need to change your name servers and use the ones from Digital Ocean. You have to find out how to do that in your domain provider.
 
 Then you need to create two `A` records to point the domains to the droplet IP (or the reserved IP if you are using one).
 
@@ -373,8 +328,7 @@ Some services related to tracker (for instance <https://newtrackon.com>) use thi
 
 ## Install The Application
 
-First, we will install the application on port `80` because we need a live app to generate the HTTPs certificates with
-Let's Encrypt. Once we generate the certificates we can change the configuration to serve the application on port `443`.
+First, we will install the application on port `80` because we need a live app to generate the HTTPs certificates with Let's Encrypt. Once we generate the certificates we can change the configuration to serve the application on port `443`.
 
 ### Without certificates
 
@@ -382,44 +336,37 @@ We'll start by launching your app in a basic, non-secure mode. Initial deploymen
 
 First, we need to get the docker compose configuration. You can download it directly from the [Torrust Compose GitHub repo](https://github.com/torrust/torrust-compose) or you can use Git:
 
-<CodeBlock lang="bash">
-
-```bash
-cd \\
+<CodeBlock
+lang="bash"
+code={`cd \\
   && mkdir -p github/torrust \\
   && cd github/torrust/ \\
   && git clone --single-branch --branch main https://github.com/torrust/torrust-compose.git \\
   && cd torrust-compose/ \\
   && git status \\
-  && cd droplet/
-```
-
-</CodeBlock>
+  && cd droplet/`}
+/>
 
 If you use Git you will need to install it in the server. Follow the ["How To Install Git on Ubuntu 22.04"](https://www.digitalocean.com/community/tutorials/how-to-install-git-on-ubuntu-22-04) guide.
 
 After cloning the repository you have to run the install script:
 
-<CodeBlock lang="bash">
-
-```bash
-$ ./bin/install.sh
+<CodeBlock
+lang="bash"
+code={`$ ./bin/install.sh
 Creating compose .env './.env'
 Creating proxy config file: './storage/proxy/etc/nginx-conf/nginx.conf'
 Creating index database: './storage/index/lib/database/sqlite3.db'
 Creating index configuration: './storage/index/etc/index.toml'
 Creating tracker database: './storage/tracker/lib/database/sqlite3.db'
-Creating tracker configuration: './storage/tracker/etc/tracker.toml'
-```
-
-</CodeBlock>
+Creating tracker configuration: './storage/tracker/etc/tracker.toml'`}
+/>
 
 The script will create some needed directories and empty SQLite databases:
 
-<CodeBlock lang="bash">
-
-```bash
-$ tree storage/
+<CodeBlock
+lang="bash"
+code={`$ tree storage/
 storage/
 ├── certbot
 │   ├── etc
@@ -441,16 +388,11 @@ storage/
     │   └── tracker.toml
     └── lib
         └── database
-            └── sqlite3.db
+            └── sqlite3.db\n
+17 directories, 5 files`}
+/>
 
-17 directories, 5 files
-
-```
-
-</CodeBlock>
-
-Now you can continue with some customizations. You can adjust the default configuration for all services
-or leave the default values. But at least you must change the domain and the secrets.
+Now you can continue with some customizations. You can adjust the default configuration for all services or leave the default values. But at least you must change the domain and the secrets.
 
 First open the `.env` file and find these environment variables:
 
@@ -467,38 +409,27 @@ TORRUST_INDEX_GUI_API_BASE_URL='http://index.your-domain.com/api/v1'
 
 In `storage/index/etc/index.toml` replace the default tracker URL to be included in torrents with yours:
 
-<CodeBlock lang="bash">
+<CodeBlock
+lang="bash"
+code={`[tracker]
+url = "udp://tracker.torrust-demo.com:6969"`}
+/>
 
-```bash
-[tracker]
-url = "udp://tracker.torrust-demo.com:6969"
-
-```
-
-</CodeBlock>
-
-<CodeBlock lang="bash">
-
-```bash
-[tracker]
-url = "udp://tracker.your-domain.com:6969"
-
-```
-
-</CodeBlock>
+<CodeBlock
+lang="bash"
+code={`[tracker]
+url = "udp://tracker.your-domain.com:6969"`}
+/>
 
 You can generate the Tracker API token and the Auth Secret Key with:
 
-<CodeBlock lang="bash">
-
-```bash
-gpg --armor --gen-random 1 40
-jcrmbzlGyeP7z53TUQtXmtltMb5TubsIE9e0DPLnS4Ih29JddQw5JA==
-```
+<CodeBlock
+lang="bash"
+code={`gpg --armor --gen-random 1 40
+jcrmbzlGyeP7z53TUQtXmtltMb5TubsIE9e0DPLnS4Ih29JddQw5JA==`}
+/>
 
 You also need to change Nginx configuration `share/container/default/config/nginx.conf` to set your domain.
-
-</CodeBlock>
 
 <Callout type="info">
 
@@ -508,13 +439,7 @@ NOTICE: We are not sending emails from the application because user's email vali
 
 Now, you should be able to run the application with the following command:
 
-<CodeBlock lang="bash">
-
-```bash
-docker compose up --build --detach
-```
-
-</CodeBlock>
+<CodeBlock lang="bash" code={`docker compose up --build --detach`} />
 
 If you have reached this point, congratulations! you already have these live services:
 
@@ -530,13 +455,7 @@ Let's Encrypt provides free certificates. You'll learn how to obtain and configu
 
 First, you need to log in the "certbot" container. [Certbot](https://certbot.eff.org/) is a free, open source software tool for automatically (using Let’s Encrypt certificates) enable HTTPS.
 
-<CodeBlock lang="bash">
-
-```bash
-docker compose run --entrypoint /bin/sh certbot
-```
-
-</CodeBlock>
+<CodeBlock lang="bash" code={`docker compose run --entrypoint /bin/sh certbot`} />
 
 <Callout type="info">
 
@@ -546,27 +465,21 @@ Notice that the previous command recreates the docker containers so you site wil
 
 Once you are logged in the certbot container you need to execute these certbot commands to generate the staging certificates:
 
-<CodeBlock lang="bash">
-
-```bash
-certbot certonly --webroot --webroot-path=/var/www/html --email email@example.com --agree-tos --no-eff-email --staging -d index.torrust-demo.com
-certbot certonly --webroot --webroot-path=/var/www/html --email email@example.com --agree-tos --no-eff-email --staging -d tracker.torrust-demo.com
-```
-
-</CodeBlock>
+<CodeBlock
+lang="bash"
+code={`certbot certonly --webroot --webroot-path=/var/www/html --email email@example.com --agree-tos --no-eff-email --staging -d index.torrust-demo.com
+certbot certonly --webroot --webroot-path=/var/www/html --email email@example.com --agree-tos --no-eff-email --staging -d tracker.torrust-demo.com`}
+/>
 
 Replace `email@example.com` with your email.
 
 For the production certificates you can execute the same command but removing the flag `--staging`:
 
-<CodeBlock lang="bash">
-
-```bash
-certbot certonly --webroot --webroot-path=/var/www/html --email email@example.com --agree-tos --no-eff-email --force-renewal -d index.torrust-demo.com
-certbot certonly --webroot --webroot-path=/var/www/html --email email@example.com --agree-tos --no-eff-email --force-renewal -d tracker.torrust-demo.com
-```
-
-</CodeBlock>
+<CodeBlock
+lang="bash"
+code={`certbot certonly --webroot --webroot-path=/var/www/html --email email@example.com --agree-tos --no-eff-email --force-renewal -d index.torrust-demo.com
+certbot certonly --webroot --webroot-path=/var/www/html --email email@example.com --agree-tos --no-eff-email --force-renewal -d tracker.torrust-demo.com`}
+/>
 
 In the directory `storage/certbot/etc/live` you should have at least one directory per domain.
 
@@ -576,13 +489,7 @@ Once we have the certificates, we'll tell our server (Nginx) to use them, ensuri
 
 #### Generate The Diffie-Hellman Key
 
-<CodeBlock lang="bash">
-
-```bash
-sudo openssl dhparam -out /home/torrust/github/torrust/torrust-compose/droplet/storage/dhparam/dhparam-2048.pem 2048
-```
-
-</CodeBlock>
+<CodeBlock lang="bash" code={`sudo openssl dhparam -out /home/torrust/github/torrust/torrust-compose/droplet/storage/dhparam/dhparam-2048.pem 2048`} />
 
 #### Update Nginx Configuration
 
@@ -748,23 +655,11 @@ Replace it from `http://index.torrust-demo.com/api/v1` to `https://index.torrust
 
 After changing the Nginx configuration and `.env` file you need to recreate containers:
 
-<CodeBlock lang="bash">
-
-```bash
-docker compose up -d --force-recreate
-```
-
-</CodeBlock>
+<CodeBlock lang="bash" code={`docker compose up -d --force-recreate`} />
 
 If you only change the Nginx configuration you can execute the following to reload Nginx configuration:
 
-<CodeBlock lang="bash">
-
-```bash
-docker compose --ansi never restart proxy
-```
-
-</CodeBlock>
+<CodeBlock lang="bash" code={`docker compose --ansi never restart proxy`} />
 
 ### Setup Cronjob To Renew Certificates
 
@@ -772,40 +667,21 @@ Certificates expire, so we'll set up an automatic renewal system, like a subscri
 
 We will use crontab to execute a command every day:
 
-<CodeBlock lang="bash">
-
-```bash
-sudo crontab -e
-```
-
-</CodeBlock>
+<CodeBlock lang="bash" code={`sudo crontab -e`} />
 
 Add the following crontab line:
 
-<CodeBlock lang="text">
-
-```text
-0 12 * * * /home/torrust/github/torrust/torrust-compose/droplet/bin/ssl_renew.sh >> /var/log/cron.log 2>&1
-```
-
-</CodeBlock>
+<CodeBlock lang="text" code={`0 12 * * * /home/torrust/github/torrust/torrust-compose/droplet/bin/ssl_renew.sh >> /var/log/cron.log 2>&1`} />
 
 You can check the cronjob output with:
 
-<CodeBlock lang="bash">
-
-```bash
-tail -f /var/log/cron.log
-```
-
-</CodeBlock>
+<CodeBlock lang="bash" code={`tail -f /var/log/cron.log`} />
 
 After generating the certificates and renewing them you should have a certbot directory structure similar to this:
 
-<CodeBlock lang="bash">
-
-```bash
-$ sudo tree storage/certbot/
+<CodeBlock
+lang="bash"
+code={`$ sudo tree storage/certbot/
 [sudo] password for torrust:
 storage/certbot/
 ├── etc
@@ -878,12 +754,9 @@ storage/certbot/
 │       ├── deploy
 │       ├── post
 │       └── pre
-└── lib
-
-22 directories, 49 files
-```
-
-</CodeBlock>
+└── lib\n
+22 directories, 49 files`}
+/>
 
 ## Exposed services
 
@@ -913,8 +786,7 @@ You should be able to access the services directly (with no proxy) connecting to
 - Tracker (UDP): udp://tracker.torrust-demo.com:6969
 - Tracker (API): <http://tracker.torrust-demo.com:1212>
 
-But you should also be able to connect to all services except the UDP Tracker via the Nginx proxy both with HTTP
-or HTTPs:
+But you should also be able to connect to all services except the UDP Tracker via the Nginx proxy both with HTTP or HTTPs:
 
 HTTP access to services via proxy:
 
@@ -932,14 +804,11 @@ HTTPs access to services via proxy:
 - Tracker (HTTP): <https://tracker.torrust-demo.com/announce>
 - Tracker (API): <https://tracker.torrust-demo.com/api>
 
-You can disable both, direct access to the container (without using the Nginx proxy) and also access without certificates (HTTP). In that case you only need to expose port: `443` and `6969`. In order to do that you will
-need to enable a firewall on the server or the Digital Ocean firewall.
+You can disable both, direct access to the container (without using the Nginx proxy) and also access without certificates (HTTP). In that case you only need to expose port: `443` and `6969`. In order to do that you will need to enable a firewall on the server or the Digital Ocean firewall.
 
 <Callout type="info">
 
-Notice: The UDP tracker is not available via the proxy. If you want all requests to go through the
-proxy you need to change the Nginx configuration to set up a UDP proxy. There is a discussion
-on the Tracker repository on GitHub about how to setup the proxy for the UDP tracker.
+Notice: The UDP tracker is not available via the proxy. If you want all requests to go through the proxy you need to change the Nginx configuration to set up a UDP proxy. There is a discussion on the Tracker repository on GitHub about how to setup the proxy for the UDP tracker.
 
 </Callout>
 
@@ -956,19 +825,16 @@ You can enable the UFW firewall on the server by following the Digital Ocean gui
 
 For example, you can allow only the ports `22`, `43` and `6969` with the following command:
 
-<CodeBlock lang="bash">
-
-```bash
-sudo ufw default deny incoming
+<CodeBlock
+lang="bash"
+code={`sudo ufw default deny incoming
 sudo ufw default allow outgoing
 sudo ufw allow ssh
 sudo ufw allow 443
 sudo ufw allow 6969/udp
 sudo ufw enable
-sudo ufw status verbose
-```
-
-</CodeBlock>
+sudo ufw status verbose`}
+/>
 
 <Callout type="info">
 
@@ -1006,11 +872,9 @@ These endpoints are very useful to test if your installation is OK.
 
 ## Troubleshooting
 
-You might have problems setting up the application. There are some useful things you should know
-in order to be able to address potential problems.
+You might have problems setting up the application. There are some useful things you should know in order to be able to address potential problems.
 
-First, it might be useful to enable the debug logging for some services. Both the Index and the Tracker
-have a configuration option `log_level = "info"`. You can change the logging level to `debug` or even `trace`.
+First, it might be useful to enable the debug logging for some services. Both the Index and the Tracker have a configuration option `log_level = "info"`. You can change the logging level to `debug` or even `trace`.
 
 Configuration files are located in:
 
@@ -1019,27 +883,18 @@ Configuration files are located in:
 
 If you change the config files you will need to restart the services:
 
-<CodeBlock lang="bash">
-
-```bash
-docker compose restart
-```
-
-</CodeBlock>
+<CodeBlock lang="bash" code={`docker compose restart`} />
 
 You can also check the logs of any service with:
 
-<CodeBlock lang="bash">
-
-```bash
-docker compose logs proxy
+<CodeBlock
+lang="bash"
+code={`docker compose logs proxy
 docker compose logs certbot
 docker compose logs index
 docker compose logs index-gui
-docker compose logs tracker
-```
-
-</CodeBlock>
+docker compose logs tracker`}
+/>
 
 If you change the config files you will need to restart the services.
 
@@ -1066,24 +921,18 @@ If your server does not have too much disk space you could run out of disk space
 
 Docker stores the logs in a separate directory, if you want to truncate the logs you can find them first with:
 
-<CodeBlock lang="bash">
-
-```bash
-sudo : > $(docker inspect --format='{{.LogPath}}' tracker)
--bash: /var/lib/docker/containers/397484cca9572d98524e4f81095bb27f90c349306c39bc517afe5bcb3a6d7f5e/397484cca9572d98524e4f81095bb27f90c349306c39bc517afe5bcb3a6d7f5e-json.log: Permission denied
-```
-
-</CodeBlock>
+<CodeBlock
+lang="bash"
+code={`sudo : > $(docker inspect --format='{{.LogPath}}' tracker)
+-bash: /var/lib/docker/containers/397484cca9572d98524e4f81095bb27f90c349306c39bc517afe5bcb3a6d7f5e/397484cca9572d98524e4f81095bb27f90c349306c39bc517afe5bcb3a6d7f5e-json.log: Permission denied`}
+/>
 
 And then truncate the file with:
 
-<CodeBlock lang="bash">
-
-```bash
-sudo truncate -s 0 /var/lib/docker/containers/397484cca9572d98524e4f81095bb27f90c349306c39bc517afe5bcb3a6d7f5e/397484cca9572d98524e4f81095bb27f90c349306c39bc517afe5bcb3a6d7f5e-json.log
-```
-
-</CodeBlock>
+<CodeBlock
+lang="bash"
+code={`sudo truncate -s 0 /var/lib/docker/containers/397484cca9572d98524e4f81095bb27f90c349306c39bc517afe5bcb3a6d7f5e/397484cca9572d98524e4f81095bb27f90c349306c39bc517afe5bcb3a6d7f5e-json.log`}
+/>
 
 The docker compose configuration sets a limit on the number of log files and their size.
 
@@ -1105,10 +954,7 @@ We are using SQLite so the only thing we need to do is to backup the database fi
 - Index database: `index/lib/database/sqlite3.db`
 - Tracker database: `tracker/lib/database/sqlite3.db`
 
-We enabled backups for the droplet when we created it. Droplet backups are generated
-once per week. You should setup a better backup policy or use a MySQL service that provides backup.
-An easy way to increase the number of backups would be to mount a volume and periodically backup the files
-you want to backup, for example the database files or the configuration files.
+We enabled backups for the droplet when we created it. Droplet backups are generated once per week. You should setup a better backup policy or use a MySQL service that provides backup. An easy way to increase the number of backups would be to mount a volume and periodically backup the files you want to backup, for example the database files or the configuration files.
 
 Alternatively, you can use [SnapShooter to backup droplets and volumes](https://docs.digitalocean.com/developer-center/droplets-and-volumes-backups-with-snapshooter/).
 
@@ -1154,20 +1000,17 @@ If you are interested in, you can add your tracker to some tracker lists, for ex
 
 We have not enabled email verification. If you enable it you will need to configure the SMTP server in the Index configuration:
 
-<CodeBlock lang="toml">
-
-```toml
-[mail]
+<CodeBlock
+lang="toml"
+code={`[mail]
 email_verification_enabled = false
 from = "example@email.com"
 reply_to = "noreply@email.com"
 username = ""
 password = ""
 server = "mailcatcher"
-port = 1025
-```
-
-</CodeBlock>
+port = 1025`}
+/>
 
 ### Docker Image Tags
 

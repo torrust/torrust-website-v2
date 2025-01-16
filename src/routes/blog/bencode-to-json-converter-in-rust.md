@@ -60,25 +60,11 @@ It's a new crate designed to simplify the conversion of Bencode data into JSON f
 
 Here’s a quick example to show how straightforward it is to use:
 
-<CodeBlock lang="terminal">
-
-```s
-echo "4:spam" | cargo run
-"spam"
-```
-
-</CodeBlock>
+<CodeBlock lang="bash" code= {`echo "4:spam" | cargo run "spam"`} />
 
 For non UTF-8 Bencoded strings, we represent them as byte sequences enclosed in HTML-styled tags `<hex>...</hex>`;
 
-<CodeBlock lang="terminal">
-
-```s
-printf "d3:bar2:\xFF\xFEe" | cargo run
-{"bar":"<hex>fffe</hex>"}
-```
-
-</CodeBlock>
+<CodeBlock lang="bash" code= {`printf "d3:bar2:\xFF\xFEe" | cargo run {"bar":"<hex>fffe</hex>"}`} />
 
 ## Why It Is Useful
 
@@ -96,79 +82,46 @@ Using `bencode2json` is straightforward. Here's a quick guide on how to get star
 
 Add the crate to your `Cargo.toml`:
 
-<CodeBlock lang="toml">
-
-```toml
-[dependencies]
-bencode2json = "0.1.0"
-```
-
-</CodeBlock>
+<CodeBlock lang="toml" code= {`[dependencies] bencode2json = "0.1.0"`} />
 
 ### Basic Usage
 
 Here's a simple example of how to convert Bencode to JSON:
 
-<CodeBlock lang="rust">
-
-```rust
-use bencode2json::try_bencode_to_json;
-
-fn main() {
-  use torrust_bencode2json::{try_bencode_to_json};
-
-  let result = try_bencode_to_json(b"d4:spam4:eggse").unwrap();
-
+<CodeBlock
+lang="rust"
+code= {`use bencode2json::try_bencode_to_json;\n
+fn main() { 
+  use torrust_bencode2json::{try_bencode_to_json};\n
+  let result = try_bencode_to_json(b"d4:spam4:eggse").unwrap();\n
   assert_eq!(result, r#"{"spam":"eggs"}"#);
-}
-```
-
-</CodeBlock>
+}`}
+/>
 
 ### Advance Usage
 
-`bencode2json` supports any kind of input and output that implement Read or Write traits,
-meaning you can read from stdin and write to stdout or from/to files.
+`bencode2json` supports any kind of input and output that implement Read or Write traits, meaning you can read from stdin and write to stdout or from/to files.
 
-<CodeBlock lang="rust">
-
-```rust
-use bencode2json::parsers::{BencodeParser};
-
-let mut output = String::new();
-
-let mut parser = BencodeParser::new(&b"4:spam"[..]);
-
+<CodeBlock
+lang="rust"
+code= {`use bencode2json::parsers::{BencodeParser};\n
+let mut output = String::new();\n
+let mut parser = BencodeParser::new(&b"4:spam"[..]);\n
 parser
   .write_str(&mut output)
-  .expect("Bencode to JSON conversion failed");
-
-println!("{output}"); // It prints the JSON string: "spam"
-```
-
-</CodeBlock>
+  .expect("Bencode to JSON conversion failed");\n
+println!("{output}"); // It prints the JSON string: "spam"`}
+/>
 
 ### Using the Console App
 
 The package provides a console command too. You can install it with:
 
-<CodeBlock lang="terminal">
-
-```s
-cargo install torrust-bencode2json
-```
-
-</CodeBlock>
+<CodeBlock lang="bash" code={`cargo install torrust-bencode2json`} />
 
 And execute it to convert a torrent file into JSON.
 
-<CodeBlock lang="terminal">
-
-```s
-cat ./sample.torrent | cargo run | jq
-```
-
-</CodeBlock>
+<CodeBlock lang="bash" code={`cat ./sample.torrent | cargo run | jq`} />
 
 [jq](https://jqlang.github.io/jq/) is jq is a lightweight and flexible command-line JSON processor. Make sure you have it installed.
 

@@ -1,14 +1,18 @@
 <script lang="ts">
 	import Icon from '@iconify/svelte';
+	import hljs from 'highlight.js';
+	import 'highlight.js/styles/atom-one-dark.css';
+
 	interface Props {
 		filename?: string | undefined;
 		lang: string;
 		fullBleed?: boolean | undefined;
+		code?: string;
 		children?: import('svelte').Snippet;
 	}
 
-	let { filename = undefined, lang, fullBleed = undefined, children }: Props = $props();
-	let codeBlockElement: HTMLDivElement | undefined = $state();
+	let { filename = undefined, lang, fullBleed = undefined, code = '', children }: Props = $props();
+	let codeBlockElement: HTMLElement | undefined = $state();
 	let showCheckmark: boolean = $state(false);
 
 	async function copyToClipboard() {
@@ -22,6 +26,23 @@
 			console.error('Failed to copy: ', err);
 		}
 	}
+
+	function normalizeIndentation(code: string): string {
+		const lines = code.split('\n');
+		const nonEmptyLines = lines.filter((line) => line.trim() !== '');
+		const minIndent = Math.min(
+			...nonEmptyLines.map((line) => line.match(/^\s*/)?.[0]?.length || 0)
+		);
+		return lines.map((line) => (line.trim() === '' ? '' : line.slice(minIndent))).join('\n');
+	}
+
+	function processCodeForDisplay(code: string): string {
+		return code.replace(/\\n/g, '\n');
+	}
+
+	let normalizedCode = normalizeIndentation(processCodeForDisplay(code));
+
+	let highlightedCode = hljs.highlight(normalizedCode, { language: lang }).value;
 </script>
 
 <div class="code-block" class:full-bleed={fullBleed} bind:this={codeBlockElement}>
@@ -42,7 +63,15 @@
 		{/if}
 	</button>
 	<div class="code-content">
-		{@render children?.()}
+		{#if code}
+			<pre><code
+					class="hljs"
+					bind:this={codeBlockElement}
+					style="padding: 10px; background-color: #282c34;">{@html highlightedCode}</code
+				></pre>
+		{:else if children}
+			{@render children?.()}
+		{/if}
 	</div>
 </div>
 
@@ -50,15 +79,16 @@
 	.code-block {
 		display: block;
 		position: relative;
-		background-color: rgba(245, 245, 245, 0.08);
 		color: var(--color--code-text);
 		font-family: var(--font--mono);
 		font-size: 1rem;
 		line-height: 1.33em;
 		border-radius: 8px;
 		box-shadow: var(--card-shadow);
+		padding: 12px 10px 20px 10px;
+		min-height: 80px;
+		background-color: #282c34 !important;
 
-		padding: 30px 15px;
 		margin: 30px 0;
 
 		:global(pre) {
@@ -66,6 +96,7 @@
 			scrollbar-color: var(--color--primary) var(--color--primary-tint);
 			scrollbar-width: thin;
 			padding-bottom: 5px;
+			max-width: 100%;
 
 			&::-webkit-scrollbar {
 				height: 8px;
@@ -76,6 +107,10 @@
 					background: var(--color--primary-shade);
 				}
 			}
+		}
+
+		.code-content code {
+			border-radius: 8px;
 		}
 
 		.lang {

@@ -67,15 +67,12 @@ Setting up the development environment requires to setup the three main services
 
 First, we need to create the folder (in this example, a temp folder) where we will store the repositories of our services.
 
-<CodeBlock lang="terminal">
-
-```bash
-cd /tmp/
+<CodeBlock
+lang="bash"
+code={`cd /tmp/
 mkdir -p torrust
-cd torrust
-```
-
-</CodeBlock>
+cd torrust`}
+/>
 
 <Callout type="info">
 
@@ -87,13 +84,7 @@ This guide uses bash commands and it has been tested on Ubuntu Ubuntu 23.04. You
 
 If you are using SQLite3 as database driver for the Tracker or the Backend, you will need to install the following dependency:
 
-<CodeBlock lang="terminal">
-
-```bash
-sudo apt-get install libsqlite3-dev
-```
-
-</CodeBlock>
+<CodeBlock lang="bash" code={`sudo apt-get install libsqlite3-dev`} />
 
 ## Set Up the Torrust Tracker
 
@@ -103,38 +94,23 @@ This tutorial is tested with this Rust version:
 
 Since we are using the openssl crate with the [vendored](https://docs.rs/openssl/latest/openssl/#vendored) feature, enabled, you will need to install the following dependencies:
 
-<CodeBlock lang="terminal">
-
-```bash
-sudo apt-get install pkg-config libssl-dev make
-```
-
-</CodeBlock>
+<CodeBlock lang="bash" code={`sudo apt-get install pkg-config libssl-dev make`} />
 
 Now, we will build the tracker and create the storage folders where persistent data like databases will be stored:
 
-<CodeBlock lang="terminal">
-
-```terminal
-git clone https://github.com/torrust/torrust-tracker.git \\
+<CodeBlock
+lang="bash"
+code={`git clone https://github.com/torrust/torrust-tracker.git \\
   && cd torrust-tracker \\
   && cargo build \\
   && mkdir -p ./storage/tracker/lib/database \\
   && mkdir -p ./storage/tracker/lib/tls \\
-  && mkdir -p ./storage/tracker/etc
-```
-
-</CodeBlock>
+  && mkdir -p ./storage/tracker/etc`}
+/>
 
 You can run the Tracker with the following command:
 
-<CodeBlock lang="terminal">
-
-```bash
-cargo run
-```
-
-</CodeBlock>
+<CodeBlock lang="bash" code={`cargo run`} />
 
 <Callout type="info">
 
@@ -144,12 +120,11 @@ NOTICE: You do not need to change the default values for development.
 
 After running the Tracker with `cargo run` you should see the following output:
 
-<CodeBlock lang="output">
-
-```s
-Finished `dev` profile [optimized + debuginfo] target(s) in 0.09s
-     Running `target/debug/torrust-tracker`
-Loading configuration from default configuration file: `./share/default/config/tracker.development.sqlite3.toml` ...
+<CodeBlock
+lang="bash"
+code={`Finished \`dev\` profile [optimized + debuginfo] target(s) in 0.09s
+Running \`target/debug/torrust-tracker\`
+Loading configuration from default configuration file: \`./share/default/config/tracker.development.sqlite3.toml\` ...
 2024-05-27T11:39:21.332802857+01:00 [torrust_tracker::bootstrap::logging][INFO] logging initialized.
 2024-05-27T11:39:21.333426924+01:00 [UDP TRACKER][INFO] Starting on: udp://0.0.0.0:6969
 2024-05-27T11:39:21.333462384+01:00 [torrust_tracker::bootstrap::jobs][INFO] TLS not enabled
@@ -159,10 +134,8 @@ Loading configuration from default configuration file: `./share/default/config/t
 2024-05-27T11:39:21.333814923+01:00 [API][INFO] Starting on http://127.0.0.1:1212
 2024-05-27T11:39:21.333839143+01:00 [API][INFO] Started on http://127.0.0.1:1212
 2024-05-27T11:39:21.333883712+01:00 [HEALTH CHECK API][INFO] Starting on: http://127.0.0.1:1313
-2024-05-27T11:39:21.333948472+01:00 [HEALTH CHECK API][INFO] Started on: http://127.0.0.1:1313
-```
-
-</CodeBlock>
+2024-05-27T11:39:21.333948472+01:00 [HEALTH CHECK API][INFO] Started on: http://127.0.0.1:1313`}
+/>
 
 <Callout type="info">
 
@@ -172,13 +145,7 @@ IMPORTANT: Every time you change the configuration you need to restart the servi
 
 By default, if you don't specify any `Config.toml` file, the application will use this:
 
-<CodeBlock lang="output">
-
-```s
-Loading default configuration file: `./share/default/config/tracker.development.sqlite3.toml` ...
-```
-
-</CodeBlock >
+<CodeBlock lang="bash" code={`Loading default configuration file: \`./share/default/config/tracker.development.sqlite3.toml\` ..`} />
 
 You can't change that file because it's a template included in the repo. If you want to set your custom configuration, you can either:
 
@@ -189,33 +156,20 @@ You can't change that file because it's a template included in the repo. If you 
 
 First, copy the template file to the storage folder:
 
-<CodeBlock lang="terminal">
-
-```bash
-cp share/default/config/tracker.development.sqlite3.toml storage/tracker/etc/tracker.toml
-```
-
-</CodeBlock>
+<CodeBlock lang="bash" code={`cp share/default/config/tracker.development.sqlite3.toml storage/tracker/etc/tracker.toml`} />
 
 Then, you can change any value and finally run the tracker with:
 
-<CodeBlock lang="terminal">
-
-```bash
-TORRUST_TRACKER_CONFIG_TOML_PATH="./storage/tracker/etc/tracker.toml" cargo run
-```
-
-</CodeBlock>
+<CodeBlock lang="bash" code={`TORRUST_TRACKER_CONFIG_TOML_PATH="./storage/tracker/etc/tracker.toml" cargo run`} />
 
 That would give you this output:
 
-<CodeBlock lang="output">
-
-```s
-TORRUST_TRACKER_CONFIG_TOML_PATH="./storage/tracker/etc/tracker.toml" cargo run
-    Finished `dev` profile [optimized + debuginfo] target(s) in 0.09s
-     Running `target/debug/torrust-tracker`
-Loading configuration from file: `./storage/tracker/etc/tracker.toml` ...
+<CodeBlock
+lang="bash"
+code={`TORRUST_TRACKER_CONFIG_TOML_PATH="./storage/tracker/etc/tracker.toml" cargo run
+    Finished \`dev\` profile [optimized + debuginfo] target(s) in 0.09s
+Running \`target/debug/torrust-tracker\`
+Loading configuration from file: \`./storage/tracker/etc/tracker.toml\` ...
 2024-05-27T12:52:00.364641064+01:00 [torrust_tracker::bootstrap::logging][INFO] logging initialized.
 2024-05-27T12:52:00.365277963+01:00 [UDP TRACKER][INFO] Starting on: udp://0.0.0.0:6969
 2024-05-27T12:52:00.365309093+01:00 [torrust_tracker::bootstrap::jobs][INFO] TLS not enabled
@@ -225,22 +179,14 @@ Loading configuration from file: `./storage/tracker/etc/tracker.toml` ...
 2024-05-27T12:52:00.365596502+01:00 [API][INFO] Starting on http://127.0.0.1:1212
 2024-05-27T12:52:00.365599702+01:00 [API][INFO] Started on http://127.0.0.1:1212
 2024-05-27T12:52:00.365616862+01:00 [HEALTH CHECK API][INFO] Starting on: http://127.0.0.1:1313
-2024-05-27T12:52:00.365711472+01:00 [HEALTH CHECK API][INFO] Started on: http://127.0.0.1:1313
-```
-
-</CodeBlock>
+2024-05-27T12:52:00.365711472+01:00 [HEALTH CHECK API][INFO] Started on: http://127.0.0.1:1313`}
+/>
 
 ## Inject the configuration with an environment variable
 
 You can also inject the configuration with:
 
-<CodeBlock lang="terminal">
-
-```bash
-TORRUST_TRACKER_CONFIG_TOML=`cat share/default/config/tracker.development.sqlite3.toml` cargo run
-```
-
-</CodeBlock>
+<CodeBlock lang="bash" code={`TORRUST_TRACKER_CONFIG_TOML=\`cat share/default/config/tracker.development.sqlite3.toml\` cargo run`} />
 
 <Callout type="info">
 
@@ -250,10 +196,9 @@ NOTICE: We load the whole file into the env var. This is not useful for developm
 
 The response should be like this:
 
-<CodeBlock lang="json">
-
-```json
-{
+<CodeBlock
+lang="json"
+code={`{
 	"torrents": 0,
 	"seeders": 0,
 	"completed": 0,
@@ -270,10 +215,8 @@ The response should be like this:
 	"udp6_connections_handled": 0,
 	"udp6_announces_handled": 0,
 	"udp6_scrapes_handled": 0
-}
-```
-
-</CodeBlock>
+}`}
+/>
 
 For more details about the Torrust Tracker, check the [Tracker documentation](https://docs.rs/torrust-tracker/).
 
@@ -285,56 +228,34 @@ This tutorial has been tested with this Rust version:
 
 To run the tests you will also need to install a command line tool to handle torrent files called [imdl](https://github.com/casey/intermodal). You can install it with the following command:
 
-<CodeBlock lang="terminal">
-
-```bash
-cargo install imdl
-```
-
-</CodeBlock>
+<CodeBlock lang="bash" code={`cargo install imdl`} />
 
 You will also need to install a tool for database migrations if you are going to make changes to the database schema. We are using [SQLx](https://github.com/launchbadge/sqlx). You can install it with the following command:
 
-<CodeBlock lang="terminal">
-
-```bash
-cargo install sqlx-cli
-```
-
-</CodeBlock>
+<CodeBlock lang="bash" code={`cargo install sqlx-cli`} />
 
 We will now clone the `torrust-index` repository:
 
-<CodeBlock lang="terminal">
-
-```terminal
-  git clone https://github.com/torrust/torrust-index.git \\
+<CodeBlock
+lang="bash"
+code={`git clone https://github.com/torrust/torrust-index.git \\
   && cd torrust-index \\
   && cargo build \\
   && mkdir -p ./storage/index/lib/database \\
-  && mkdir -p ./storage/index/lib/tls
-```
-
-</CodeBlock>
+  && mkdir -p ./storage/index/lib/tls`}
+/>
 
 You can run the Torrust Index with the following commands:
 
-<CodeBlock lang="terminal">
-
-```bash
-TORRUST_INDEX_API_CORS_PERMISSIVE=true cargo run
-```
-
-</CodeBlock>
+<CodeBlock lang="bash" code={`TORRUST_INDEX_API_CORS_PERMISSIVE=true cargo run`} />
 
 As you can see we are using the environment variable `TORRUST_IDX_BACK_CORS_PERMISSIVE` to enable a permissive CORS policy. The default port for the Backend is `3001` and for the web server serving the frontend application is `3000`. Since they are different ports, we need to tell the backend to allow requests from a different port so that the frontend can make request to the API. To know more about CORS, check the [Mozilla CORS documentation](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS).
 
 After running the Index with `TORRUST_INDEX_API_CORS_PERMISSIVE=true cargo run` you should see the following output:
 
-<CodeBlock lang="output">
-
-```s
-Loading configuration from default configuration file: `./share/default/config/index.development.sqlite3.toml` ...
+<CodeBlock
+lang="bash"
+code={`Loading configuration from default configuration file: \`./share/default/config/index.development.sqlite3.toml\` ...
 2024-05-27T12:56:25.300980998+01:00 [torrust_index::bootstrap::logging][INFO] logging initialized.
 2024-05-27T12:56:25.425949219+01:00 [torrust_index::web::api::server][INFO] TLS not enabled
 2024-05-27T12:56:25.425976429+01:00 [torrust_index::console::cronjobs::tracker_statistics_importer][INFO] Tracker statistics importer launcher started
@@ -342,10 +263,8 @@ Loading configuration from default configuration file: `./share/default/config/i
 2024-05-27T12:56:25.426233288+01:00 [torrust_index::web::api::server][INFO] Starting API server with net config: 0.0.0.0:3001 ...
 2024-05-27T12:56:25.426290848+01:00 [torrust_index::console::cronjobs::tracker_statistics_importer][INFO] Tracker statistics importer API server listening on http://127.0.0.1:3002
 2024-05-27T12:56:25.426250898+01:00 [torrust_index::console::cronjobs::tracker_statistics_importer][INFO] Running tracker statistics importer every 2000 milliseconds ...
-2024-05-27T12:56:25.427603675+01:00 [torrust_index::web::api::server][INFO] API server listening on http://0.0.0.0:3001
-```
-
-</CodeBlock>
+2024-05-27T12:56:25.427603675+01:00 [torrust_index::web::api::server][INFO] API server listening on http://0.0.0.0:3001`}
+/>
 
 You should be able to load the API entrypoint on <http://0.0.0.0:3001/>
 
@@ -363,17 +282,14 @@ The frontend is a [Nuxt](https://nuxt.com/) application.
 
 The last repository we need to clone is the `torrust-index-gui` repository . Remember to install Node.js and we need to be in the torrust folder to clone the repository.
 
-<CodeBlock lang="terminal">
-
-```terminal
-git clone https://github.com/torrust/torrust-index-gui.git \\
+<CodeBlock
+lang="bash"
+code={`git clone https://github.com/torrust/torrust-index-gui.git \\
   && cd torrust-index-gui \\
   && npm install \\
   && cp .env.local .env \\
-  && npm run dev
-```
-
-</CodeBlock>
+  && npm run dev`}
+/>
 
 You should see the following output:
 

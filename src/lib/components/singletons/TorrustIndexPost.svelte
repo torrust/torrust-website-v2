@@ -66,19 +66,16 @@
 
 			<p>You can easily build the Rust app with cargo.</p>
 
-			<CodeBlock lang="terminal">
-				<code
-					><pre>
-git clone git@github.com:torrust/torrust-index.git \
-  && cd torrust-index && cargo build --release \
-  && mkdir -p ./storage/database
-</pre></code
-				>
-			</CodeBlock>
+			<CodeBlock
+				lang="bash"
+				code={`git clone git@github.com:torrust/torrust-index.git \\
+  && cd torrust-index && cargo build --release \\
+  && mkdir -p ./storage/database`}
+			/>
 
 			Then you can run it with:
 
-			<CodeBlock lang="terminal">./target/release/torrust-index</CodeBlock>
+			<CodeBlock lang="bash" code={`./target/release/torrust-index`} />
 
 			<h2 id="docker">Run with docker</h2>
 
@@ -88,27 +85,26 @@ git clone git@github.com:torrust/torrust-index.git \
 				to run the containerized application:
 			</p>
 
-			<CodeBlock lang="terminal">
-				<code
-					><pre>
-cd /tmp \
-  && mkdir torrust-index \
-  && cd torrust-index \
-  && export USER_ID=1000 \
-  && docker run -it \
-    --env USER_ID="$USER_ID" \
-    --publish 3001:3001/tcp \
-    --volume "$(pwd)/storage/index/lib":"/var/lib/torrust/index" \
-    --volume "$(pwd)/storage/index/log":"/var/log/torrust/index" \
-    --volume "$(pwd)/storage/index/etc":"/etc/torrust/index" \
-    torrust/index:develop
-</pre></code
-				>
-			</CodeBlock>
+			<CodeBlock
+				lang="bash"
+				code={`cd /tmp \\
+  && mkdir torrust-index \\
+  && cd torrust-index \\
+  && export USER_ID=1000 \\
+  && docker run -it \\
+    --env USER_ID="$USER_ID" \\
+    --publish 3001:3001/tcp \\
+    --volume "$(pwd)/storage/index/lib":"/var/lib/torrust/index" \\
+    --volume "$(pwd)/storage/index/log":"/var/log/torrust/index" \\
+    --volume "$(pwd)/storage/index/etc":"/etc/torrust/index" \\
+    torrust/index:develop`}
+			/>
 
-			Please refer to the [official
-			documentation](https://docs.rs/torrust-index/3.0.0-rc.1/torrust_index/#run-with-docker) to
-			learn more about running the index with docker.
+			Please refer to the
+			<a href="https://docs.rs/torrust-index/3.0.0-rc.1/torrust_index/#run-with-docker"
+				>official documentation</a
+			>
+			to learn more about running the index with docker.
 
 			<h2 id="roadmap">Roadmap</h2>
 
