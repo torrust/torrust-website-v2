@@ -77,10 +77,9 @@ Regardless which protocol clients use to connect to the tracker, eventually all 
 - **The statistics about that torrent**: number of seeders, leechers and peers that have completed downloading.
 - **The peer list**: a list of all the clients announcing the same torrent (swarm).
 
-<CodeBlock lang="json">
-
-```json
-{
+<CodeBlock
+lang="json"
+code={`{
 	"info_hash": "090c6d4fb3a03191c4ef1fda6236ef0efb2d5c10",
 	"seeders": 1,
 	"completed": 1,
@@ -100,10 +99,8 @@ Regardless which protocol clients use to connect to the tracker, eventually all 
 			"event": "Completed"
 		}
 	]
-}
-```
-
-</CodeBlock>
+}`}
+/>
 
 The reason why we have been focusing on that part is because we think that's the main bottleneck if we want to increase the number of requests the tracker can handle per second.
 
@@ -114,10 +111,9 @@ The `announce` request is the most important request a tracker needs to handle. 
 
 Every request is a write/read request. The system is intensive in writes. All requests eventually try to acquire a write lock to include themselves in the peer list. That's why we think that's the main bottleneck in our implementation, at the moment. For that reason we have been trying different implementations of the torrents repository:
 
-<CodeBlock lang="rust">
-
-```rust
-pub type TorrentsRwLockStd = RwLockStd<EntrySingle>;
+<CodeBlock
+lang="rust"
+code={`pub type TorrentsRwLockStd = RwLockStd<EntrySingle>;
 pub type TorrentsRwLockStdMutexStd = RwLockStd<EntryMutexStd>;
 pub type TorrentsRwLockStdMutexTokio = RwLockStd<EntryMutexTokio>;
 pub type TorrentsRwLockTokio = RwLockTokio<EntrySingle>;
@@ -126,10 +122,8 @@ pub type TorrentsRwLockTokioMutexTokio = RwLockTokio<EntryMutexTokio>;
 pub type TorrentsSkipMapMutexStd = CrossbeamSkipList<EntryMutexStd>; // Default
 pub type TorrentsSkipMapMutexParkingLot = CrossbeamSkipList<EntryMutexParkingLot>;
 pub type TorrentsSkipMapRwLockParkingLot = CrossbeamSkipList<EntryRwLockParkingLot>;
-pub type TorrentsDashMapMutexStd = XacrimonDashMap<EntryMutexStd>;
-```
-
-</CodeBlock>
+pub type TorrentsDashMapMutexStd = XacrimonDashMap<EntryMutexStd>;`}
+/>
 
 The default implementation used in production is `TorrentsSkipMapMutexStd`.
 
@@ -143,20 +137,13 @@ The default implementation used in production is `TorrentsSkipMapMutexStd`.
 
 As we explained in a previous article ("[Benchmarking the Torrust BitTorrent Tracker](benchmarking-the-torrust-bittorrent-tracker)") you can run the benchmark for those different repository implementations with the following command:
 
-<CodeBlock lang="terminal">
-
-```terminal
-cargo bench -p torrust-tracker-torrent-repository
-```
-
-</CodeBlock>
+<CodeBlock lang="bash" code={`cargo bench -p torrust-tracker-torrent-repository`} />
 
 The output at the time of writing this post is similar to:
 
-<CodeBlock lang="terminal">
-
-```terminal
-     Running benches/repository_benchmark.rs (target/release/deps/repository_benchmark-a9b0013c8d09c3c3)
+<CodeBlock
+lang="bash"
+code={`     Running benches/repository_benchmark.rs (target/release/deps/repository_benchmark-a9b0013c8d09c3c3)
 add_one_torrent/RwLockStd
                         time:   [63.057 ns 63.242 ns 63.506 ns]
 Found 12 outliers among 100 measurements (12.00%)
@@ -185,10 +172,8 @@ Found 2 outliers among 100 measurements (2.00%)
   1 (1.00%) high mild
   1 (1.00%) high severe
 Benchmarking add_one_torrent/RwLockTokioMutexTokio: Collecting 100 samples in estimated 1.0005 s (6.9M iteratiadd_one_torrent/RwLockTokioMutexTokio
-                        time:   [143.39 ns 143.51 ns 143.63 ns]
-```
-
-</CodeBlock>
+                        time:   [143.39 ns 143.51 ns 143.63 ns]`}
+/>
 
 ## Profiling With Valgrind
 
@@ -203,20 +188,17 @@ In order to profile the UDP tracker you need to:
 
 Build and run the binary for profiling with:
 
-<CodeBlock lang="console">
-
-```console
-RUSTFLAGS='-g' cargo build --release --bin profiling \\
+<CodeBlock
+lang="console"
+code={`RUSTFLAGS='-g' cargo build --release --bin profiling \\
    && export TORRUST_TRACKER_CONFIG_TOML_PATH="./share/default/config/tracker.udp.benchmarking.toml" \\
    && valgrind \\
      --tool=callgrind \\
      --callgrind-out-file=callgrind.out \\
      --collect-jumps=yes \\
      --simulate-cache=yes \\
-     ./target/release/profiling 60
-```
-
-</CodeBlock>
+     ./target/release/profiling 60`}
+/>
 
 <Callout type="info">
 
@@ -227,13 +209,7 @@ RUSTFLAGS='-g' cargo build --release --bin profiling \\
 After running the tracker with `valgrind` it generates a file called `callgrind.out`
 that you can open with `kcachegrind`.
 
-<CodeBlock lang="terminal">
-
-```terminal
-kcachegrind callgrind.out
-```
-
-</CodeBlock>
+<CodeBlock lang="bash" code={`kcachegrind callgrind.out`} />
 
 <Image src="/images/posts/profiling-the-torrust-bittorrent-udp-tracker/kcachegrind-screenshot.png" alt="Visualizing profiling data with kcachegrind" />
 
@@ -262,13 +238,7 @@ Flamegraphs offer a visual representation of code execution, providing invaluabl
 
 After installing the `cargo flamegraph` package you can generate the flamegraph with:
 
-<CodeBlock lang="terminal">
-
-```terminal
-TORRUST_TRACKER_CONFIG_TOML_PATH="./share/default/config/tracker.udp.benchmarking.toml" cargo flamegraph --bin=profiling -- 60
-```
-
-</CodeBlock>
+<CodeBlock lang="bash" code={`TORRUST_TRACKER_CONFIG_TOML_PATH="./share/default/config/tracker.udp.benchmarking.toml" cargo flamegraph --bin=profiling -- 60`} />
 
 Running the `cargo flamegraph` running the whole service produces a flamegraph like [this](/images/posts/profiling-the-torrust-bittorrent-udp-tracker/flamegraph.svg):
 

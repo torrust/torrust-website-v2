@@ -5,6 +5,7 @@ import { vitePreprocess } from '@sveltejs/vite-plugin-svelte';
 import rehypeExternalLinks from 'rehype-external-links';
 import rehypeSlug from 'rehype-slug';
 import rehypeAutolinkHeadings from 'rehype-autolink-headings';
+import rehypePrettyCode from 'rehype-pretty-code';
 
 /** @type {import('mdsvex').MdsvexOptions}*/
 const mdsvexOptions = {
@@ -23,6 +24,18 @@ const mdsvexOptions = {
 					tagName: 'span',
 					properties: {},
 					children: [{ type: 'text', value: '#' }]
+				}
+			}
+		],
+		[
+			rehypePrettyCode,
+			{
+				theme: 'github-dark',
+				onVisitLine(node) {
+					if (node.children.length === 0) {
+						// Ensure empty lines are preserved
+						node.children = [{ type: 'text', value: '↹↹↹' }];
+					}
 				}
 			}
 		]

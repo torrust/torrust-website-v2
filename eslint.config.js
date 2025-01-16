@@ -49,7 +49,9 @@ export default [
 			'no-fallthrough': 'off',
 			'no-prototype-builtins': 'off',
 			'no-redeclare': 'off',
-			'no-extra-boolean-cast': 'off'
+			'no-extra-boolean-cast': 'off',
+			'no-misleading-character-class': 'off',
+			'no-unused-disable': 'off'
 		},
 		plugins: {
 			prettier: eslintPluginPrettier,

@@ -99,10 +99,9 @@ Bencoding (pronounced "Bee-encoding") is a data serialization method used primar
 
 The JSON representation of a torrent file, after decoding the bytes is something like this:
 
-<CodeBlock lang="json">
-
-```json
-{
+<CodeBlock
+lang="json"
+code={`{
 	"announce": "http://localhost",
 	"comment": "Comments",
 	"created by": "qBittorrent v4.4.1",
@@ -116,10 +115,8 @@ The JSON representation of a torrent file, after decoding the bytes is something
 		"source": "Source"
 	},
 	"url-list": "http://localhost/mandelbrot_2048x2048.png"
-}
-```
-
-</CodeBlock>
+}`}
+/>
 
 As you can see there is one key or field called `info`. This part of the file is used to generate the info-hash, which is the torrent unique identifier.
 
@@ -138,10 +135,9 @@ There are two different types of torrent files:
 
 Here is another example of a torrent containing multiple files:
 
-<CodeBlock lang="json">
-
-```json
-{
+<CodeBlock
+lang="json"
+code={`{
 	"announce": "http://localhost",
 	"comment": "Comments",
 	"created by": "qBittorrent v4.4.1",
@@ -163,10 +159,8 @@ Here is another example of a torrent containing multiple files:
 		"private": 1
 	},
 	"url-list": "http://localhost/mandelbrot_2048x2048.png"
-}
-```
-
-</CodeBlock>
+}`}
+/>
 
 <Callout type="info">
 

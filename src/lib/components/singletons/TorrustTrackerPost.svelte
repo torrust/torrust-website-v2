@@ -64,21 +64,19 @@
 
 			<p>Building the Rust app from source is simple using cargo.</p>
 
-			<CodeBlock lang="terminal">
-				<code
-					><pre>
-git clone https://github.com/torrust/torrust-tracker.git \
-  && cd torrust-tracker \
-  && cargo build --release \
-  && mkdir -p ./storage/tracker/lib/database \
+			<CodeBlock
+				lang="bash"
+				code={`git clone https://github.com/torrust/torrust-tracker.git \\
+  && cd torrust-tracker \\
+  && cargo build --release \\
+  && mkdir -p ./storage/tracker/lib/database \\
   && mkdir -p ./storage/tracker/lib/tls
-</pre></code
-				>
-			</CodeBlock>
+				`}
+			/>
 
 			Once built, you can run it with:
 
-			<CodeBlock lang="terminal">./target/release/torrust-tracker</CodeBlock>
+			<CodeBlock lang="bash" code={`./target/release/torrust-tracker`} />
 
 			<h2 id="docker">Run with docker</h2>
 
@@ -88,26 +86,26 @@ git clone https://github.com/torrust/torrust-tracker.git \
 				to run the containerized application:
 			</p>
 
-			<CodeBlock lang="terminal">
-				<code
-					><pre>
-cd /tmp \
-  && mkdir torrust-tracker \
-  && cd torrust-tracker \
-  && export USER_ID=1000 \
-  && docker run -it \
-    --env USER_ID="$USER_ID" \
-    --publish 3001:3001/tcp \
-    --volume "$(pwd)/storage/tracker/lib":"/var/lib/torrust/tracker" \
-    --volume "$(pwd)/storage/tracker/log":"/var/log/torrust/tracker" \
-    --volume "$(pwd)/storage/tracker/etc":"/etc/torrust/tracker" \
+			<CodeBlock
+				lang="bash"
+				code={`cd /tmp
+  && mkdir torrust-tracker
+  && cd torrust-tracker
+  && export USER_ID=1000
+  && docker run -it
+    --env USER_ID="$USER_ID"
+    --publish 3001:3001/tcp
+    --volume "$(pwd)/storage/tracker/lib":"/var/lib/torrust/tracker"
+    --volume "$(pwd)/storage/tracker/log":"/var/log/torrust/tracker"
+    --volume "$(pwd)/storage/tracker/etc":"/etc/torrust/tracker"
     torrust/tracker:develop
-</pre></code
-				>
-			</CodeBlock>
+  `}
+			/>
 
-			Please refer to the [official
-			documentation](https://docs.rs/torrust-tracker/3.0.0-alpha.11/torrust_tracker/#run-with-docker)
+			Please refer to
+			<a href="https://docs.rs/torrust-tracker/3.0.0-alpha.11/torrust_tracker/#run-with-docker"
+				>the official documentation</a
+			>
 			to learn more about running the index with docker.
 
 			<h2 id="roadmap">Roadmap</h2>
@@ -124,7 +122,6 @@ cd /tmp \
 				>
 			</p>
 
-			<p></p>
 			<ul>
 				<li>Core</li>
 				<ul>
@@ -194,8 +191,6 @@ cd /tmp \
 
 			<p>We aim to make this software as accessible and widely used as possible.</p>
 
-			<p></p>
-
 			<h3 id="copyright">Copyright</h3>
 
 			<p>
@@ -222,8 +217,6 @@ cd /tmp \
 					>www.gnu.org/licenses</a
 				>. Some files include explicit copyright notices and/or license notices.
 			</p>
-
-			<p></p>
 
 			<h3 id="legacyException">Legacy Exception</h3>
 
