@@ -88,48 +88,40 @@ All of the examples included in this blog post are publicly available in our "[C
 
 > **_Please Note:_** The actual `Containerfile` for the **Tracker** and **Index** services builds images for both `debug` and `release` modes. For learning purposes we are using a simplified version here which only builds the `release` mode:
 
-<CodeBlock lang="dockerfile">
-
-```dockerfile
-# Extracted example of our Containerfile.
-
+<CodeBlock
+lang="dockerfile"
+code={`# Extracted example of our Containerfile.\n
 ## Base Builder Image
 FROM rust:bookworm as chef
 WORKDIR /tmp
 RUN curl -L --proto '=https' --tlsv1.2 -sSf https://raw.githubusercontent.com/cargo-bins/cargo-binstall/main/install-from-binstall-release.sh | bash
-RUN cargo binstall --no-confirm cargo-chef cargo-nextest
-
+RUN cargo binstall --no-confirm cargo-chef cargo-nextest\n
 ## Tester Image
 FROM rust:slim-bookworm as tester
 WORKDIR /tmp
 RUN apt-get update; apt-get install -y curl; apt-get autoclean
 RUN curl -L --proto '=https' --tlsv1.2 -sSf https://raw.githubusercontent.com/cargo-bins/cargo-binstall/main/install-from-binstall-release.sh | bash
-RUN cargo binstall --no-confirm cargo-nextest
-
+RUN cargo binstall --no-confirm cargo-nextest\n
 ## Su Exe Compile
 FROM docker.io/library/gcc:bookworm as gcc
 COPY ./contrib/dev-tools/su-exec/ /usr/local/src/su-exec/
-RUN cc -Wall -Werror -g /usr/local/src/su-exec/su-exec.c -o /usr/local/bin/su-exec; chmod +x /usr/local/bin/su-exec
-
+RUN cc -Wall -Werror -g /usr/local/src/su-exec/su-exec.c -o /usr/local/bin/su-exec; chmod +x /usr/local/bin/su-exec\n
 ## Chef Prepare (look at project and see wat we need)
 FROM chef AS recipe
 WORKDIR /build/src
 COPY . /build/src
-RUN cargo chef prepare --recipe-path /build/recipe.json
-
+RUN cargo chef prepare --recipe-path /build/recipe.json\n
 ## Cook (release)
 FROM chef AS dependencies
 WORKDIR /build/src
 COPY --from=recipe /build/recipe.json /build/recipe.json
 RUN cargo chef cook --tests --benches --examples --workspace --all-targets --all-features --recipe-path /build/recipe.json --release
-RUN cargo nextest archive --tests --benches --examples --workspace --all-targets --all-features --archive-file /build/temp.tar.zst --release  ; rm -f /build/temp.tar.zst
-
+RUN cargo nextest archive --tests --benches --examples --workspace --all-targets --all-features --archive-file /build/temp.tar.zst --release  ; rm -f /build/temp.tar.zst\n
 ## Build Archive (release)
 FROM dependencies AS build
 WORKDIR /build/src
 COPY . /build/src
-RUN cargo nextest archive --tests --benches --examples --workspace --all-targets --all-features --archive-file /build/full-example.tar.zst --release
-
+RUN cargo nextest archive --tests --benches --examples --workspace --all-targets --all-features --archive-file /build/full-example.tar.zst --release\n
 # Extract and Test (release)
 FROM tester as test
 WORKDIR /test
@@ -138,26 +130,21 @@ COPY --from=build \
   /build/full-example.tar.zst \
   /test/full-example.tar.zst
 RUN cargo nextest run --workspace-remap /test/src/ --extract-to /test/src/ --no-run --archive-file /test/full-example.tar.zst
-RUN cargo nextest run --workspace-remap /test/src/ --target-dir-remap /test/src/target/ --cargo-metadata /test/src/target/nextest/cargo-metadata.json --binaries-metadata /test/src/target/nextest/binaries-metadata.json
-
+RUN cargo nextest run --workspace-remap /test/src/ --target-dir-remap /test/src/target/ --cargo-metadata /test/src/target/nextest/cargo-metadata.json --binaries-metadata /test/src/target/nextest/binaries-metadata.json\n
 RUN mkdir -p /app/bin/; cp -l /test/src/target/release/full-example /app/bin/full-example
-RUN chown -R root:root /app; chmod -R u=rw,go=r,a+X /app; chmod -R a+x /app/bin
-
+RUN chown -R root:root /app; chmod -R u=rw,go=r,a+X /app; chmod -R a+x /app/bin\n
 ## Runtime
 FROM gcr.io/distroless/cc-debian12:debug as runtime
 RUN ["/busybox/cp", "-sp", "/busybox/sh","/busybox/cat","/busybox/ls","/busybox/env", "/bin/"]
 COPY --from=gcc --chmod=0555 /usr/local/bin/su-exec /bin/su-exec
 ARG USER_ID=1000
 COPY --chmod=0555 ./share/container/entry_script_sh /usr/local/bin/entry.sh
-ENTRYPOINT ["/usr/local/bin/entry.sh"]
-
+ENTRYPOINT ["/usr/local/bin/entry.sh"]\n
 ## Release Runtime
 FROM runtime as release
 COPY --from=test /app/ /usr/
-CMD ["/usr/bin/full-example"]
-```
-
-</CodeBlock>
+CMD ["/usr/bin/full-example"]`}
+/>
 
 The real version in production contains some duplicate stages to build the `debug` mode. Those stages are almost identical to the ones in this example and are therefore omitted. Only some flags and names change.
 
@@ -216,25 +203,21 @@ A common pattern to build smaller docker images is to use multi-stage Dockerfile
 
 You can compile your application with all of the Rust tooling and then use the final binary in a slim operating system. This image does not contain the common packages contained in the default tag and only contains the minimal packages needed to run your compiled Rust application.
 
-<CodeBlock lang="dockerfile">
-
-```dockerfile
-# This is the first stage. This image is used to compile the Rust application.
+<CodeBlock
+lang="dockerfile"
+code={`# This is the first stage. This image is used to compile the Rust application.
 FROM rust:bookworm as builder
 WORKDIR /app
 RUN cargo init
 # Install the package in the current directory
 RUN cargo install --path .
-CMD ["./target/release/app"]
-
+CMD ["./target/release/app"]\n
 # This is the production stage.
 # The slim image does not contain the common packages contained in the default tag and only contains the minimal packages needed to run rust.
 FROM debian:bookworm-slim
 COPY --from=builder /usr/local/cargo/bin/app /usr/local/bin/app
-CMD ["app"]
-```
-
-</CodeBlock>
+CMD ["app"]`}
+/>
 
 The example is very easy and you can build and run the image with:
 
@@ -322,35 +305,24 @@ We first create an **empty application configuration** which uses the same depen
 
 Then we build the application. With these layers yo do not need to re-build the dependencies when you change the application code.
 
-<CodeBlock lang="dockerfile">
-
-```dockerfile
-FROM rust:latest as builder
-
-WORKDIR /app
-
+<CodeBlock
+lang="dockerfile"
+code={`FROM rust:latest as builder\n
+WORKDIR /app\n
 # Copy over the manifest files
-COPY Cargo.toml Cargo.lock /app/
-
+COPY Cargo.toml Cargo.lock /app/\n
 # Create a dummy main.rs to build dependencies
-RUN mkdir src && echo "fn main() { println!(\"if you see this, the build broke\"); }" > src/main.rs
-
+RUN mkdir src && echo "fn main() { println!(\"if you see this, the build broke\"); }" > src/main.rs\n
 # This build step will cache the dependencies as they're not changed
-RUN cargo build --release
-
+RUN cargo build --release\n
 # Now, remove the dummy main.rs and copy your source code
-COPY . /app
-
+COPY . /app\n
 # You'll need to update the last modified of the main.rs file to inform cargo to rebuild it
-RUN touch -a -m ./src/main.rs
-
+RUN touch -a -m ./src/main.rs\n
 # Build the application for release. Since dependencies are cached, this will only build your code
-RUN cargo build --release
-
-CMD ["./target/release/custom-dependencies-cache"]
-```
-
-</CodeBlock>
+RUN cargo build --release\n
+CMD ["./target/release/custom-dependencies-cache"]`}
+/>
 
 Instead of this custom solution, we use and recommend [cargo chef](https://github.com/LukeMathWalker/cargo-chef) which is a cargo-subcommand that specializes in speeding up Rust Docker builds using Docker layer caching.
 
@@ -358,39 +330,25 @@ Instead of this custom solution, we use and recommend [cargo chef](https://githu
 
 In this example, we show how to use [cargo chef](https://github.com/LukeMathWalker/cargo-chef), that we prefer to use.
 
-<CodeBlock lang="dockerfile">
-
-```dockerfile
-FROM rust:latest as chef
-
-WORKDIR /app
-
+<CodeBlock
+lang="dockerfile"
+code={`FROM rust:latest as chef\n
+WORKDIR /app\n
 # Install cargo-chef
-RUN cargo install cargo-chef --locked
-
+RUN cargo install cargo-chef --locked\n
 # Examines your project and builds a recipe that captures the set of information required to build your dependencies
-FROM chef AS planner
-
-COPY . .
-
-RUN cargo chef prepare --recipe-path recipe.json
-
-FROM chef AS builder
-
-COPY --from=planner /app/recipe.json recipe.json
-
+FROM chef AS planner\n
+COPY . .\n
+RUN cargo chef prepare --recipe-path recipe.json\n
+FROM chef AS builder\n
+COPY --from=planner /app/recipe.json recipe.json\n
 # Build dependencies - this is the caching Docker layer!
-RUN cargo chef cook --release --recipe-path recipe.json
-
-COPY . .
-
+RUN cargo chef cook --release --recipe-path recipe.json\n
+COPY . .\n
 # Build the application for release. Since dependencies are cached, this will only build your code
-RUN cargo build --release
-
-CMD ["./target/release/dependencies-cache-with-cargo-chef"]
-```
-
-</CodeBlock>
+RUN cargo build --release\n
+CMD ["./target/release/dependencies-cache-with-cargo-chef"]`}
+/>
 
 While it does more or less the same as the custom solution. It caches dependencies in a separate layer and has some other [benefits](https://github.com/LukeMathWalker/cargo-chef#benefits-of-cargo-chef).
 
@@ -402,24 +360,19 @@ Cargo Binstall repo: <https://github.com/cargo-bins/cargo-binstall>.
 
 We are using it to install `cargo chef` and `cargo nextest` packages easily.
 
-<CodeBlock lang="dockerfile">
-
-```dockerfile
-
-FROM rust:latest
+<CodeBlock
+lang="dockerfile"
+code={`FROM rust:latest
 WORKDIR /app
-# Install `cargo binstall`
+# Install \`cargo binstall\`
 RUN curl -L --proto '=https' --tlsv1.2 -sSf https://raw.githubusercontent.com/cargo-bins/cargo-binstall/main/install-from-binstall-release.sh | bash
-# Install Rust binaries with `cargo binstall`
+# Install Rust binaries with \`cargo binstall\`
 RUN cargo binstall --no-confirm cargo-chef cargo-nextest
 RUN cargo chef --version && cargo nextest --version
 RUN cargo init
 RUN cargo build --release
-CMD ["./target/release/app"]
-
-```
-
-</CodeBlock>
+CMD ["./target/release/app"]`}
+/>
 
 ## Archiving And Reusing Builds With Cargo Nextest
 
@@ -438,13 +391,11 @@ We are using it for two reasons:
 - **Test partitioning**. We build the application in a docker stage and then run the tests in another stage. This way we can separate the build and test phases.
 - **Passing the binary to the next stage**. After building the application we archive the build artifacts and then we extract them in the next stage to run the tests. Finally we copy the binary to the final "runtime" stage.
 
-<CodeBlock lang="dockerfile">
-
-```dockerfile
-## First stage to install the nextest tool
+<CodeBlock
+lang="dockerfile"
+code={`## First stage to install the nextest tool
 FROM rust:latest as nextest
-RUN cargo install cargo-nextest --locked
-
+RUN cargo install cargo-nextest --locked\n
 ## Second stage to build the application and package it with nextest
 FROM nextest AS builder
 WORKDIR /build/src
@@ -455,8 +406,7 @@ RUN cargo build
 # include the binary in the archive.
 # See: https://github.com/nextest-rs/nextest/issues/423
 RUN cargo nextest archive --tests --benches --examples --workspace --all-targets --all-features --archive-file /build/archiving-and-reusing-builds.tar.zst
-CMD ["/build/src/target/debug/archiving-and-reusing-builds"]
-
+CMD ["/build/src/target/debug/archiving-and-reusing-builds"]\n
 ## Third stage to test the application
 FROM nextest AS tester
 WORKDIR /test
@@ -471,18 +421,15 @@ RUN cargo nextest run --workspace-remap /test/src/ --extract-to /test/src/ --no-
 # copy it in the next stage.
 RUN cargo nextest run --workspace-remap /test/src/ --target-dir-remap /test/src/target/ --cargo-metadata /test/src/target/nextest/cargo-metadata.json --binaries-metadata /test/src/target/nextest/binaries-metadata.json
 RUN mkdir -p /app/bin/; cp -l /test/src/target/debug/archiving-and-reusing-builds /app/bin/archiving-and-reusing-builds
-CMD ["/app/bin/archiving-and-reusing-builds"]
-
+CMD ["/app/bin/archiving-and-reusing-builds"]\n
 ## Fourth stage to run the application in production
 FROM nextest AS runtime
 WORKDIR /app
 # We take the application binary from the tester stage to ensure the binary we
 # use has passed the tests.
 COPY --from=tester /app/bin/archiving-and-reusing-builds /app/
-CMD ["/app/archiving-and-reusing-builds"]
-```
-
-</CodeBlock>
+CMD ["/app/archiving-and-reusing-builds"]`}
+/>
 
 <Callout type="info">
 
@@ -527,22 +474,15 @@ There are some ways to avoid running the container as `root`. We will see all of
 
 ### Use the `USER` instruction
 
-<CodeBlock lang="dockerfile">
-
-```dockerfile
-FROM rust:latest
-
-WORKDIR /app
-
+<CodeBlock
+lang="dockerfile"
+code={`FROM rust:latest\n
+WORKDIR /app\n
 RUN cargo init
-RUN cargo build --release
-
-USER www-data
-
-CMD ["./target/release/app"]
-```
-
-</CodeBlock>
+RUN cargo build --release\n
+USER www-data\n
+CMD ["./target/release/app"]`}
+/>
 
 You can add the `USER` instruction before the last command. In that example we know that the base image already contains the user `www-data`.
 
@@ -554,25 +494,17 @@ www-data:x:33:33:www-data:/var/www:/usr/sbin/nologin`}
 
 But you can also create a specific user for your application:
 
-<CodeBlock lang="dockerfile">
-
-```dockerfile
-FROM rust:latest
-
-WORKDIR /app
-
+<CodeBlock
+lang="dockerfile"
+code={`FROM rust:latest\n
+WORKDIR /app\n
 RUN cargo init
-RUN cargo build --release
-
+RUN cargo build --release\n
 RUN groupadd -r appuser
-RUN useradd -r -u 1001 -g appuser appuser
-
-USER appuser
-
-CMD ["./target/release/app"]
-```
-
-</CodeBlock>
+RUN useradd -r -u 1001 -g appuser appuser\n
+USER appuser\n
+CMD ["./target/release/app"]`}
+/>
 
 Using the `USER` instruction is considered a good practice because by default the container will not run as root. In that example, docker will run the container as the user with the ID `1001`.
 
@@ -617,36 +549,27 @@ With the proposed solutions you would need to rebuild the docker image so that t
 
 There is al alternative to the previous solutions that makes it possible to **run the container with different user IDs without rebuilding the image**.
 
-<CodeBlock lang="dockerfile">
-
-```dockerfile
-
-## Compile su-exec
+<CodeBlock
+lang="dockerfile"
+code={`## Compile su-exec
 FROM docker.io/library/gcc:bookworm as gcc
 COPY ./contrib/dev-tools/su-exec/ /usr/local/src/su-exec/
-RUN cc -Wall -Werror -g /usr/local/src/su-exec/su-exec.c -o /usr/local/bin/su-exec; chmod +x /usr/local/bin/su-exec
-
+RUN cc -Wall -Werror -g /usr/local/src/su-exec/su-exec.c -o /usr/local/bin/su-exec; chmod +x /usr/local/bin/su-exec\n
 ## Application
 FROM rust:bookworm as builder
 WORKDIR /app
 RUN cargo init
 RUN cargo build --release
-CMD ["./target/release/app"]
-
+CMD ["./target/release/app"]\n
 ## Runtime
 FROM gcr.io/distroless/cc-debian12:debug as runtime
-RUN ["/busybox/cp", "-sp", "/busybox/sh","/busybox/cat","/busybox/ls","/busybox/env", "/bin/"]
-
+RUN ["/busybox/cp", "-sp", "/busybox/sh","/busybox/cat","/busybox/ls","/busybox/env", "/bin/"]\n
 COPY --from=builder /app/target/release/app /usr/local/bin/app
 COPY --from=gcc --chmod=0555 /usr/local/bin/su-exec /bin/su-exec
-COPY --chmod=0555 ./share/container/entry_script_sh /usr/local/bin/entry.sh
-
+COPY --chmod=0555 ./share/container/entry_script_sh /usr/local/bin/entry.sh\n
 ENTRYPOINT ["/usr/local/bin/entry.sh"]
-CMD ["/usr/local/bin/app"]
-
-```
-
-</CodeBlock>
+CMD ["/usr/local/bin/app"]`}
+/>
 
 This is the approach we use in Torrust. You run the docker as `root` but we always use an entrypoint. That entrypoint creates a new user with an ID provided as an environment variable.
 
@@ -678,51 +601,40 @@ Rust apps can be built in `debug` or `release` mode. The `Containerfile` builds 
 
 We can abstract away the stages:
 
-<CodeBlock lang="dockerfile">
-
-```dockerfile
-## Base Builder Image
+<CodeBlock
+lang="dockerfile"
+code={`## Base Builder Image
 FROM rust:bookworm as chef
-# Install tools needed to build the application: cargo-chef cargo-nextest
-
+# Install tools needed to build the application: cargo-chef cargo-nextest\n
 ## Tester Image
 FROM rust:slim-bookworm as tester
-# Install tools needed to test the application: cargo-nextest
-
+# Install tools needed to test the application: cargo-nextest\n
 ## Su Exe Compile
 FROM docker.io/library/gcc:bookworm as gcc
-# Compile the su-exec program which is used at runtime to change the user running the container.
-
+# Compile the su-exec program which is used at runtime to change the user running the container.\n
 ## Chef Prepare (look at project and see wat we need)
 FROM chef AS recipe
-# Prepare the info needed to build and cache cargo dependencies
-
+# Prepare the info needed to build and cache cargo dependencies\n
 ## Cook (release)
 FROM chef AS dependencies
-# Re-hydrate the minimum project skeleton identified by `cargo chef prepare` and build it to cache dependencies
-
+# Re-hydrate the minimum project skeleton identified by \`cargo chef prepare\` and build it to cache dependencies\n
 ## Build Archive (release)
 FROM dependencies AS build
-# build and archive the application
-
+# build and archive the application\n
 # Extract and Test (release)
 FROM tester as test
 # Extract the application from the archived artifacts and run the tests.
-# And copy the binary to an specified location so it can be used in the `release`
-# stage.
-
+# And copy the binary to an specified location so it can be used in the \`release\`
+# stage.\n
 ## Runtime
 FROM gcr.io/distroless/cc-debian12:debug as runtime
 # Minimal image to run the app in production.
-# Includes the entrypoint to setup and run the application with a different user Id.
-
+# Includes the entrypoint to setup and run the application with a different user Id.\n
 ## Release Runtime
 FROM runtime as release
-# Runtime for release mode. It copies the binary from the `test` stage and runs it
-# via the entrypoint added in the `runtime` stage.
-```
-
-</CodeBlock>
+# Runtime for release mode. It copies the binary from the \`test\` stage and runs it
+# via the entrypoint added in the \`runtime\` stage.`}
+/>
 
 Let's see each stage individually.
 
@@ -801,10 +713,9 @@ RUN cargo nextest archive --tests --benches --examples --workspace --all-targets
 
 Now, that we have successfully built the application, we can run the tests. We extract the application from the archived artifacts and run the tests.
 
-<CodeBlock lang="dockerfile">
-
-```dockerfile
-## Extract and Test (release)
+<CodeBlock
+lang="dockerfile"
+code={`## Extract and Test (release)
 FROM tester as test
 WORKDIR /test
 COPY . /test/src
@@ -820,10 +731,8 @@ RUN cargo nextest run --workspace-remap /test/src/ --target-dir-remap /test/src/
 # there in the final runtime stage.
 RUN mkdir -p /app/bin/; cp -l /test/src/target/release/full-example /app/bin/full-example
 # Since we use su-exec. We need to run the container as root.
-RUN chown -R root:root /app; chmod -R u=rw,go=r,a+X /app; chmod -R a+x /app/bin
-```
-
-</CodeBlock>
+RUN chown -R root:root /app; chmod -R u=rw,go=r,a+X /app; chmod -R a+x /app/bin`}
+/>
 
 Once the application has been built and tested we prepare the runtime. We start from a minimum "distroless" image variant. We add an entrypoint to setup the application and also to make sure we don't use the `root` user to run it. The entrypoint just runs the application provided as an argument, in our case, our application in `debug` or `release` mode, depending of which one you want to run.
 

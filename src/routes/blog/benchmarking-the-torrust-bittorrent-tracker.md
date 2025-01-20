@@ -128,41 +128,34 @@ There are many ways to keep this information in memory. The access to this data 
 
 The output at the time of writing this post is:
 
-<CodeBlock lang="bash">
-
-```terminal
-tokio::sync::RwLock<std::collections::BTreeMap<InfoHash, Entry>>
+<CodeBlock
+lang="bash"
+code={`tokio::sync::RwLock<std::collections::BTreeMap<InfoHash, Entry>>
 add_one_torrent: Avg/AdjAvg: (60ns, 59ns)
 update_one_torrent_in_parallel: Avg/AdjAvg: (10.909457ms, 0ns)
 add_multiple_torrents_in_parallel: Avg/AdjAvg: (13.88879ms, 0ns)
-update_multiple_torrents_in_parallel: Avg/AdjAvg: (7.772484ms, 7.782535ms)
-
+update_multiple_torrents_in_parallel: Avg/AdjAvg: (7.772484ms, 7.782535ms)\n
 std::sync::RwLock<std::collections::BTreeMap<InfoHash, Entry>>
 add_one_torrent: Avg/AdjAvg: (43ns, 39ns)
 update_one_torrent_in_parallel: Avg/AdjAvg: (4.020937ms, 4.020937ms)
 add_multiple_torrents_in_parallel: Avg/AdjAvg: (5.896177ms, 5.768448ms)
-update_multiple_torrents_in_parallel: Avg/AdjAvg: (3.883823ms, 3.883823ms)
-
+update_multiple_torrents_in_parallel: Avg/AdjAvg: (3.883823ms, 3.883823ms)\n
 std::sync::RwLock<std::collections::BTreeMap<InfoHash, Arc<std::sync::Mutex<Entry>>>>
 add_one_torrent: Avg/AdjAvg: (51ns, 49ns)
 update_one_torrent_in_parallel: Avg/AdjAvg: (3.252314ms, 3.149109ms)
 add_multiple_torrents_in_parallel: Avg/AdjAvg: (8.411094ms, 8.411094ms)
-update_multiple_torrents_in_parallel: Avg/AdjAvg: (4.106086ms, 4.106086ms)
-
+update_multiple_torrents_in_parallel: Avg/AdjAvg: (4.106086ms, 4.106086ms)\n
 tokio::sync::RwLock<std::collections::BTreeMap<InfoHash, Arc<std::sync::Mutex<Entry>>>>
 add_one_torrent: Avg/AdjAvg: (91ns, 90ns)
 update_one_torrent_in_parallel: Avg/AdjAvg: (3.542378ms, 3.435695ms)
 add_multiple_torrents_in_parallel: Avg/AdjAvg: (15.651172ms, 15.651172ms)
-update_multiple_torrents_in_parallel: Avg/AdjAvg: (4.368189ms, 4.257572ms)
-
+update_multiple_torrents_in_parallel: Avg/AdjAvg: (4.368189ms, 4.257572ms)\n
 tokio::sync::RwLock<std::collections::BTreeMap<InfoHash, Arc<tokio::sync::Mutex<Entry>>>>
 add_one_torrent: Avg/AdjAvg: (111ns, 109ns)
 update_one_torrent_in_parallel: Avg/AdjAvg: (6.590677ms, 6.808535ms)
 add_multiple_torrents_in_parallel: Avg/AdjAvg: (16.572217ms, 16.30488ms)
-update_multiple_torrents_in_parallel: Avg/AdjAvg: (4.073221ms, 4.000122ms)
-```
-
-</CodeBlock>
+update_multiple_torrents_in_parallel: Avg/AdjAvg: (4.073221ms, 4.000122ms)`}
+/>
 
 We are benchmarking four scenarios that we think are the most relevant:
 
@@ -216,10 +209,9 @@ The last line `./target/release/aquatic_udp_load_test -p > "load-test-config.tom
 
 Edit the `load-test-config.toml`:
 
-<CodeBlock lang="bash">
-
-```toml
-# ...
+<CodeBlock
+lang="bash"
+code={`# ...
 server_address = "127.0.0.1:6969"
 # ...
 # Probability that a generated request is a connect request as part
@@ -231,10 +223,8 @@ weight_announce = 50
 # Probability that a generated request is a scrape request, as part
 # of sum of the various weight arguments.
 weight_scrape = 1
-# ...
-```
-
-</CodeBlock>
+# ...`}
+/>
 
 Finally you can run the test with:
 
@@ -255,10 +245,9 @@ Just as an example we show the test results with a non dedicated machine.
 
 **Test result**:
 
-<CodeBlock lang="bash">
-
-```terminal
-Requests out: 388702.94/second
+<CodeBlock
+lang="bash"
+code={`Requests out: 388702.94/second
 Responses in: 349832.25/second
   - Connect responses:  173325.85
   - Announce responses: 173061.13
@@ -274,10 +263,8 @@ Announce responses per info hash:
   - p95: 3
   - p99: 106
   - p99.9: 283
-  - p100: 357
-```
-
-</CodeBlock>
+  - p100: 357`}
+/>
 
 ## Comparative UDP Benchmarking With Other Trackers
 

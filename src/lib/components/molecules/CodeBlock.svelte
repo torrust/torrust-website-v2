@@ -46,22 +46,24 @@
 </script>
 
 <div class="code-block" class:full-bleed={fullBleed} bind:this={codeBlockElement}>
-	{#if filename}
-		<div class="filename">{filename}</div>
-	{/if}
-	{#if lang}
-		<div class="lang">{lang}</div>
-	{/if}
-	<button
-		class={`copy-button ${showCheckmark ? 'copy-button-green' : 'copy-button-gray'}`}
-		onclick={copyToClipboard}
-	>
-		{#if showCheckmark}
-			<Icon icon="charm:tick" color="#6cdb2e" />
-		{:else}
-			<Icon icon="ion:copy-outline" color="#FFFFFF" />
+	<div class="code-block-info">
+		{#if filename}
+			<div class="filename">{filename}</div>
 		{/if}
-	</button>
+		{#if lang}
+			<div class="lang">{lang}</div>
+		{/if}
+		<button
+			class={`copy-button ${showCheckmark ? 'copy-button-green' : 'copy-button-gray'}`}
+			onclick={copyToClipboard}
+		>
+			{#if showCheckmark}
+				Code Copied <Icon icon="charm:tick" color="#6cdb2e" />
+			{:else}
+				Copy Code<Icon icon="ion:copy-outline" color="#FFFFFF" />
+			{/if}
+		</button>
+	</div>
 	<div class="code-content">
 		{#if code}
 			<pre><code
@@ -85,10 +87,10 @@
 		line-height: 1.33em;
 		border-radius: 8px;
 		box-shadow: var(--card-shadow);
-		padding: 12px 10px 20px 10px;
+		padding: 0 0 20px 0;
 		min-height: 80px;
 		background-color: #282c34 !important;
-
+		border: 1px solid gray;
 		margin: 30px 0;
 
 		:global(pre) {
@@ -111,17 +113,21 @@
 
 		.code-content code {
 			border-radius: 8px;
+			margin: 1rem 0.5rem 0 0.5rem;
+			padding: 20px;
+		}
+
+		.code-block-info {
+			display: flex;
+			justify-content: space-between;
+			border-bottom: 1px solid gray;
+			padding: 0.3rem 0.5rem;
 		}
 
 		.lang {
-			position: absolute;
-			right: 0;
-			top: -15px;
-			background-color: rgba(36, 36, 36, 1);
-			border-radius: 8px;
 			padding: 5px 10px;
 			z-index: 2;
-			font-size: 0.85em;
+			font-size: 1em;
 		}
 
 		.filename {
@@ -137,13 +143,16 @@
 		}
 
 		.copy-button {
-			position: absolute;
-			top: 1.5rem;
-			right: 1.5rem;
-			padding: 0.25rem;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			border: 1px solid gray;
 			border-radius: 0.375rem;
+			gap: 0.5rem;
+			padding: 0.25rem 0.5rem;
 			box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
 			cursor: pointer;
+			font-size: 0.85em;
 		}
 
 		.copy-button-green {

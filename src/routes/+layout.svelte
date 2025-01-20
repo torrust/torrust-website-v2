@@ -4,18 +4,27 @@
 	import Header from '$lib/components/organisms/Header.svelte';
 	import Footer from '$lib/components/organisms/Footer.svelte';
 	import { onNavigate } from '$app/navigation';
+
 	let contentDiv: HTMLElement | null = null;
+
+	const supportsViewTransition = typeof window !== 'undefined' && 'startViewTransition' in document;
 
 	onNavigate((navigation) => {
 		return new Promise((resolve) => {
-			const transition = document.startViewTransition(async () => {
+			if (supportsViewTransition) {
+				const transition = document.startViewTransition(async () => {
+					if (contentDiv) {
+						contentDiv.scrollTop = 0;
+					}
+					resolve();
+					await navigation.complete;
+				});
+			} else {
 				if (contentDiv) {
-					// Fix scroll
 					contentDiv.scrollTop = 0;
 				}
 				resolve();
-				await navigation.complete;
-			});
+			}
 		});
 	});
 

@@ -1,4 +1,4 @@
-import { fetchMarkdownPosts } from '$lib/utils/index_posts';
+import { fetchMarkdownPosts } from '$lib/data/posts';
 import type { Contributor } from '$lib/utils/types';
 import { fetchWithCache } from '$lib/utils/cache';
 

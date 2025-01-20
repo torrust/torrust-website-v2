@@ -501,47 +501,35 @@ Notice: you have to edit the file `./storage/proxy/etc/nginx-conf/nginx.conf` no
 
 </Callout>
 
-<CodeBlock lang="nginx">
-
-```nginx
-server
+<CodeBlock
+lang="nginx"
+code={`server
 {
   listen 443 ssl http2;
   listen [::]:443 ssl http2;
-  server_name index.torrust-demo.com;
-
-  server_tokens off;
-
+  server_name index.torrust-demo.com;\n
+  server_tokens off;\n
   ssl_certificate /etc/letsencrypt/live/index.torrust-demo.com-0001/fullchain.pem;
-  ssl_certificate_key /etc/letsencrypt/live/index.torrust-demo.com-0001/privkey.pem;
-
-  ssl_buffer_size 8k;
-
-  ssl_dhparam /etc/ssl/certs/dhparam-2048.pem;
-
+  ssl_certificate_key /etc/letsencrypt/live/index.torrust-demo.com-0001/privkey.pem;\n
+  ssl_buffer_size 8k;\n
+  ssl_dhparam /etc/ssl/certs/dhparam-2048.pem;\n
   ssl_protocols TLSv1.2;
-  ssl_prefer_server_ciphers on;
-
-  ssl_ciphers ECDH+AESGCM:ECDH+AES256:ECDH+AES128:DH+3DES:!ADH:!AECDH:!MD5;
-
+  ssl_prefer_server_ciphers on;\n
+  ssl_ciphers ECDH+AESGCM:ECDH+AES256:ECDH+AES128:DH+3DES:!ADH:!AECDH:!MD5;\n
   ssl_ecdh_curve secp384r1;
-  ssl_session_tickets off;
-
+  ssl_session_tickets off;\n
   ssl_stapling on;
   ssl_stapling_verify on;
-  resolver 8.8.8.8;
-
+  resolver 8.8.8.8;\n
   location ^~/api/
   {
     rewrite ^/api/(.*)$ /$1 break;
     try_files $uri @index;
-  }
-
+  }\n
   location /
   {
     try_files $uri @index-gui;
-  }
-
+  }\n
   location @index
   {
     proxy_pass http://index:3001;
@@ -552,8 +540,7 @@ server
     add_header Content-Security-Policy "default-src * data: 'unsafe-eval' 'unsafe-inline'" always;
     #add_header Strict-Transport-Security "max-age=31536000; includeSubDomains; preload" always;
     # enable strict transport security only if you understand the implications
-  }
-
+  }\n
   location @index-gui
   {
     proxy_pass http://index-gui:3000;
@@ -564,49 +551,36 @@ server
     add_header Content-Security-Policy "default-src * data: 'unsafe-eval' 'unsafe-inline'" always;
     #add_header Strict-Transport-Security "max-age=31536000; includeSubDomains; preload" always;
     # enable strict transport security only if you understand the implications
-  }
-
+  }\n
   root /var/www/html;
   index index.html index.htm index.nginx-debian.html;
-}
-
+}\n
 server
 {
   listen 443 ssl http2;
   listen [::]:443 ssl http2;
-  server_name tracker.torrust-demo.com;
-
-  server_tokens off;
-
+  server_name tracker.torrust-demo.com;\n
+  server_tokens off;\n
   ssl_certificate /etc/letsencrypt/live/tracker.torrust-demo.com/fullchain.pem;
-  ssl_certificate_key /etc/letsencrypt/live/tracker.torrust-demo.com/privkey.pem;
-
-  ssl_buffer_size 8k;
-
-  ssl_dhparam /etc/ssl/certs/dhparam-2048.pem;
-
+  ssl_certificate_key /etc/letsencrypt/live/tracker.torrust-demo.com/privkey.pem;\n
+  ssl_buffer_size 8k;\n
+  ssl_dhparam /etc/ssl/certs/dhparam-2048.pem;\n
   ssl_protocols TLSv1.2;
-  ssl_prefer_server_ciphers on;
-
-  ssl_ciphers ECDH+AESGCM:ECDH+AES256:ECDH+AES128:DH+3DES:!ADH:!AECDH:!MD5;
-
+  ssl_prefer_server_ciphers on;\n
+  ssl_ciphers ECDH+AESGCM:ECDH+AES256:ECDH+AES128:DH+3DES:!ADH:!AECDH:!MD5;\n
   ssl_ecdh_curve secp384r1;
-  ssl_session_tickets off;
-
+  ssl_session_tickets off;\n
   ssl_stapling on;
   ssl_stapling_verify on;
-  resolver 8.8.8.8;
-
+  resolver 8.8.8.8;\n
   location /api/
   {
     try_files $uri @tracker-api;
-  }
-
+  }\n
   location /
   {
     try_files $uri @tracker-http;
-  }
-
+  }\n
   location @tracker-api
   {
     proxy_pass http://tracker:1212;
@@ -617,8 +591,7 @@ server
     add_header Content-Security-Policy "default-src * data: 'unsafe-eval' 'unsafe-inline'" always;
     #add_header Strict-Transport-Security "max-age=31536000; includeSubDomains; preload" always;
     # enable strict transport security only if you understand the implications
-  }
-
+  }\n
   location @tracker-http
   {
     proxy_pass http://tracker:7070;
@@ -628,17 +601,13 @@ server
     add_header Referrer-Policy "no-referrer-when-downgrade" always;
     add_header Content-Security-Policy "default-src * data: 'unsafe-eval' 'unsafe-inline'" always;
     #add_header Strict-Transport-Security "max-age=31536000; includeSubDomains; preload" always;
-    # enable strict transport security only if you understand the implications
-
+    # enable strict transport security only if you understand the implications\n
     proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-  }
-
+  }\n
   root /var/www/html;
   index index.html index.htm index.nginx-debian.html;
-}
-```
-
-</CodeBlock>
+}`}
+/>
 
 Make sure you also change the domains:
 
@@ -900,22 +869,17 @@ If you change the config files you will need to restart the services.
 
 You can also enable the debug for the Nginx proxy. Edit the file `./storage/proxy/etc/nginx-conf/nginx.conf` and add `error_log` to the server configuration:
 
-<CodeBlock lang="nginx">
-
-```nginx
-server
+<CodeBlock
+lang="nginx"
+code={`server
 {
     listen 443 ssl http2;
     listen [::]:443 ssl http2;
-    server_name index.torrust-demo.com;
-
-    error_log /var/log/nginx/error.log debug;
-
+    server_name index.torrust-demo.com;\n
+    error_log /var/log/nginx/error.log debug;\n
     ...
-}
-```
-
-</CodeBlock>
+}`}
+/>
 
 If your server does not have too much disk space you could run out of disk space.
 

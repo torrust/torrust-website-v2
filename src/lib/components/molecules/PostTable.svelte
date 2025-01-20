@@ -1,4 +1,3 @@
-<!-- @migration-task Error while migrating Svelte code: Can't migrate code with afterUpdate. Please migrate by hand. -->
 <script lang="ts">
 	import { onMount } from 'svelte';
 
@@ -13,12 +12,14 @@
 		}
 	};
 
-	onMount(updateStyles);
+	onMount(() => {
+		updateStyles();
+	});
 
 	$: updateStyles();
 </script>
 
-<svelte:window bind:innerWidth={size} />
+<svelte:window on:resize={() => (size = window.innerWidth)} />
 
 <div class={size >= 1440 ? 'scroll-container' : ''} style={divStyle}>
 	<div>
