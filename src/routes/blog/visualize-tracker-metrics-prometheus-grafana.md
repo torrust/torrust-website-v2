@@ -61,16 +61,15 @@ We will not include instructions about how to install Prometheus and Grafana. Pl
 
 This is the new services added to the docker compose configuration we are using in the live demo:
 
-<CodeBlock lang="yml">
-
-```yml
-grafana:
+<CodeBlock
+lang="yml"
+code={`grafana:
   image: grafana/grafana:11.4.0
   container_name: grafana
   restart: unless-stopped
   environment:
-    - GF_SECURITY_ADMIN_USER=${GF_SECURITY_ADMIN_USER:-admin}
-    - GF_SECURITY_ADMIN_PASSWORD=${GF_SECURITY_ADMIN_PASSWORD:-admin}
+    - GF_SECURITY_ADMIN_USER=\${GF_SECURITY_ADMIN_USER:-admin}
+    - GF_SECURITY_ADMIN_PASSWORD=\${GF_SECURITY_ADMIN_PASSWORD:-admin}
   networks:
     - backend_network
   ports:
@@ -78,8 +77,7 @@ grafana:
   volumes:
     - grafana_data:/var/lib/grafana
   depends_on:
-    - prometheus
-
+    - prometheus\n
 prometheus:
   image: prom/prometheus:v3.0.1
   container_name: prometheus
@@ -96,13 +94,10 @@ prometheus:
     max-size: '10m'
     max-file: '10'
   depends_on:
-    - tracker
-
+    - tracker\n
 volumes:
-  grafana_data: {}
-```
-
-</CodeBlock>
+  grafana_data: {}`}
+/>
 
 <Callout type="warning">
 
@@ -112,28 +107,23 @@ You have to provide a docker compose environment variable `GF_SECURITY_ADMIN_PAS
 
 The `Nginx` service was also changed a little bit to make sure it's started after the Grafana container. We need that to server Grafana via Nginx (to use HTTPs).
 
-<CodeBlock lang="yml">
-
-```yml
-proxy:
+<CodeBlock
+lang="yml"
+code={`proxy:
   # The rest of the configuration is the same ...
   depends_on:
     - index-gui
     - index
     - tracker
-    - grafana
-```
-
-</CodeBlock>
+    - grafana`}
+/>
 
 The Prometheus configuration is very simple. We only need to set the Tracker URL.
 
-<CodeBlock lang="yml">
-
-```yml
-global:
-  scrape_interval: 15s # How often to scrape metrics
-
+<CodeBlock
+lang="yml"
+code={`global:
+  scrape_interval: 15s # How often to scrape metrics\n
 scrape_configs:
   - job_name: 'tracker_metrics'
     metrics_path: '/api/v1/stats'
@@ -141,10 +131,8 @@ scrape_configs:
       token: ['MyAccessToken']
       format: ['prometheus']
     static_configs:
-      - targets: ['tracker:1212']
-```
-
-</CodeBlock>
+      - targets: ['tracker:1212']`}
+/>
 
 <Callout type="warning">
 

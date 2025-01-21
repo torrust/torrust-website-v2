@@ -11,12 +11,11 @@ import rehypePrettyCode from 'rehype-pretty-code';
 const mdsvexOptions = {
 	extensions: ['.md'],
 	rehypePlugins: [
-		rehypeExternalLinks, // Adds 'target' and 'rel' to external links
-		rehypeSlug, // Adds 'id' attributes to Headings (h1,h2,etc)
+		rehypeExternalLinks,
+		rehypeSlug,
 		[
 			rehypeAutolinkHeadings,
 			{
-				// Adds hyperlinks to the headings, requires rehypeSlug
 				behavior: 'prepend',
 				properties: { className: ['heading-link'], title: 'Permalink', ariaHidden: 'true' },
 				content: {
@@ -33,7 +32,6 @@ const mdsvexOptions = {
 				theme: 'github-dark',
 				onVisitLine(node) {
 					if (node.children.length === 0) {
-						// Ensure empty lines are preserved
 						node.children = [{ type: 'text', value: '↹↹↹' }];
 					}
 				}

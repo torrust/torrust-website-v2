@@ -43,7 +43,7 @@
 				<a href="/blog/{prevPost.meta.slug}">{prevPost?.meta?.title}</a>
 			</div>
 		{:else}
-			<h3 class="inactive">You are reading our first post.</h3>
+			<h3 class="inactive">You are reading our most recent post.</h3>
 		{/if}
 	</div>
 
